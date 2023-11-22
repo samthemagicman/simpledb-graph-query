@@ -8,22 +8,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CypherVisitor extends CypherBaseVisitor<String> {
+    String graphName = "defaultgraph";
 
     @Override
     public String visitQuery(CypherParser.QueryContext ctx) {
-        String matchClause = visitMatchClause(ctx.matchClause());
-        String returnClause = "";
-        if (ctx.returnClause() != null) {
-            returnClause = "\n" + visitReturnClause(ctx.returnClause());
+        if (ctx.matchClause() != null) {
+            String matchClause = visit(ctx.matchClause());
+            String returnClause = "";
+            if (ctx.returnClause() != null) {
+                returnClause = "\n" + visit(ctx.returnClause());
+            }
+            return returnClause + "\n" + matchClause;
+        } else {
+            return visit(ctx.children.get(0));
         }
-        return returnClause + "\n" + matchClause;
+    }
+
+    @Override
+    public String visitCreateCommand(CypherParser.CreateCommandContext ctx) {
+        String nodeTableName = graphName + "_nodes";
+        return "INSERT INTO " + nodeTableName + visit(ctx.createCommandPattern());
+    }
+
+    @Override
+    public String visitCreateCommandPattern(CypherParser.CreateCommandPatternContext ctx) {
+        var nodeId = ctx.pair().property.getText();
+        var nodeLabel = ctx.pair().value.getText();
+
+        var properties = ctx.createCommandProperties().pair();
+        var propNames = properties.stream().map(p -> p.property.getText() + nodeId).toArray(String[]::new);
+        var propValues = properties.stream().map(p -> "'" + p.value.getText() + nodeId + "'").toArray(String[]::new);
+
+        return  " (" + nodeLabel + ", " + String.join(",", propNames) + ") VALUES (" + nodeLabel + "," + String.join(",", propValues) + ")";
     }
 
     @Override
     public String visitMatchClause(CypherParser.MatchClauseContext ctx) {
-        var p = "FROM " + ctx.pattern().nodePattern(0).nodeLabel().getText();
-        if (ctx.pattern().nodePattern(0).nodeId() != null) {
-            p += " AS " + ctx.pattern().nodePattern(0).nodeId().ID().getText();
+        var p = "FROM " + ctx.pattern().nodePattern(0).pair().property.getText();
+        if (ctx.pattern().nodePattern(0).pair() != null) {
+            p += " AS " + ctx.pattern().nodePattern(0).pair().value.getText();
         }
         p += "\n" + visitPattern(ctx.pattern());
         return p;
@@ -31,27 +54,31 @@ public class CypherVisitor extends CypherBaseVisitor<String> {
 
     @Override
     public String visitReturnClause(CypherParser.ReturnClauseContext ctx) {
+        return "SELECT " + visit(ctx.returnPattern());
+    }
+
+    @Override
+    public String visitReturnAll(CypherParser.ReturnAllContext ctx) {
+        return "*";
+    }
+
+    @Override
+    public String visitReturnSingleNode(CypherParser.ReturnSingleNodeContext ctx) {
+        return ctx.ID().getText();
+    }
+
+    @Override
+    public String visitReturnMultipleNodes(CypherParser.ReturnMultipleNodesContext ctx) {
         List<String> returnItems = new ArrayList<>();
         for (CypherParser.ReturnItemContext returnItemContext : ctx.returnItem()) {
             returnItems.add(visitReturnItem(returnItemContext));
         }
-        return "SELECT " + String.join(", ", returnItems);
+        return String.join(", ", returnItems);
     }
 
     @Override
     public String visitReturnItem(CypherParser.ReturnItemContext ctx) {
-        String nodeId = visitNodeId(ctx.nodeId());
-        String property = visitProperty(ctx.property());
-        return nodeId + "." + property;
-    }
-
-    @Override
-    public String visitProperty(CypherParser.PropertyContext ctx) {
-        TerminalNode idNode = ctx.ID();
-        if (idNode != null) {
-            return idNode.getText();
-        }
-        return "";
+        return ctx.object.getText() + "." + ctx.property.getText();
     }
 
     @Override
@@ -59,13 +86,13 @@ public class CypherVisitor extends CypherBaseVisitor<String> {
 
         if (ctx.relationshipPattern() == null) {
             return ";";
-        } else if (ctx.relationshipPattern().nodeId() == null) {
-            var node1 = ctx.nodePattern(0);
-            var node1Label = node1.nodeLabel().getText();
-            var node1Id = node1.nodeId().ID().getText();
-            var node2 = ctx.nodePattern(1);
-            var node2Label = node2.nodeLabel().getText();
-            var node2Id = node2.nodeId().ID().getText();
+        } else if (ctx.relationshipPattern().pair().property == null) {
+            var node1 = ctx.nodePattern(0).pair();
+            var node1Label = node1.property.getText();
+            var node1Id = node1.value.getText();
+            var node2 = ctx.nodePattern(1).pair();
+            var node2Label = node2.property.getText();
+            var node2Id = node2.value.getText();
 
             return "JOIN " +
                     node2Id + " ON " + node1Id + "." + node1Label + "_id" + " = " + node2Id + "." + node2Id + "_id";
@@ -73,36 +100,17 @@ public class CypherVisitor extends CypherBaseVisitor<String> {
         }
 
         var relationship = ctx.relationshipPattern();
-        var relationshipLabel = relationship.nodeLabel().getText();
-        var relationshipId = relationship.nodeId().ID().getText();
+        var relationshipLabel = relationship.pair().property.getText();
+        var relationshipId = relationship.pair().value.getText();
         var node1 = ctx.nodePattern(0);
-        var node1Label = node1.nodeLabel().getText();
-        var node1Id = node1.nodeId().ID().getText();
+        var node1Label = node1.pair().property.getText();
+        var node1Id = node1.pair().value.getText();
         var node2 = ctx.nodePattern(1);
-        var node2Label = node2.nodeLabel().getText();
-        var node2Id = node2.nodeId().ID().getText();
+        var node2Label = node2.pair().property.getText();
+        var node2Id = node2.pair().value.getText();
 
         var p = "JOIN " + relationshipId + " ON " + node1Id + "." + node1Label + "_id" + " = " + relationshipId + "." + node1Id + "_id";
         p = p + "\nJOIN " + node2Id + " ON " + relationshipId + "." + node2Id + "_id" + " = " + node2Id + "." + node2Id + "_id";
         return p;
     }
-
-    @Override
-    public String visitNodePattern(CypherParser.NodePatternContext ctx) {
-        TerminalNode nodeId = ctx.nodeId().ID();
-        if (nodeId != null) {
-            return "SCAN(" + nodeId.getText() + ")";
-        }
-        return "";
-    }
-
-    @Override
-    public String visitNodeId(CypherParser.NodeIdContext ctx) {
-        TerminalNode idNode = ctx.ID();
-        if (idNode != null) {
-            return idNode.getText();
-        }
-        return "";
-    }
-
 }

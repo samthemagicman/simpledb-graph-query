@@ -13,6 +13,7 @@ public class antlr4test {
         System.out.println("Enter a query: ");
         String inp = "MATCH (person:Person)-[likes:LIKES]-(movie:Movie)\n" +
                 "RETURN person.name, person.born\n";
+        inp = "CREATE (person:Person {name: \"Sam Salfi\", age: twentytwo})";
 
         // String input = scn.nextLine();
 

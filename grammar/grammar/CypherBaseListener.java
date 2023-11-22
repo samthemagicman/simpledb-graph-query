@@ -1,5 +1,4 @@
 // Generated from .//Cypher.g4 by ANTLR 4.13.1
-package simpledb.graph.grammar;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -29,6 +28,42 @@ public class CypherBaseListener implements CypherListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterCreateCommand(CypherParser.CreateCommandContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCreateCommand(CypherParser.CreateCommandContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCreateCommandPattern(CypherParser.CreateCommandPatternContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCreateCommandPattern(CypherParser.CreateCommandPatternContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCreateCommandProperties(CypherParser.CreateCommandPropertiesContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCreateCommandProperties(CypherParser.CreateCommandPropertiesContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterMatchClause(CypherParser.MatchClauseContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -53,6 +88,42 @@ public class CypherBaseListener implements CypherListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterReturnAll(CypherParser.ReturnAllContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReturnAll(CypherParser.ReturnAllContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterReturnSingleNode(CypherParser.ReturnSingleNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReturnSingleNode(CypherParser.ReturnSingleNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterReturnMultipleNodes(CypherParser.ReturnMultipleNodesContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReturnMultipleNodes(CypherParser.ReturnMultipleNodesContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterReturnItem(CypherParser.ReturnItemContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -60,18 +131,6 @@ public class CypherBaseListener implements CypherListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitReturnItem(CypherParser.ReturnItemContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterProperty(CypherParser.PropertyContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitProperty(CypherParser.PropertyContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -113,25 +172,13 @@ public class CypherBaseListener implements CypherListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNodeLabel(CypherParser.NodeLabelContext ctx) { }
+	@Override public void enterPair(CypherParser.PairContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitNodeLabel(CypherParser.NodeLabelContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterNodeId(CypherParser.NodeIdContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitNodeId(CypherParser.NodeIdContext ctx) { }
+	@Override public void exitPair(CypherParser.PairContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

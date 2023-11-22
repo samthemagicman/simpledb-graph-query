@@ -1,5 +1,4 @@
 // Generated from .//Cypher.g4 by ANTLR 4.13.1
-package simpledb.graph.grammar;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -17,6 +16,24 @@ public interface CypherVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitQuery(CypherParser.QueryContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link CypherParser#createCommand}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCreateCommand(CypherParser.CreateCommandContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link CypherParser#createCommandPattern}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCreateCommandPattern(CypherParser.CreateCommandPatternContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link CypherParser#createCommandProperties}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCreateCommandProperties(CypherParser.CreateCommandPropertiesContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link CypherParser#matchClause}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -29,17 +46,32 @@ public interface CypherVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitReturnClause(CypherParser.ReturnClauseContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code returnAll}
+	 * labeled alternative in {@link CypherParser#returnPattern}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitReturnAll(CypherParser.ReturnAllContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code returnSingleNode}
+	 * labeled alternative in {@link CypherParser#returnPattern}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitReturnSingleNode(CypherParser.ReturnSingleNodeContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code returnMultipleNodes}
+	 * labeled alternative in {@link CypherParser#returnPattern}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitReturnMultipleNodes(CypherParser.ReturnMultipleNodesContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link CypherParser#returnItem}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitReturnItem(CypherParser.ReturnItemContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link CypherParser#property}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitProperty(CypherParser.PropertyContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link CypherParser#pattern}.
 	 * @param ctx the parse tree
@@ -59,15 +91,9 @@ public interface CypherVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNodePattern(CypherParser.NodePatternContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link CypherParser#nodeLabel}.
+	 * Visit a parse tree produced by {@link CypherParser#pair}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitNodeLabel(CypherParser.NodeLabelContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link CypherParser#nodeId}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNodeId(CypherParser.NodeIdContext ctx);
+	T visitPair(CypherParser.PairContext ctx);
 }

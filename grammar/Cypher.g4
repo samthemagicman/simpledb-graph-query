@@ -3,35 +3,56 @@ grammar Cypher;
 // Lexer rules
 WS : [ \t\r\n]+ -> skip;
 
+LEFT_BRACKET : '[';
+RIGHT_BRACKET : ']';
+LEFT_BRACE : '{';
+RIGHT_BRACE : '}';
+LEFT_PAREN : '(';
+RIGHT_PAREN : ')';
 MATCH : 'MATCH';
 RETURN : 'RETURN';
+CREATE : 'CREATE';
 PERIOD: '.';
 COMMA : ',';
 SEMICOLON: ';';
 COLON: ':';
 
 ID : [a-zA-Z]+;
+QUOTE_STRING
+ : '"' (~[\r\n"] | '""')* '"'
+   {
+     // Strip the quotes
+     String s = getText();
+     s = s.substring(1, s.length() - 1);
+     setText(s);
+   }
+ ;
+query : matchClause returnClause | createCommand;
 
-// Parser rules
-query : matchClause returnClause;
+createCommand: CREATE createCommandPattern;
+
+createCommandPattern : '(' pair createCommandProperties ')';
+
+createCommandProperties:
+    '{' (pair (COMMA pair)*)? '}'
+    |
+    ;
 
 matchClause : MATCH pattern;
 
-returnClause : RETURN nodeId | RETURN (returnItem (COMMA returnItem)*)?;
+returnClause : RETURN returnPattern;
 
-returnItem : nodeId PERIOD property;
+returnPattern:
+    '*' # returnAll |
+    ID #returnSingleNode |
+    (returnItem (COMMA returnItem)*)? #returnMultipleNodes;
 
-property: ID;
+returnItem : object=ID PERIOD property=ID;
 
 pattern: nodePattern '-' relationshipPattern '-' nodePattern | nodePattern;
 
-relationshipPattern : '[]' | '[' nodeId ':' nodeLabel ']' | '[' nodeId ']';
+relationshipPattern : '[]' | '[' pair ']';
 
-nodePattern : '(' nodeId ':' nodeLabel ')' | '(' nodeLabel ')';
+nodePattern : '(' pair ')';
 
-nodeLabel: ID;
-
-nodeId: ID;
-
-// Other rules can be added as needed to support more features of openCypher.
-// MATCH (person:Person)-[likes:LIKES]->(movie:Movie)
+pair : (property=ID ':')* value=ID | (property=ID ':')* value=QUOTE_STRING;
