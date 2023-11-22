@@ -39,7 +39,12 @@ public class CypherVisitor extends CypherBaseVisitor<String> {
         var propNames = properties.stream().map(p -> p.property.getText() + nodeId).toArray(String[]::new);
         var propValues = properties.stream().map(p -> "'" + p.value.getText() + nodeId + "'").toArray(String[]::new);
 
-        return  " (" + nodeLabel + ", " + String.join(",", propNames) + ") VALUES (" + nodeLabel + "," + String.join(",", propValues) + ")";
+        String propNamesString = propNames.length == 0 ? "" : "," + String.join(",", propNames);
+        String propValuesString = propValues.length == 0 ? "" : "," + String.join(",", propValues);
+
+        String result = " (" + nodeLabel + propNamesString + ") VALUES (" + nodeLabel + propValuesString + ")";
+
+        return result;
     }
 
     @Override
