@@ -1,0 +1,8 @@
+MATCH (person:Person)-[likes:LIKES]-(movie:Movie)
+RETURN person.name, person.born
+
+
+SELECT person.name, person.born
+FROM person
+JOIN likes ON person.person_id = likes.person_id
+JOIN movie ON likes.movie_id = movie.movie_id;
