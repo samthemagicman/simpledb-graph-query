@@ -11,9 +11,8 @@ public class antlr4test {
     public static void main(String[] args) {
         Scanner scn = new Scanner(System.in);
         System.out.println("Enter a query: ");
-        String inp = "MATCH (person:Person)-[likes:LIKES]-(movie:Movie)\n" +
+        String inp = "CREATE (person:Person {name: \"Sam Salfi\", age: twentytwo})\n" + "MATCH (person:Person)-[likes:LIKES]-(movie:Movie)\n" +
                 "RETURN person.name, person.born\n";
-        inp = "CREATE (person:Person {name: \"Sam Salfi\", age: twentytwo})";
 
         // String input = scn.nextLine();
 

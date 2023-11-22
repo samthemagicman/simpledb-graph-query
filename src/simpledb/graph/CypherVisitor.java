@@ -12,16 +12,18 @@ public class CypherVisitor extends CypherBaseVisitor<String> {
 
     @Override
     public String visitQuery(CypherParser.QueryContext ctx) {
-        if (ctx.matchClause() != null) {
-            String matchClause = visit(ctx.matchClause());
-            String returnClause = "";
-            if (ctx.returnClause() != null) {
-                returnClause = "\n" + visit(ctx.returnClause());
-            }
-            return returnClause + "\n" + matchClause;
-        } else {
-            return visit(ctx.children.get(0));
+        var query = ctx.children.stream().map(this::visit).toArray(String[]::new);
+        return String.join(";\n", query) + ";";
+    }
+
+    @Override
+    public String visitMatchAndReturnClause(CypherParser.MatchAndReturnClauseContext ctx) {
+        String matchClause = visit(ctx.matchClause());
+        String returnClause = "";
+        if (ctx.returnClause() != null) {
+            returnClause = "\n" + visit(ctx.returnClause());
         }
+        return returnClause + "\n" + matchClause;
     }
 
     @Override

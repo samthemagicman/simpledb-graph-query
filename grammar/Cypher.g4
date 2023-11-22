@@ -27,7 +27,7 @@ QUOTE_STRING
      setText(s);
    }
  ;
-query : matchClause returnClause | createCommand;
+query : (matchAndReturnClause | createCommand)+;
 
 createCommand: CREATE createCommandPattern;
 
@@ -37,6 +37,8 @@ createCommandProperties:
     '{' (pair (COMMA pair)*)? '}'
     |
     ;
+
+matchAndReturnClause : matchClause returnClause;
 
 matchClause : MATCH pattern;
 

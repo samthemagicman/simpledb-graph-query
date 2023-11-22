@@ -65,6 +65,18 @@ public class CypherBaseListener implements CypherListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterMatchAndReturnClause(CypherParser.MatchAndReturnClauseContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMatchAndReturnClause(CypherParser.MatchAndReturnClauseContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterMatchClause(CypherParser.MatchClauseContext ctx) { }
 	/**
 	 * {@inheritDoc}

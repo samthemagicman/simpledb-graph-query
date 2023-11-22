@@ -1,2 +1,3 @@
+CREATE (person:Person {name: "Sam Salfi", age: twentytwo})
 MATCH (person:Person)-[likes:LIKES]-(movie:Movie)
 RETURN person.name, person.born

@@ -48,6 +48,16 @@ public interface CypherListener extends ParseTreeListener {
 	 */
 	void exitCreateCommandProperties(CypherParser.CreateCommandPropertiesContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link CypherParser#matchAndReturnClause}.
+	 * @param ctx the parse tree
+	 */
+	void enterMatchAndReturnClause(CypherParser.MatchAndReturnClauseContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CypherParser#matchAndReturnClause}.
+	 * @param ctx the parse tree
+	 */
+	void exitMatchAndReturnClause(CypherParser.MatchAndReturnClauseContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link CypherParser#matchClause}.
 	 * @param ctx the parse tree
 	 */

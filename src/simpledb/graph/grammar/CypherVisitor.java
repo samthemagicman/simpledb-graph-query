@@ -35,6 +35,12 @@ public interface CypherVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCreateCommandProperties(CypherParser.CreateCommandPropertiesContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link CypherParser#matchAndReturnClause}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMatchAndReturnClause(CypherParser.MatchAndReturnClauseContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link CypherParser#matchClause}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
