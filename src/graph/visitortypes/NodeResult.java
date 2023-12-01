@@ -1,4 +1,4 @@
-package simpledb.graph.visitortypes;
+package graph.visitortypes;
 
 public interface NodeResult {
 }

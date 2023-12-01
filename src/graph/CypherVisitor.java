@@ -1,8 +1,8 @@
-package simpledb.graph;
+package graph;
 
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import simpledb.graph.grammar.*;
+import graph.grammar.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +38,8 @@ public class CypherVisitor extends CypherBaseVisitor<String> {
         var nodeLabel = ctx.pair().value.getText();
 
         var properties = ctx.createCommandProperties().pair();
-        var propNames = properties.stream().map(p -> p.property.getText() + nodeId).toArray(String[]::new);
-        var propValues = properties.stream().map(p -> "'" + p.value.getText() + nodeId + "'").toArray(String[]::new);
+        var propNames = properties.stream().map(p -> p.property.getText()).toArray(String[]::new);
+        var propValues = properties.stream().map(p -> "'" + p.value.getText() + "'").toArray(String[]::new);
 
         String propNamesString = propNames.length == 0 ? "" : "," + String.join(",", propNames);
         String propValuesString = propValues.length == 0 ? "" : "," + String.join(",", propValues);

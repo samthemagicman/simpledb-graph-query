@@ -17,7 +17,7 @@ COMMA : ',';
 SEMICOLON: ';';
 COLON: ':';
 
-ID : [a-zA-Z]+;
+ID : [a-zA-Z0-9_]+;
 QUOTE_STRING
  : '"' (~[\r\n"] | '""')* '"'
    {
@@ -29,11 +29,18 @@ QUOTE_STRING
  ;
 query : (matchAndReturnClause | createCommand)+;
 
-createCommand: CREATE createCommandPattern;
+createCommand: CREATE createCommandPattern (COMMA createCommandPattern)?;
 
-createCommandPattern : '(' pair createCommandProperties ')';
+createCommandPattern :
+    nodeFrom=createNodePattern '-' relationship=createRelationshipPattern '->' nodeTo=createNodePattern
+    | nodeTo=createNodePattern '<-' relationship=createRelationshipPattern '-' nodeFrom=createNodePattern
+    | createNodePattern;
 
-createCommandProperties:
+createRelationshipPattern: '[' nodeNameAndLabel=pair properties=nodeProperties ']';
+
+createNodePattern : '(' nodeNameAndLabel=pair properties=nodeProperties ')';
+
+nodeProperties:
     '{' (pair (COMMA pair)*)? '}'
     |
     ;

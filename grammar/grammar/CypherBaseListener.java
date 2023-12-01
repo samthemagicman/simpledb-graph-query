@@ -52,13 +52,37 @@ public class CypherBaseListener implements CypherListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCreateCommandProperties(CypherParser.CreateCommandPropertiesContext ctx) { }
+	@Override public void enterCreateRelationshipPattern(CypherParser.CreateRelationshipPatternContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCreateCommandProperties(CypherParser.CreateCommandPropertiesContext ctx) { }
+	@Override public void exitCreateRelationshipPattern(CypherParser.CreateRelationshipPatternContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCreateNodePattern(CypherParser.CreateNodePatternContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCreateNodePattern(CypherParser.CreateNodePatternContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterNodeProperties(CypherParser.NodePropertiesContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNodeProperties(CypherParser.NodePropertiesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

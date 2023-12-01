@@ -37,15 +37,35 @@ public interface CypherListener extends ParseTreeListener {
 	 */
 	void exitCreateCommandPattern(CypherParser.CreateCommandPatternContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link CypherParser#createCommandProperties}.
+	 * Enter a parse tree produced by {@link CypherParser#createRelationshipPattern}.
 	 * @param ctx the parse tree
 	 */
-	void enterCreateCommandProperties(CypherParser.CreateCommandPropertiesContext ctx);
+	void enterCreateRelationshipPattern(CypherParser.CreateRelationshipPatternContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link CypherParser#createCommandProperties}.
+	 * Exit a parse tree produced by {@link CypherParser#createRelationshipPattern}.
 	 * @param ctx the parse tree
 	 */
-	void exitCreateCommandProperties(CypherParser.CreateCommandPropertiesContext ctx);
+	void exitCreateRelationshipPattern(CypherParser.CreateRelationshipPatternContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CypherParser#createNodePattern}.
+	 * @param ctx the parse tree
+	 */
+	void enterCreateNodePattern(CypherParser.CreateNodePatternContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CypherParser#createNodePattern}.
+	 * @param ctx the parse tree
+	 */
+	void exitCreateNodePattern(CypherParser.CreateNodePatternContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CypherParser#nodeProperties}.
+	 * @param ctx the parse tree
+	 */
+	void enterNodeProperties(CypherParser.NodePropertiesContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CypherParser#nodeProperties}.
+	 * @param ctx the parse tree
+	 */
+	void exitNodeProperties(CypherParser.NodePropertiesContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link CypherParser#matchAndReturnClause}.
 	 * @param ctx the parse tree

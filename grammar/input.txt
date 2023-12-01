@@ -1,3 +1,4 @@
-CREATE (person:Person {name: "Sam Salfi", age: twentytwo})
+CREATE (person:Person {name: "Sam Salfi", age: twentytwo})-[sam:ACTED_IN]->(movie:Movie {title: "The Matrix", year: 1999})
+
 MATCH (person:Person)-[likes:LIKES]-(movie:Movie)
 RETURN person.name, person.born

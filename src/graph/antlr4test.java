@@ -1,11 +1,11 @@
-package simpledb.graph;
+package graph;
 import org.antlr.v4.runtime.CharStreams;
 
 import java.util.Scanner;
 
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.*;
-import simpledb.graph.grammar.*;
+import graph.grammar.*;
 public class antlr4test {
 
     public static void main(String[] args) {
