@@ -1,7 +1,6 @@
 cd grammar
 @ECHO OFF
-SET TEST_CURRENT_DIR=%CLASSPATH:.;=%
-if "%TEST_CURRENT_DIR%" == "%CLASSPATH%" ( SET CLASSPATH=.;%CLASSPATH% )
+set CLASSPATH=..\antlr-4.13.1-complete.jar;%CLASSPATH%
 @ECHO ON
 
 java org.antlr.v4.gui.TestRig Cypher %1 -gui %2
