@@ -764,8 +764,9 @@ public class CypherParser extends Parser {
 	@SuppressWarnings("CheckReturnValue")
 	public static class MatchPatternContext extends ParserRuleContext {
 		public NodePatternContext nodeFrom;
-		public NodeRelationshipPatternContext relationship;
+		public NodeRelationshipPatternContext undirectedRelationship;
 		public NodePatternContext nodeTo;
+		public NodeRelationshipPatternContext relationship;
 		public NodePatternContext node;
 		public List<NodePatternContext> nodePattern() {
 			return getRuleContexts(NodePatternContext.class);
@@ -803,7 +804,7 @@ public class CypherParser extends Parser {
 				if (_la==LEFT_BRACKET) {
 					{
 					setState(109);
-					((MatchPatternContext)_localctx).relationship = nodeRelationshipPattern();
+					((MatchPatternContext)_localctx).undirectedRelationship = nodeRelationshipPattern();
 					}
 				}
 

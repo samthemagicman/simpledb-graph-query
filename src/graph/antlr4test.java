@@ -16,16 +16,8 @@ public class Antlr4test {
         System.out.println("Enter a query: ");
         // String inp = "CREATE (person:Person {name: \"Sam Salfi\", email:
         // \"samsalfi@yahoo.ca\"})-[:FRIENDS_WITH]->(:Person {name: \"Pamela\"})\n"
-        String inp = "MATCH (person:Person {email: \"samsalfi@yahoo.ca\"})\n" +
-                "RETURN person.name, person.email\n";
-
-        // String input = scn.nextLine();
-
-        // var lexer = new CypherLexer(CharStreams.fromString(inp));
-        // var tokens = new CommonTokenStream(lexer);
-        // var parser = new CypherParser(tokens);
-        // var visitor = new CypherVisitor();
-        // var results = visitor.visit(parser.query());
+        String inp = "MATCH (person:Person {id: 40, email: \"samsalfi@yahoo.ca\"})\n" +
+                "RETURN person\n";
 
         Client client = new Client();
         client.initialize();

@@ -51,7 +51,7 @@ returnPattern: '*' # returnAll | ID # returnSingleNode | (returnItem (COMMA retu
 returnItem: object = ID PERIOD property = ID;
 
 matchPattern:
-	nodeFrom = nodePattern '-' (relationship = nodeRelationshipPattern)? '-' nodeTo = nodePattern
+	nodeFrom = nodePattern '-' (undirectedRelationship = nodeRelationshipPattern)? '-' nodeTo = nodePattern
 	| nodeFrom = nodePattern '-' relationship = nodeRelationshipPattern '->' nodeTo = nodePattern
 	| nodeTo = nodePattern '<-' relationship = nodeRelationshipPattern '-' nodeFrom = nodePattern
 	| node = nodePattern;

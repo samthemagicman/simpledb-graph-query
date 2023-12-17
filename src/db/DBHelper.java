@@ -3,6 +3,7 @@ package db;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -88,6 +89,20 @@ public class DBHelper {
         }
     }
 
+    public graph.visitor.result.Node createNodeFromResultSet(ResultSet resultSet, String[] properties, String label)
+            throws SQLException {
+        graph.visitor.result.Node newNode = new graph.visitor.result.Node(graph.visitor.result.Node.Type.NODE,
+                new Properties(), "", label);
+
+        ResultSetMetaData rsmd = resultSet.getMetaData();
+        for (int j = 1; j <= rsmd.getColumnCount(); j++) {
+            String columnName = rsmd.getColumnName(j);
+            newNode.getProperties()
+                    .addProperty(new Pair(columnName.replace("node_", ""), resultSet.getString(columnName)));
+        }
+        return newNode;
+    }
+
     public graph.visitor.result.Node[] matchNode(graph.visitor.result.Node node) {
         ArrayList<graph.visitor.result.Node> nodes = new ArrayList<>();
         String[] selectProperties = node.getSelectProperties();
@@ -99,8 +114,8 @@ public class DBHelper {
             selectNode += String.join(", ", Arrays.stream(selectProperties)
                     .map(property -> "node_" + property)
                     .toArray(String[]::new));
-            selectNode += " FROM " + nodes_table_name + " WHERE node_type = ?";
         }
+        selectNode += " FROM " + nodes_table_name + " WHERE node_type = ?";
 
         // Add properties to the WHERE clause
         Properties nodeProperties = node.getProperties();
@@ -122,12 +137,9 @@ public class DBHelper {
             // execute statement and get result set
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                graph.visitor.result.Node newNode = new graph.visitor.result.Node(graph.visitor.result.Node.Type.NODE,
-                        new Properties(), "", node.getLabel());
-                for (String property : selectProperties) {
-                    newNode.getProperties().addProperty(new Pair(property, resultSet.getString("node_" + property)));
-                }
-                nodes.add(newNode);
+                nodes.add(createNodeFromResultSet(resultSet, selectProperties, node.getLabel()));
+                // nodes.add(createNodeFromResultSet(resultSet, selectProperties,
+                // node.getLabel()));
             }
 
             resultSet.close();
@@ -319,6 +331,22 @@ public class DBHelper {
             System.out.println("Error updating node properties.");
             e.printStackTrace();
         }
+    }
+
+    public void getNodesWithDirectedRelationship(graph.visitor.result.Node nodeSource,
+            graph.visitor.result.Node nodeTarget,
+            graph.visitor.result.Node relationship) {
+        String sql = "SELECT " +
+                "n1.node_id AS source_node_id, " +
+                "n1.node_name AS source_name, " +
+                "n2.node_id AS target_node_id, " +
+                "n2.node_name AS target_name " +
+                "FROM " +
+                "buzzhub_relationships r " +
+                "JOIN " +
+                "buzzhub_nodes n1 ON r.edge_source_node_id = n1.node_id " +
+                "JOIN " +
+                "buzzhub_nodes n2 ON r.edge_target_node_id = n2.node_id;";
     }
 
     public Node[] searchNodesViaEdges(String src_node_type, String dest_node_type, String src_node_conditions,

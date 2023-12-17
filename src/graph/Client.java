@@ -11,11 +11,12 @@ import db.DBHelper;
 import graph.grammar.CypherLexer;
 import graph.grammar.CypherParser;
 import graph.visitor.CypherVisitor;
+import graph.visitor.result.MatchPattern;
 import graph.visitor.result.Properties;
 import graph.visitor.result.commands.CreateCommand;
 import graph.visitor.result.commands.CreateNodesWithRelationship;
 import graph.visitor.result.commands.CreateSingleNode;
-import graph.visitor.result.commands.MatchSingleCommand;
+import graph.visitor.result.commands.MatchReturnCommand;
 import graph.visitor.result.commands.QueryResult;
 import graph.visitor.result.core.Command;
 import model.Node;
@@ -53,8 +54,8 @@ public class Client {
         for (Command command : result.getCommands()) {
             if (command instanceof CreateCommand) {
                 handleCreateCommand((CreateCommand) command);
-            } else if (command instanceof MatchSingleCommand) {
-                handleMatchSingleCommand((MatchSingleCommand) command);
+            } else if (command instanceof MatchReturnCommand) {
+                handleMatchCommand((MatchReturnCommand) command);
             }
         }
     }
@@ -94,14 +95,20 @@ public class Client {
         return (QueryResult) results;
     }
 
-    private void handleMatchSingleCommand(MatchSingleCommand command) {
-        String[] filters = command.getNode().getSelectProperties();
-        filters = Arrays.stream(filters)
-                .map(filter -> "node_" + filter.toLowerCase())
-                .toArray(String[]::new);
-        graph.visitor.result.Node[] nodes = dbHelper.matchNode(command.getNode());
-        for (graph.visitor.result.Node node : nodes) {
-            System.out.println(node);
+    private void handleMatchCommand(MatchReturnCommand command) {
+        MatchPattern pattern = command.getMatchPattern();
+
+        if (pattern.getType() == MatchPattern.Type.SINGLE) {
+            // String[] filters = pattern.getNodeSource().getSelectProperties();
+            // filters = Arrays.stream(filters)
+            // .map(filter -> "node_" + filter.toLowerCase())
+            // .toArray(String[]::new);
+            graph.visitor.result.Node[] nodes = dbHelper.matchNode(pattern.getNodeSource());
+            for (graph.visitor.result.Node node : nodes) {
+                System.out.println(node);
+            }
+        } else {
+
         }
     }
 

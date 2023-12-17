@@ -70,9 +70,23 @@ public class CypherVisitor extends CypherBaseVisitor<VisitorResult> {
             if (pair.getProperty().equals(match.getNodeSource().getVariableName())) {
                 match.getNodeSource().addSelectProperty(pair.getValue());
             }
+
+            if (match.getType() == MatchPattern.Type.RELATIONSHIP) {
+                if (pair.getProperty().equals(match.getNodeTarget().getVariableName())) {
+                    match.getNodeTarget().addSelectProperty(pair.getValue());
+                }
+                if (pair.getProperty().equals(match.getNodeRelationship().getVariableName())) {
+                    match.getNodeRelationship().addSelectProperty(pair.getValue());
+                }
+            }
         }
 
-        return new MatchSingleCommand(match.getNodeSource());
+        return new MatchReturnCommand(match, returnPattern);
+    }
+
+    @Override
+    public Properties visitReturnSingleNode(ReturnSingleNodeContext ctx) {
+        return new Properties();
     }
 
     @Override
@@ -87,10 +101,16 @@ public class CypherVisitor extends CypherBaseVisitor<VisitorResult> {
 
     @Override
     public MatchPattern visitMatchPattern(MatchPatternContext ctx) {
-        if (ctx.node != null) {
+        if (ctx.node != null) { // It's a single node
             Node node = (Node) visit(ctx.node);
 
             return new MatchPattern(node, MatchPattern.Type.SINGLE);
+        } else if (ctx.relationship != null) {
+            Node nodeTo = (Node) visit(ctx.nodeTo);
+            Node nodeFrom = (Node) visit(ctx.nodeFrom);
+            Node relationship = (Node) visit(ctx.relationship);
+
+            return new MatchPattern(nodeTo, nodeFrom, relationship, MatchPattern.Type.RELATIONSHIP);
         }
 
         return new MatchPattern(null, MatchPattern.Type.SINGLE);
