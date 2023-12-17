@@ -1,5 +1,11 @@
 Project: Implement Graph Queries in Relational Database
 
+Property graph model: 
+- Nodes represent entities, and edges represent relationships between these entities.
+- Both nodes and edges can have associated properties (key-value pairs).
+- Used in graph databases like Neo4j and Amazon Neptune.
+
+
 Requirment: 
 1. This projects uses Postgres Database running on local host port 5432. 
 2. This project connects to a Database name: graphs (Make sure a database with this name exists).
