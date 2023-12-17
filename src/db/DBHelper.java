@@ -306,7 +306,7 @@ public class DBHelper {
         }
     }
 
-    public void DeleteRelationship(Relationship relationship) {
+    public void DeleteRelationship(int edge_source_node_id, int edge_target_node_id) {
 
         // create delete statement using prepared statement
         String deleteRelationship = "DELETE FROM " + relationships_table_name
@@ -315,8 +315,8 @@ public class DBHelper {
         try {
             // prepared statement
             PreparedStatement preparedStatement = dbConnection.prepareStatement(deleteRelationship);
-            preparedStatement.setInt(1, relationship.getEdgeSourceNodeId());
-            preparedStatement.setInt(2, relationship.getEdgeTargetNodeId());
+            preparedStatement.setInt(1, edge_source_node_id);
+            preparedStatement.setInt(2, edge_target_node_id);
 
             // execute statement
             preparedStatement.executeUpdate();
@@ -326,31 +326,46 @@ public class DBHelper {
         }
     }
 
-    public void updateNodeProperties(int node_id, String node_type, String[] updates) {
+    public void updateNodeProperties(graph.visitor.result.Node node) throws Exception {
         // create update statement using prepared statement
+        String[] selectProperties = node.getSelectProperties();
+
         String updateNode = "UPDATE " + nodes_table_name + " SET ";
-        for (int i = 0; i < updates.length; i++) {
-            updateNode = updateNode + updates[i] + ", ";
+        if (selectProperties.length == 0) {
+            throw new Exception("No properties to update");
+        } else {
+            updateNode += String.join(", ", Arrays.stream(selectProperties)
+                    .map(property -> "node_" + property + " = ?")
+                    .toArray(String[]::new));
         }
 
-        // remove last comma
-        updateNode = updateNode.substring(0, updateNode.length() - 2);
+        updateNode += " WHERE node_type = ?";
 
-        // add where clause
-        updateNode = updateNode + " WHERE node_id = ? AND node_type = ?";
+        // Add properties to the WHERE clause
+        Properties nodeProperties = node.getProperties();
+        for (Pair property : nodeProperties.getProperties()) {
+            updateNode += " AND node_" + property.getProperty() + " = ?";
+        }
 
-        try {
+        updateNode += ";";
+
+        try{
             // prepared statement
             PreparedStatement preparedStatement = dbConnection.prepareStatement(updateNode);
-            preparedStatement.setInt(1, node_id);
-            preparedStatement.setString(2, node_type);
+            preparedStatement.setString(1, node.getLabel());
+            int i = 2;
+            for (Pair property : nodeProperties.getProperties()) {
+                preparedStatement.setString(i, property.getValue());
+                i++;
+            }
 
             // execute statement
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Error updating node properties.");
-            e.printStackTrace();
+            System.out.println("Error updating node.");
+            e.printStackTrace();   
         }
+        
     }
 
     public MatchQueryResult[] getNodesWithUndirectedRelationship(graph.visitor.result.Node nodeSource,
@@ -492,4 +507,13 @@ public class DBHelper {
 
     }
 
+
+    public void closeDBConnection() {
+        try {
+            dbConnection.close();
+        } catch (SQLException e) {
+            System.out.println("Error closing database connection.");
+            e.printStackTrace();
+        }
+    }
 }
