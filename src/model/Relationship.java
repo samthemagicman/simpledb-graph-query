@@ -4,90 +4,99 @@ import java.time.LocalDate;
 
 public class Relationship {
 
-    private int relationship_id;
-    private String edge_type; 
-    private int edge_source_node_id;
-    private int edge_target_node_id;
-    private LocalDate edge_date_created;
-    private String relationship_description;
-    private String relationship_type;
+    private int id;
+    private String description;
+    private String label;
+    private String edgeType;
+    private int edgeSourceNodeId;
+    private int edgeTargetNodeId;
+    private LocalDate edgeDateCreated;
 
-    public Relationship(int relationship_id, String edge_type, int edge_source_node_id, int edge_target_node_id, LocalDate edge_date_created, String relationship_description, String relationship_type){
-        this.relationship_id = relationship_id;
-        this.edge_type = edge_type;
-        this.edge_source_node_id = edge_source_node_id;
-        this.edge_target_node_id = edge_target_node_id;
-        this.edge_date_created = edge_date_created;
-        this.relationship_description = relationship_description;
-        this.relationship_type = relationship_type;
+    public Relationship(String edgeType, int edgeSourceNodeId, int edgeTargetNodeId,
+            LocalDate edgeDateCreated, String description, String type) {
+        this.edgeType = edgeType;
+        this.edgeSourceNodeId = edgeSourceNodeId;
+        this.edgeTargetNodeId = edgeTargetNodeId;
+        this.edgeDateCreated = edgeDateCreated;
+        this.description = description;
+        this.label = type;
     }
 
-    public int getRelationship_id(){
-        return relationship_id;
+    public Relationship(int id, String edgeType, int edgeSourceNodeId, int edgeTargetNodeId,
+            LocalDate edgeDateCreated, String description, String type) {
+        this.id = id;
+        this.edgeType = edgeType;
+        this.edgeSourceNodeId = edgeSourceNodeId;
+        this.edgeTargetNodeId = edgeTargetNodeId;
+        this.edgeDateCreated = edgeDateCreated;
+        this.description = description;
+        this.label = type;
     }
 
-    public String getEdge_type(){
-        return edge_type;
+    public int getId() {
+        return id;
     }
 
-    public int getEdge_source_node_id(){
-        return edge_source_node_id;
+    public String getEdgeType() {
+        return edgeType;
     }
 
-    public int getEdge_target_node_id(){
-        return edge_target_node_id;
+    public int getEdgeSourceNodeId() {
+        return edgeSourceNodeId;
     }
 
-    public LocalDate getEdge_date_created(){
-        return edge_date_created;
+    public int getEdgeTargetNodeId() {
+        return edgeTargetNodeId;
     }
 
-    public String getRelationship_description(){
-        return relationship_description;
+    public LocalDate getEdgeDateCreated() {
+        return edgeDateCreated;
     }
 
-    public String getRelationship_type(){
-        return relationship_type;
+    public String getDescription() {
+        return description;
     }
 
-    public void setRelationship_id(int relationship_id){
-        this.relationship_id = relationship_id;
+    public String getLabel() {
+        return label;
     }
 
-    public void setEdge_type(String edge_type){
-        this.edge_type = edge_type;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setEdge_source_node_id(int edge_source_node_id){
-        this.edge_source_node_id = edge_source_node_id;
+    public void setEdgeType(String edgeType) {
+        this.edgeType = edgeType;
     }
 
-    public void setEdge_target_node_id(int edge_target_node_id){
-        this.edge_target_node_id = edge_target_node_id;
+    public void setEdgeSourceNodeId(int edgeSourceNodeId) {
+        this.edgeSourceNodeId = edgeSourceNodeId;
     }
 
-    public void setEdge_date_created(LocalDate edge_date_created){
-        this.edge_date_created = edge_date_created;
+    public void setEdgeTargetNodeId(int edgeTargetNodeId) {
+        this.edgeTargetNodeId = edgeTargetNodeId;
     }
 
-    public void setRelationship_description(String relationship_description){
-        this.relationship_description = relationship_description;
+    public void setEdgeDateCreated(LocalDate edgeDateCreated) {
+        this.edgeDateCreated = edgeDateCreated;
     }
 
-    public void setRelationship_type(String relationship_type){
-        this.relationship_type = relationship_type;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
+    public void setLabel(String type) {
+        this.label = type;
+    }
 
     @Override
-    public String toString(){
-        return "Relationship ID: " + relationship_id + "\n" +
-                "Edge Type: " + edge_type + "\n" +
-                "Edge Source Node ID: " + edge_source_node_id + "\n" +
-                "Edge Target Node ID: " + edge_target_node_id + "\n" +
-                "Edge Date Created: " + edge_date_created + "\n" +
-                "Relationship Description: " + relationship_description + "\n" +
-                "Relationship Type: " + relationship_type + "\n";
+    public String toString() {
+        return "Relationship ID: " + getId() + "\n" +
+                "Edge Type: " + getEdgeType() + "\n" +
+                "Edge Source Node ID: " + getEdgeSourceNodeId() + "\n" +
+                "Edge Target Node ID: " + getEdgeTargetNodeId() + "\n" +
+                "Edge Date Created: " + getEdgeDateCreated() + "\n" +
+                "Relationship Type: " + getLabel() + "\n";
     }
-    
+
 }

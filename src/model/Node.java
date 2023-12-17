@@ -4,131 +4,138 @@ import java.time.LocalDate;
 
 public class Node {
 
-    private int node_id;
-    private String node_type;
-    private String node_name;
-    private String node_username;
-    private String node_email;
-    private LocalDate node_dob;
-    private String node_content;
-    private LocalDate node_date_created;
-    private String node_tags;
-    private String node_country;
-    private String node_city;
-    
-    public Node(int node_id, String node_type, String node_name, String username, String node_email, LocalDate node_dob, String node_content, LocalDate node_date_created, String node_tags, String node_country, String node_city){
-        this.node_id = node_id;
-        this.node_type = node_type;
-        this.node_name = node_name;
-        this.node_username = username;
-        this.node_email = node_email;
-        this.node_dob = node_dob;
-        this.node_content = node_content;
-        this.node_date_created = node_date_created;
-        this.node_tags = node_tags;
-        this.node_country = node_country;
-        this.node_city = node_city;
+    private int id;
+    private String label;
+    private String name;
+    private String username;
+    private String email;
+    private String content;
+    private LocalDate dateCreated;
+    private String tags;
+    private String country;
+    private String city;
+
+    public Node(String type) {
+        this.label = type;
     }
 
-    public int getNode_id(){
-        return node_id;
+    public Node(String type, String name, String username, String email, String content,
+            LocalDate dateCreated, String tags, String country, String city) {
+        this.label = type;
+        this.name = name;
+        this.username = username;
+        this.email = email;
+        this.content = content;
+        this.dateCreated = dateCreated;
+        this.tags = tags;
+        this.country = country;
+        this.city = city;
     }
 
-    public String getNode_type(){
-        return node_type;
+    public Node(int id, String type, String name, String username, String email, String content,
+            LocalDate dateCreated, String tags, String country, String city) {
+        this.id = id;
+        this.label = type;
+        this.name = name;
+        this.username = username;
+        this.email = email;
+        this.content = content;
+        this.dateCreated = dateCreated;
+        this.tags = tags;
+        this.country = country;
+        this.city = city;
     }
 
-    public String getNode_name(){
-        return node_name;
+    public int getId() {
+        return id;
     }
 
-    public String getNode_username(){
-        return node_username;
+    public String getLabel() {
+        return label;
     }
 
-    public String getNode_email(){
-        return node_email;
+    public String getName() {
+        return name;
     }
 
-    public LocalDate getNode_dob(){
-        return node_dob;
+    public String getUsername() {
+        return username;
     }
 
-    public String getNode_content(){
-        return node_content;
+    public String getEmail() {
+        return email;
     }
 
-    public LocalDate getNode_date_created(){
-        return node_date_created;
+    public String getContent() {
+        return content;
     }
 
-    public String getNode_tags(){
-        return node_tags;
+    public LocalDate getDateCreated() {
+        return dateCreated;
     }
 
-    public String getNode_country(){
-        return node_country;
+    public String getTags() {
+        return tags;
     }
 
-    public String getNode_city(){
-        return node_city;
+    public String getCountry() {
+        return country;
     }
 
-    public void setNode_id(int node_id){
-        this.node_id = node_id;
+    public String getCity() {
+        return city;
     }
 
-    public void setNode_type(String node_type){
-        this.node_type = node_type;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setNode_name(String node_name){
-        this.node_name = node_name;
+    public void setLabel(String type) {
+        this.label = type;
     }
 
-    public void setNode_username(String node_username){
-        this.node_username = node_username;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setNode_email(String node_email){
-        this.node_email = node_email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public void setNode_dob(LocalDate node_dob){
-        this.node_dob = node_dob;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public void setNode_content(String node_content){
-        this.node_content = node_content;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public void setNode_date_created(LocalDate node_date_created){
-        this.node_date_created = node_date_created;
+    public void setDateCreated(LocalDate dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
-    public void setNode_tags(String node_tags){
-        this.node_tags = node_tags;
+    public void setTags(String tags) {
+        this.tags = tags;
     }
 
-    public void setNode_country(String node_country){
-        this.node_country = node_country;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
-    public void setNode_city(String node_city){
-        this.node_city = node_city;
+    public void setCity(String city) {
+        this.city = city;
     }
 
     @Override
-    public String toString(){
-        return "Node ID: " + node_id + "\n" +
-               "Node Type: " + node_type + "\n" +
-               "Node Name: " + node_name + "\n" +
-               "Node Email: " + node_email + "\n" +
-               "Node DOB: " + node_dob.toString() + "\n" +
-               "Node Content: " + node_content + "\n" +
-               "Node Date Created: " + node_date_created + "\n" +
-               "Node Tags: " + node_tags + "\n" +
-                "Node Country: " + node_country + "\n" +
-                "Node City: " + node_city + "\n";
+    public String toString() {
+        return "Node ID: " + getId() + "\n" +
+                "Node Type: " + getLabel() + "\n" +
+                "Node Name: " + getName() + "\n" +
+                "Node Email: " + getEmail() + "\n" +
+                "Node Content: " + getContent() + "\n" +
+                "Node Date Created: " + getDateCreated() + "\n" +
+                "Node Tags: " + getTags() + "\n" +
+                "Node Country: " + getCountry() + "\n" +
+                "Node City: " + getCity() + "\n";
     }
 }

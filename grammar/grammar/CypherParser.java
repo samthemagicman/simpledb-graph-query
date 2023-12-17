@@ -1,4 +1,4 @@
-// Generated from .//Cypher.g4 by ANTLR 4.13.1
+// Generated from ./Cypher.g4 by ANTLR 4.13.1
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -250,6 +250,18 @@ public class CypherParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class CreateCommandPatternContext extends ParserRuleContext {
+		public CreateCommandPatternContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_createCommandPattern; }
+	 
+		public CreateCommandPatternContext() { }
+		public void copyFrom(CreateCommandPatternContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class CreateNodeRelationshipContext extends CreateCommandPatternContext {
 		public CreateNodePatternContext nodeFrom;
 		public CreateRelationshipPatternContext relationship;
 		public CreateNodePatternContext nodeTo;
@@ -262,21 +274,68 @@ public class CypherParser extends Parser {
 		public CreateRelationshipPatternContext createRelationshipPattern() {
 			return getRuleContext(CreateRelationshipPatternContext.class,0);
 		}
-		public CreateCommandPatternContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_createCommandPattern; }
+		public CreateNodeRelationshipContext(CreateCommandPatternContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterCreateCommandPattern(this);
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterCreateNodeRelationship(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitCreateCommandPattern(this);
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitCreateNodeRelationship(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof CypherVisitor ) return ((CypherVisitor<? extends T>)visitor).visitCreateCommandPattern(this);
+			if ( visitor instanceof CypherVisitor ) return ((CypherVisitor<? extends T>)visitor).visitCreateNodeRelationship(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class CreateSingleNodeContext extends CreateCommandPatternContext {
+		public CreateNodePatternContext node;
+		public CreateNodePatternContext createNodePattern() {
+			return getRuleContext(CreateNodePatternContext.class,0);
+		}
+		public CreateSingleNodeContext(CreateCommandPatternContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterCreateSingleNode(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitCreateSingleNode(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CypherVisitor ) return ((CypherVisitor<? extends T>)visitor).visitCreateSingleNode(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class CreateNodeInverseRelationshipContext extends CreateCommandPatternContext {
+		public CreateNodePatternContext nodeTo;
+		public CreateRelationshipPatternContext relationship;
+		public CreateNodePatternContext nodeFrom;
+		public List<CreateNodePatternContext> createNodePattern() {
+			return getRuleContexts(CreateNodePatternContext.class);
+		}
+		public CreateNodePatternContext createNodePattern(int i) {
+			return getRuleContext(CreateNodePatternContext.class,i);
+		}
+		public CreateRelationshipPatternContext createRelationshipPattern() {
+			return getRuleContext(CreateRelationshipPatternContext.class,0);
+		}
+		public CreateNodeInverseRelationshipContext(CreateCommandPatternContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterCreateNodeInverseRelationship(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitCreateNodeInverseRelationship(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CypherVisitor ) return ((CypherVisitor<? extends T>)visitor).visitCreateNodeInverseRelationship(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -289,40 +348,43 @@ public class CypherParser extends Parser {
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
 			case 1:
+				_localctx = new CreateNodeRelationshipContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(42);
-				((CreateCommandPatternContext)_localctx).nodeFrom = createNodePattern();
+				((CreateNodeRelationshipContext)_localctx).nodeFrom = createNodePattern();
 				setState(43);
 				match(T__0);
 				setState(44);
-				((CreateCommandPatternContext)_localctx).relationship = createRelationshipPattern();
+				((CreateNodeRelationshipContext)_localctx).relationship = createRelationshipPattern();
 				setState(45);
 				match(T__1);
 				setState(46);
-				((CreateCommandPatternContext)_localctx).nodeTo = createNodePattern();
+				((CreateNodeRelationshipContext)_localctx).nodeTo = createNodePattern();
 				}
 				break;
 			case 2:
+				_localctx = new CreateNodeInverseRelationshipContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(48);
-				((CreateCommandPatternContext)_localctx).nodeTo = createNodePattern();
+				((CreateNodeInverseRelationshipContext)_localctx).nodeTo = createNodePattern();
 				setState(49);
 				match(T__2);
 				setState(50);
-				((CreateCommandPatternContext)_localctx).relationship = createRelationshipPattern();
+				((CreateNodeInverseRelationshipContext)_localctx).relationship = createRelationshipPattern();
 				setState(51);
 				match(T__0);
 				setState(52);
-				((CreateCommandPatternContext)_localctx).nodeFrom = createNodePattern();
+				((CreateNodeInverseRelationshipContext)_localctx).nodeFrom = createNodePattern();
 				}
 				break;
 			case 3:
+				_localctx = new CreateSingleNodeContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(54);
-				createNodePattern();
+				((CreateSingleNodeContext)_localctx).node = createNodePattern();
 				}
 				break;
 			}

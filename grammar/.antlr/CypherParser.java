@@ -1,5 +1,4 @@
-// Generated from ./Cypher.g4 by ANTLR 4.13.1
-package graph.grammar;
+// Generated from c:/Users/Samuel/Documents/GitHub/simpledb-graph-query/grammar/Cypher.g4 by ANTLR 4.13.1
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -121,19 +120,6 @@ public class CypherParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_query; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterQuery(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitQuery(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof CypherVisitor ) return ((CypherVisitor<? extends T>)visitor).visitQuery(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final QueryContext query() throws RecognitionException {
@@ -198,19 +184,6 @@ public class CypherParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_createCommand; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterCreateCommand(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitCreateCommand(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof CypherVisitor ) return ((CypherVisitor<? extends T>)visitor).visitCreateCommand(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final CreateCommandContext createCommand() throws RecognitionException {
@@ -276,19 +249,6 @@ public class CypherParser extends Parser {
 			return getRuleContext(CreateRelationshipPatternContext.class,0);
 		}
 		public CreateNodeRelationshipContext(CreateCommandPatternContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterCreateNodeRelationship(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitCreateNodeRelationship(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof CypherVisitor ) return ((CypherVisitor<? extends T>)visitor).visitCreateNodeRelationship(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class CreateSingleNodeContext extends CreateCommandPatternContext {
@@ -297,19 +257,6 @@ public class CypherParser extends Parser {
 			return getRuleContext(CreateNodePatternContext.class,0);
 		}
 		public CreateSingleNodeContext(CreateCommandPatternContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterCreateSingleNode(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitCreateSingleNode(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof CypherVisitor ) return ((CypherVisitor<? extends T>)visitor).visitCreateSingleNode(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class CreateNodeInverseRelationshipContext extends CreateCommandPatternContext {
@@ -326,19 +273,6 @@ public class CypherParser extends Parser {
 			return getRuleContext(CreateRelationshipPatternContext.class,0);
 		}
 		public CreateNodeInverseRelationshipContext(CreateCommandPatternContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterCreateNodeInverseRelationship(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitCreateNodeInverseRelationship(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof CypherVisitor ) return ((CypherVisitor<? extends T>)visitor).visitCreateNodeInverseRelationship(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final CreateCommandPatternContext createCommandPattern() throws RecognitionException {
@@ -417,19 +351,6 @@ public class CypherParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_createRelationshipPattern; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterCreateRelationshipPattern(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitCreateRelationshipPattern(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof CypherVisitor ) return ((CypherVisitor<? extends T>)visitor).visitCreateRelationshipPattern(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final CreateRelationshipPatternContext createRelationshipPattern() throws RecognitionException {
@@ -475,19 +396,6 @@ public class CypherParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_createNodePattern; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterCreateNodePattern(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitCreateNodePattern(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof CypherVisitor ) return ((CypherVisitor<? extends T>)visitor).visitCreateNodePattern(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final CreateNodePatternContext createNodePattern() throws RecognitionException {
@@ -535,19 +443,6 @@ public class CypherParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_nodeProperties; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterNodeProperties(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitNodeProperties(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof CypherVisitor ) return ((CypherVisitor<? extends T>)visitor).visitNodeProperties(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final NodePropertiesContext nodeProperties() throws RecognitionException {
@@ -626,19 +521,6 @@ public class CypherParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_matchAndReturnClause; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterMatchAndReturnClause(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitMatchAndReturnClause(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof CypherVisitor ) return ((CypherVisitor<? extends T>)visitor).visitMatchAndReturnClause(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final MatchAndReturnClauseContext matchAndReturnClause() throws RecognitionException {
@@ -674,19 +556,6 @@ public class CypherParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_matchClause; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterMatchClause(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitMatchClause(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof CypherVisitor ) return ((CypherVisitor<? extends T>)visitor).visitMatchClause(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final MatchClauseContext matchClause() throws RecognitionException {
@@ -722,19 +591,6 @@ public class CypherParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_returnClause; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterReturnClause(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitReturnClause(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof CypherVisitor ) return ((CypherVisitor<? extends T>)visitor).visitReturnClause(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final ReturnClauseContext returnClause() throws RecognitionException {
@@ -776,36 +632,10 @@ public class CypherParser extends Parser {
 	public static class ReturnSingleNodeContext extends ReturnPatternContext {
 		public TerminalNode ID() { return getToken(CypherParser.ID, 0); }
 		public ReturnSingleNodeContext(ReturnPatternContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterReturnSingleNode(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitReturnSingleNode(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof CypherVisitor ) return ((CypherVisitor<? extends T>)visitor).visitReturnSingleNode(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class ReturnAllContext extends ReturnPatternContext {
 		public ReturnAllContext(ReturnPatternContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterReturnAll(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitReturnAll(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof CypherVisitor ) return ((CypherVisitor<? extends T>)visitor).visitReturnAll(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class ReturnMultipleNodesContext extends ReturnPatternContext {
@@ -820,19 +650,6 @@ public class CypherParser extends Parser {
 			return getToken(CypherParser.COMMA, i);
 		}
 		public ReturnMultipleNodesContext(ReturnPatternContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterReturnMultipleNodes(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitReturnMultipleNodes(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof CypherVisitor ) return ((CypherVisitor<? extends T>)visitor).visitReturnMultipleNodes(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final ReturnPatternContext returnPattern() throws RecognitionException {
@@ -917,19 +734,6 @@ public class CypherParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_returnItem; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterReturnItem(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitReturnItem(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof CypherVisitor ) return ((CypherVisitor<? extends T>)visitor).visitReturnItem(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final ReturnItemContext returnItem() throws RecognitionException {
@@ -972,19 +776,6 @@ public class CypherParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_pattern; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterPattern(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitPattern(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof CypherVisitor ) return ((CypherVisitor<? extends T>)visitor).visitPattern(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final PatternContext pattern() throws RecognitionException {
@@ -1040,19 +831,6 @@ public class CypherParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_relationshipPattern; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterRelationshipPattern(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitRelationshipPattern(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof CypherVisitor ) return ((CypherVisitor<? extends T>)visitor).visitRelationshipPattern(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final RelationshipPatternContext relationshipPattern() throws RecognitionException {
@@ -1106,19 +884,6 @@ public class CypherParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_nodePattern; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterNodePattern(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitNodePattern(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof CypherVisitor ) return ((CypherVisitor<? extends T>)visitor).visitNodePattern(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final NodePatternContext nodePattern() throws RecognitionException {
@@ -1163,19 +928,6 @@ public class CypherParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_pair; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterPair(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitPair(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof CypherVisitor ) return ((CypherVisitor<? extends T>)visitor).visitPair(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final PairContext pair() throws RecognitionException {

@@ -1,5 +1,4 @@
-// Generated from ./Cypher.g4 by ANTLR 4.13.1
-package graph.grammar;
+// Generated from c:/Users/Samuel/Documents/GitHub/simpledb-graph-query/grammar/Cypher.g4 by ANTLR 4.13.1
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;

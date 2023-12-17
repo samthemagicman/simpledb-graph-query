@@ -1,4 +1,4 @@
-// Generated from .//Cypher.g4 by ANTLR 4.13.1
+// Generated from ./Cypher.g4 by ANTLR 4.13.1
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -27,15 +27,41 @@ public interface CypherListener extends ParseTreeListener {
 	 */
 	void exitCreateCommand(CypherParser.CreateCommandContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link CypherParser#createCommandPattern}.
+	 * Enter a parse tree produced by the {@code createNodeRelationship}
+	 * labeled alternative in {@link CypherParser#createCommandPattern}.
 	 * @param ctx the parse tree
 	 */
-	void enterCreateCommandPattern(CypherParser.CreateCommandPatternContext ctx);
+	void enterCreateNodeRelationship(CypherParser.CreateNodeRelationshipContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link CypherParser#createCommandPattern}.
+	 * Exit a parse tree produced by the {@code createNodeRelationship}
+	 * labeled alternative in {@link CypherParser#createCommandPattern}.
 	 * @param ctx the parse tree
 	 */
-	void exitCreateCommandPattern(CypherParser.CreateCommandPatternContext ctx);
+	void exitCreateNodeRelationship(CypherParser.CreateNodeRelationshipContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code createNodeInverseRelationship}
+	 * labeled alternative in {@link CypherParser#createCommandPattern}.
+	 * @param ctx the parse tree
+	 */
+	void enterCreateNodeInverseRelationship(CypherParser.CreateNodeInverseRelationshipContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code createNodeInverseRelationship}
+	 * labeled alternative in {@link CypherParser#createCommandPattern}.
+	 * @param ctx the parse tree
+	 */
+	void exitCreateNodeInverseRelationship(CypherParser.CreateNodeInverseRelationshipContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code createSingleNode}
+	 * labeled alternative in {@link CypherParser#createCommandPattern}.
+	 * @param ctx the parse tree
+	 */
+	void enterCreateSingleNode(CypherParser.CreateSingleNodeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code createSingleNode}
+	 * labeled alternative in {@link CypherParser#createCommandPattern}.
+	 * @param ctx the parse tree
+	 */
+	void exitCreateSingleNode(CypherParser.CreateSingleNodeContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link CypherParser#createRelationshipPattern}.
 	 * @param ctx the parse tree

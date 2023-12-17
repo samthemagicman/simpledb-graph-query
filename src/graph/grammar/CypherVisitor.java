@@ -1,4 +1,4 @@
-// Generated from .//Cypher.g4 by ANTLR 4.13.1
+// Generated from ./Cypher.g4 by ANTLR 4.13.1
 package graph.grammar;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -23,17 +23,44 @@ public interface CypherVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCreateCommand(CypherParser.CreateCommandContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link CypherParser#createCommandPattern}.
+	 * Visit a parse tree produced by the {@code createNodeRelationship}
+	 * labeled alternative in {@link CypherParser#createCommandPattern}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCreateCommandPattern(CypherParser.CreateCommandPatternContext ctx);
+	T visitCreateNodeRelationship(CypherParser.CreateNodeRelationshipContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link CypherParser#createCommandProperties}.
+	 * Visit a parse tree produced by the {@code createNodeInverseRelationship}
+	 * labeled alternative in {@link CypherParser#createCommandPattern}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCreateCommandProperties(CypherParser.CreateCommandPropertiesContext ctx);
+	T visitCreateNodeInverseRelationship(CypherParser.CreateNodeInverseRelationshipContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code createSingleNode}
+	 * labeled alternative in {@link CypherParser#createCommandPattern}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCreateSingleNode(CypherParser.CreateSingleNodeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link CypherParser#createRelationshipPattern}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCreateRelationshipPattern(CypherParser.CreateRelationshipPatternContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link CypherParser#createNodePattern}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCreateNodePattern(CypherParser.CreateNodePatternContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link CypherParser#nodeProperties}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNodeProperties(CypherParser.NodePropertiesContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link CypherParser#matchAndReturnClause}.
 	 * @param ctx the parse tree

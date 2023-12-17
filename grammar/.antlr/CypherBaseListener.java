@@ -1,4 +1,4 @@
-// Generated from ./Cypher.g4 by ANTLR 4.13.1
+// Generated from c:/Users/Samuel/Documents/GitHub/simpledb-graph-query/grammar/Cypher.g4 by ANTLR 4.13.1
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -40,37 +40,13 @@ public class CypherBaseListener implements CypherListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCreateNodeRelationship(CypherParser.CreateNodeRelationshipContext ctx) { }
+	@Override public void enterCreateCommandPattern(CypherParser.CreateCommandPatternContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCreateNodeRelationship(CypherParser.CreateNodeRelationshipContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterCreateNodeInverseRelationship(CypherParser.CreateNodeInverseRelationshipContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitCreateNodeInverseRelationship(CypherParser.CreateNodeInverseRelationshipContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterCreateSingleNode(CypherParser.CreateSingleNodeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitCreateSingleNode(CypherParser.CreateSingleNodeContext ctx) { }
+	@Override public void exitCreateCommandPattern(CypherParser.CreateCommandPatternContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

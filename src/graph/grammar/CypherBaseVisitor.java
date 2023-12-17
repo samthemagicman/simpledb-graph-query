@@ -1,4 +1,4 @@
-// Generated from .//Cypher.g4 by ANTLR 4.13.1
+// Generated from ./Cypher.g4 by ANTLR 4.13.1
 package graph.grammar;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
@@ -32,14 +32,42 @@ public class CypherBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCreateCommandPattern(CypherParser.CreateCommandPatternContext ctx) { return visitChildren(ctx); }
+	@Override public T visitCreateNodeRelationship(CypherParser.CreateNodeRelationshipContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCreateCommandProperties(CypherParser.CreateCommandPropertiesContext ctx) { return visitChildren(ctx); }
+	@Override public T visitCreateNodeInverseRelationship(CypherParser.CreateNodeInverseRelationshipContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitCreateSingleNode(CypherParser.CreateSingleNodeContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitCreateRelationshipPattern(CypherParser.CreateRelationshipPatternContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitCreateNodePattern(CypherParser.CreateNodePatternContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitNodeProperties(CypherParser.NodePropertiesContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

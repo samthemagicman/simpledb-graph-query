@@ -1,4 +1,4 @@
-// Generated from .//Cypher.g4 by ANTLR 4.13.1
+// Generated from ./Cypher.g4 by ANTLR 4.13.1
 package graph.grammar;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -41,25 +41,73 @@ public class CypherBaseListener implements CypherListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCreateCommandPattern(CypherParser.CreateCommandPatternContext ctx) { }
+	@Override public void enterCreateNodeRelationship(CypherParser.CreateNodeRelationshipContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCreateCommandPattern(CypherParser.CreateCommandPatternContext ctx) { }
+	@Override public void exitCreateNodeRelationship(CypherParser.CreateNodeRelationshipContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCreateCommandProperties(CypherParser.CreateCommandPropertiesContext ctx) { }
+	@Override public void enterCreateNodeInverseRelationship(CypherParser.CreateNodeInverseRelationshipContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCreateCommandProperties(CypherParser.CreateCommandPropertiesContext ctx) { }
+	@Override public void exitCreateNodeInverseRelationship(CypherParser.CreateNodeInverseRelationshipContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCreateSingleNode(CypherParser.CreateSingleNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCreateSingleNode(CypherParser.CreateSingleNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCreateRelationshipPattern(CypherParser.CreateRelationshipPatternContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCreateRelationshipPattern(CypherParser.CreateRelationshipPatternContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCreateNodePattern(CypherParser.CreateNodePatternContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCreateNodePattern(CypherParser.CreateNodePatternContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterNodeProperties(CypherParser.NodePropertiesContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNodeProperties(CypherParser.NodePropertiesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
