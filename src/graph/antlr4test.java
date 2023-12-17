@@ -14,9 +14,10 @@ public class Antlr4test {
     public static void main(String[] args) {
         Scanner scn = new Scanner(System.in);
         System.out.println("Enter a query: ");
-        String inp = "CREATE (person:Person {name: \"Sam Salfi\", email: \"samsalfi@yahoo.ca\"})-[:FRIENDS_WITH]->(:Person {name: \"Pamela\"})\n"
-                + "MATCH (person:Person)-[likes:LIKES]-(movie:Movie)\n" +
-                "RETURN person.name, person.born\n";
+        // String inp = "CREATE (person:Person {name: \"Sam Salfi\", email:
+        // \"samsalfi@yahoo.ca\"})-[:FRIENDS_WITH]->(:Person {name: \"Pamela\"})\n"
+        String inp = "MATCH (person:Person {email: \"samsalfi@yahoo.ca\"})\n" +
+                "RETURN person.name, person.email\n";
 
         // String input = scn.nextLine();
 

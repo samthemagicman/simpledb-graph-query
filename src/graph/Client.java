@@ -1,6 +1,7 @@
 package graph;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import org.antlr.v4.runtime.CharStreams;
@@ -10,12 +11,13 @@ import db.DBHelper;
 import graph.grammar.CypherLexer;
 import graph.grammar.CypherParser;
 import graph.visitor.CypherVisitor;
-import graph.visitor.types.Properties;
-import graph.visitor.types.commands.CreateCommand;
-import graph.visitor.types.commands.CreateNodesWithRelationship;
-import graph.visitor.types.commands.CreateSingleNode;
-import graph.visitor.types.commands.QueryResult;
-import graph.visitor.types.core.Command;
+import graph.visitor.result.Properties;
+import graph.visitor.result.commands.CreateCommand;
+import graph.visitor.result.commands.CreateNodesWithRelationship;
+import graph.visitor.result.commands.CreateSingleNode;
+import graph.visitor.result.commands.MatchSingleCommand;
+import graph.visitor.result.commands.QueryResult;
+import graph.visitor.result.core.Command;
 import model.Node;
 import model.Relationship;
 
@@ -51,11 +53,13 @@ public class Client {
         for (Command command : result.getCommands()) {
             if (command instanceof CreateCommand) {
                 handleCreateCommand((CreateCommand) command);
+            } else if (command instanceof MatchSingleCommand) {
+                handleMatchSingleCommand((MatchSingleCommand) command);
             }
         }
     }
 
-    public model.Node visitorNodeToDBNode(graph.visitor.types.Node node) {
+    public model.Node visitorNodeToDBNode(graph.visitor.result.Node node) {
         Properties properties = node.getProperties();
         String name = properties.get("name");
         String username = properties.get("username");
@@ -88,6 +92,17 @@ public class Client {
         var visitor = new CypherVisitor();
         var results = visitor.visit(parser.query());
         return (QueryResult) results;
+    }
+
+    private void handleMatchSingleCommand(MatchSingleCommand command) {
+        String[] filters = command.getNode().getSelectProperties();
+        filters = Arrays.stream(filters)
+                .map(filter -> "node_" + filter.toLowerCase())
+                .toArray(String[]::new);
+        graph.visitor.result.Node[] nodes = dbHelper.matchNode(command.getNode());
+        for (graph.visitor.result.Node node : nodes) {
+            System.out.println(node);
+        }
     }
 
     private void handleCreateCommand(CreateCommand command) {

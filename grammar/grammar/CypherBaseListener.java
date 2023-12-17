@@ -76,25 +76,25 @@ public class CypherBaseListener implements CypherListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCreateRelationshipPattern(CypherParser.CreateRelationshipPatternContext ctx) { }
+	@Override public void enterNodeRelationshipPattern(CypherParser.NodeRelationshipPatternContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCreateRelationshipPattern(CypherParser.CreateRelationshipPatternContext ctx) { }
+	@Override public void exitNodeRelationshipPattern(CypherParser.NodeRelationshipPatternContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCreateNodePattern(CypherParser.CreateNodePatternContext ctx) { }
+	@Override public void enterNodePattern(CypherParser.NodePatternContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCreateNodePattern(CypherParser.CreateNodePatternContext ctx) { }
+	@Override public void exitNodePattern(CypherParser.NodePatternContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -112,37 +112,37 @@ public class CypherBaseListener implements CypherListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMatchAndReturnClause(CypherParser.MatchAndReturnClauseContext ctx) { }
+	@Override public void enterMatchAndReturnCommand(CypherParser.MatchAndReturnCommandContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMatchAndReturnClause(CypherParser.MatchAndReturnClauseContext ctx) { }
+	@Override public void exitMatchAndReturnCommand(CypherParser.MatchAndReturnCommandContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMatchClause(CypherParser.MatchClauseContext ctx) { }
+	@Override public void enterMatchCommand(CypherParser.MatchCommandContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMatchClause(CypherParser.MatchClauseContext ctx) { }
+	@Override public void exitMatchCommand(CypherParser.MatchCommandContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterReturnClause(CypherParser.ReturnClauseContext ctx) { }
+	@Override public void enterReturnCommand(CypherParser.ReturnCommandContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitReturnClause(CypherParser.ReturnClauseContext ctx) { }
+	@Override public void exitReturnCommand(CypherParser.ReturnCommandContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -196,13 +196,13 @@ public class CypherBaseListener implements CypherListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPattern(CypherParser.PatternContext ctx) { }
+	@Override public void enterMatchPattern(CypherParser.MatchPatternContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPattern(CypherParser.PatternContext ctx) { }
+	@Override public void exitMatchPattern(CypherParser.MatchPatternContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -215,18 +215,6 @@ public class CypherBaseListener implements CypherListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitRelationshipPattern(CypherParser.RelationshipPatternContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterNodePattern(CypherParser.NodePatternContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitNodePattern(CypherParser.NodePatternContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

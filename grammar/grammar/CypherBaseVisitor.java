@@ -52,14 +52,14 @@ public class CypherBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCreateRelationshipPattern(CypherParser.CreateRelationshipPatternContext ctx) { return visitChildren(ctx); }
+	@Override public T visitNodeRelationshipPattern(CypherParser.NodeRelationshipPatternContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCreateNodePattern(CypherParser.CreateNodePatternContext ctx) { return visitChildren(ctx); }
+	@Override public T visitNodePattern(CypherParser.NodePatternContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -73,21 +73,21 @@ public class CypherBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMatchAndReturnClause(CypherParser.MatchAndReturnClauseContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMatchAndReturnCommand(CypherParser.MatchAndReturnCommandContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMatchClause(CypherParser.MatchClauseContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMatchCommand(CypherParser.MatchCommandContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitReturnClause(CypherParser.ReturnClauseContext ctx) { return visitChildren(ctx); }
+	@Override public T visitReturnCommand(CypherParser.ReturnCommandContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -122,7 +122,7 @@ public class CypherBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitPattern(CypherParser.PatternContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMatchPattern(CypherParser.MatchPatternContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -130,13 +130,6 @@ public class CypherBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitRelationshipPattern(CypherParser.RelationshipPatternContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitNodePattern(CypherParser.NodePatternContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

@@ -1,6 +1,6 @@
-package graph.visitor.types.commands;
+package graph.visitor.result.commands;
 
-import graph.visitor.types.core.Command;
+import graph.visitor.result.core.Command;
 
 public class QueryResult implements Command {
     Command[] commands;

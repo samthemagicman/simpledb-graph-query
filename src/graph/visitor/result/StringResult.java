@@ -1,6 +1,6 @@
-package graph.visitor.types;
+package graph.visitor.result;
 
-import graph.visitor.types.core.VisitorResult;
+import graph.visitor.result.core.VisitorResult;
 
 public class StringResult implements VisitorResult {
     private String result;

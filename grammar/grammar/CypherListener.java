@@ -63,25 +63,25 @@ public interface CypherListener extends ParseTreeListener {
 	 */
 	void exitCreateSingleNode(CypherParser.CreateSingleNodeContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link CypherParser#createRelationshipPattern}.
+	 * Enter a parse tree produced by {@link CypherParser#nodeRelationshipPattern}.
 	 * @param ctx the parse tree
 	 */
-	void enterCreateRelationshipPattern(CypherParser.CreateRelationshipPatternContext ctx);
+	void enterNodeRelationshipPattern(CypherParser.NodeRelationshipPatternContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link CypherParser#createRelationshipPattern}.
+	 * Exit a parse tree produced by {@link CypherParser#nodeRelationshipPattern}.
 	 * @param ctx the parse tree
 	 */
-	void exitCreateRelationshipPattern(CypherParser.CreateRelationshipPatternContext ctx);
+	void exitNodeRelationshipPattern(CypherParser.NodeRelationshipPatternContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link CypherParser#createNodePattern}.
+	 * Enter a parse tree produced by {@link CypherParser#nodePattern}.
 	 * @param ctx the parse tree
 	 */
-	void enterCreateNodePattern(CypherParser.CreateNodePatternContext ctx);
+	void enterNodePattern(CypherParser.NodePatternContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link CypherParser#createNodePattern}.
+	 * Exit a parse tree produced by {@link CypherParser#nodePattern}.
 	 * @param ctx the parse tree
 	 */
-	void exitCreateNodePattern(CypherParser.CreateNodePatternContext ctx);
+	void exitNodePattern(CypherParser.NodePatternContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link CypherParser#nodeProperties}.
 	 * @param ctx the parse tree
@@ -93,35 +93,35 @@ public interface CypherListener extends ParseTreeListener {
 	 */
 	void exitNodeProperties(CypherParser.NodePropertiesContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link CypherParser#matchAndReturnClause}.
+	 * Enter a parse tree produced by {@link CypherParser#matchAndReturnCommand}.
 	 * @param ctx the parse tree
 	 */
-	void enterMatchAndReturnClause(CypherParser.MatchAndReturnClauseContext ctx);
+	void enterMatchAndReturnCommand(CypherParser.MatchAndReturnCommandContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link CypherParser#matchAndReturnClause}.
+	 * Exit a parse tree produced by {@link CypherParser#matchAndReturnCommand}.
 	 * @param ctx the parse tree
 	 */
-	void exitMatchAndReturnClause(CypherParser.MatchAndReturnClauseContext ctx);
+	void exitMatchAndReturnCommand(CypherParser.MatchAndReturnCommandContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link CypherParser#matchClause}.
+	 * Enter a parse tree produced by {@link CypherParser#matchCommand}.
 	 * @param ctx the parse tree
 	 */
-	void enterMatchClause(CypherParser.MatchClauseContext ctx);
+	void enterMatchCommand(CypherParser.MatchCommandContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link CypherParser#matchClause}.
+	 * Exit a parse tree produced by {@link CypherParser#matchCommand}.
 	 * @param ctx the parse tree
 	 */
-	void exitMatchClause(CypherParser.MatchClauseContext ctx);
+	void exitMatchCommand(CypherParser.MatchCommandContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link CypherParser#returnClause}.
+	 * Enter a parse tree produced by {@link CypherParser#returnCommand}.
 	 * @param ctx the parse tree
 	 */
-	void enterReturnClause(CypherParser.ReturnClauseContext ctx);
+	void enterReturnCommand(CypherParser.ReturnCommandContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link CypherParser#returnClause}.
+	 * Exit a parse tree produced by {@link CypherParser#returnCommand}.
 	 * @param ctx the parse tree
 	 */
-	void exitReturnClause(CypherParser.ReturnClauseContext ctx);
+	void exitReturnCommand(CypherParser.ReturnCommandContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code returnAll}
 	 * labeled alternative in {@link CypherParser#returnPattern}.
@@ -169,15 +169,15 @@ public interface CypherListener extends ParseTreeListener {
 	 */
 	void exitReturnItem(CypherParser.ReturnItemContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link CypherParser#pattern}.
+	 * Enter a parse tree produced by {@link CypherParser#matchPattern}.
 	 * @param ctx the parse tree
 	 */
-	void enterPattern(CypherParser.PatternContext ctx);
+	void enterMatchPattern(CypherParser.MatchPatternContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link CypherParser#pattern}.
+	 * Exit a parse tree produced by {@link CypherParser#matchPattern}.
 	 * @param ctx the parse tree
 	 */
-	void exitPattern(CypherParser.PatternContext ctx);
+	void exitMatchPattern(CypherParser.MatchPatternContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link CypherParser#relationshipPattern}.
 	 * @param ctx the parse tree
@@ -188,16 +188,6 @@ public interface CypherListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitRelationshipPattern(CypherParser.RelationshipPatternContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link CypherParser#nodePattern}.
-	 * @param ctx the parse tree
-	 */
-	void enterNodePattern(CypherParser.NodePatternContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link CypherParser#nodePattern}.
-	 * @param ctx the parse tree
-	 */
-	void exitNodePattern(CypherParser.NodePatternContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link CypherParser#pair}.
 	 * @param ctx the parse tree

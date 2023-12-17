@@ -1,4 +1,4 @@
-package graph.visitor.types.core;
+package graph.visitor.result.core;
 
 public interface VisitorResult {
 }

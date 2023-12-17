@@ -1,7 +1,7 @@
-package graph.visitor.types.commands;
+package graph.visitor.result.commands;
 
-import graph.visitor.types.Node;
-import graph.visitor.types.core.Command;
+import graph.visitor.result.Node;
+import graph.visitor.result.core.Command;
 
 public class CreateSingleNode implements Command {
     Node node;

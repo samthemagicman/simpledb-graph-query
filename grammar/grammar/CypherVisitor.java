@@ -43,17 +43,17 @@ public interface CypherVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCreateSingleNode(CypherParser.CreateSingleNodeContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link CypherParser#createRelationshipPattern}.
+	 * Visit a parse tree produced by {@link CypherParser#nodeRelationshipPattern}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCreateRelationshipPattern(CypherParser.CreateRelationshipPatternContext ctx);
+	T visitNodeRelationshipPattern(CypherParser.NodeRelationshipPatternContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link CypherParser#createNodePattern}.
+	 * Visit a parse tree produced by {@link CypherParser#nodePattern}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCreateNodePattern(CypherParser.CreateNodePatternContext ctx);
+	T visitNodePattern(CypherParser.NodePatternContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link CypherParser#nodeProperties}.
 	 * @param ctx the parse tree
@@ -61,23 +61,23 @@ public interface CypherVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNodeProperties(CypherParser.NodePropertiesContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link CypherParser#matchAndReturnClause}.
+	 * Visit a parse tree produced by {@link CypherParser#matchAndReturnCommand}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMatchAndReturnClause(CypherParser.MatchAndReturnClauseContext ctx);
+	T visitMatchAndReturnCommand(CypherParser.MatchAndReturnCommandContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link CypherParser#matchClause}.
+	 * Visit a parse tree produced by {@link CypherParser#matchCommand}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMatchClause(CypherParser.MatchClauseContext ctx);
+	T visitMatchCommand(CypherParser.MatchCommandContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link CypherParser#returnClause}.
+	 * Visit a parse tree produced by {@link CypherParser#returnCommand}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitReturnClause(CypherParser.ReturnClauseContext ctx);
+	T visitReturnCommand(CypherParser.ReturnCommandContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code returnAll}
 	 * labeled alternative in {@link CypherParser#returnPattern}.
@@ -106,23 +106,17 @@ public interface CypherVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitReturnItem(CypherParser.ReturnItemContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link CypherParser#pattern}.
+	 * Visit a parse tree produced by {@link CypherParser#matchPattern}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitPattern(CypherParser.PatternContext ctx);
+	T visitMatchPattern(CypherParser.MatchPatternContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link CypherParser#relationshipPattern}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitRelationshipPattern(CypherParser.RelationshipPatternContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link CypherParser#nodePattern}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNodePattern(CypherParser.NodePatternContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link CypherParser#pair}.
 	 * @param ctx the parse tree

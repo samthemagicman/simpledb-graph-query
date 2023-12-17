@@ -25,46 +25,37 @@ QUOTE_STRING:
      s = s.substring(1, s.length() - 1);
      setText(s);
    };
-query: (matchAndReturnClause | createCommand)+;
+query: (matchAndReturnCommand | createCommand)+;
 
-createCommand:
-	CREATE createCommandPattern (COMMA createCommandPattern)?;
+createCommand: CREATE createCommandPattern (COMMA createCommandPattern)?;
 
 createCommandPattern:
-	nodeFrom = createNodePattern '-' relationship = createRelationshipPattern '->' nodeTo =
-		createNodePattern # createNodeRelationship
-	| nodeTo = createNodePattern '<-' relationship = createRelationshipPattern '-' nodeFrom =
-		createNodePattern		# createNodeInverseRelationship
-	| node = createNodePattern	# createSingleNode;
+	nodeFrom = nodePattern '-' relationship = nodeRelationshipPattern '->' nodeTo = nodePattern		# createNodeRelationship
+	| nodeTo = nodePattern '<-' relationship = nodeRelationshipPattern '-' nodeFrom = nodePattern	# createNodeInverseRelationship
+	| node = nodePattern																			# createSingleNode;
 
-createRelationshipPattern:
-	'[' nodeNameAndLabel = pair properties = nodeProperties ']';
+nodeRelationshipPattern: '[' nodeNameAndLabel = pair properties = nodeProperties ']';
 
-createNodePattern:
-	'(' nodeNameAndLabel = pair properties = nodeProperties ')';
+nodePattern: '(' nodeNameAndLabel = pair properties = nodeProperties ')';
 
 nodeProperties: '{' (pair (COMMA pair)*)? '}' |;
 
-matchAndReturnClause: matchClause returnClause;
+matchAndReturnCommand: matchCommand returnCommand;
 
-matchClause: MATCH pattern;
+matchCommand: MATCH matchPattern;
 
-returnClause: RETURN returnPattern;
+returnCommand: RETURN returnPattern;
 
-returnPattern:
-	'*'									# returnAll
-	| ID								# returnSingleNode
-	| (returnItem (COMMA returnItem)*)?	# returnMultipleNodes;
+returnPattern: '*' # returnAll | ID # returnSingleNode | (returnItem (COMMA returnItem)*)? # returnMultipleNodes;
 
 returnItem: object = ID PERIOD property = ID;
 
-pattern:
-	nodePattern '-' relationshipPattern '-' nodePattern
-	| nodePattern;
+matchPattern:
+	nodeFrom = nodePattern '-' (relationship = nodeRelationshipPattern)? '-' nodeTo = nodePattern
+	| nodeFrom = nodePattern '-' relationship = nodeRelationshipPattern '->' nodeTo = nodePattern
+	| nodeTo = nodePattern '<-' relationship = nodeRelationshipPattern '-' nodeFrom = nodePattern
+	| node = nodePattern;
 
 relationshipPattern: '[]' | '[' pair ']';
 
-nodePattern: '(' pair ')';
-
-pair: (property = ID ':')* value = ID
-	| (property = ID ':')* value = QUOTE_STRING;
+pair: (property = ID ':')* value = ID | (property = ID ':')* value = QUOTE_STRING;

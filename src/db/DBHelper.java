@@ -6,7 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 
+import graph.visitor.result.Pair;
+import graph.visitor.result.Properties;
 import model.Node;
 import model.Relationship;
 
@@ -84,31 +88,76 @@ public class DBHelper {
         }
     }
 
-    // to return node (or properties) on specific conditions (i.e. Match and return
-    // clause)
-    public Node returnNode(String node_type, int node_id) {
+    public graph.visitor.result.Node[] matchNode(graph.visitor.result.Node node) {
+        ArrayList<graph.visitor.result.Node> nodes = new ArrayList<>();
+        String[] selectProperties = node.getSelectProperties();
 
-        Node node = null;
+        String selectNode = "SELECT ";
+        if (selectProperties.length == 0) {
+            selectNode += "*";
+        } else {
+            selectNode += String.join(", ", Arrays.stream(selectProperties)
+                    .map(property -> "node_" + property)
+                    .toArray(String[]::new));
+            selectNode += " FROM " + nodes_table_name + " WHERE node_type = ?";
+        }
+
+        // Add properties to the WHERE clause
+        Properties nodeProperties = node.getProperties();
+        for (Pair property : nodeProperties.getProperties()) {
+            selectNode += " AND node_" + property.getProperty() + " = ?";
+        }
+        selectNode += ";";
+
+        try {
+            // prepared statement
+            PreparedStatement preparedStatement = dbConnection.prepareStatement(selectNode);
+            preparedStatement.setString(1, node.getLabel());
+            int i = 2;
+            for (Pair property : nodeProperties.getProperties()) {
+                preparedStatement.setString(i, property.getValue());
+                i++;
+            }
+
+            // execute statement and get result set
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                graph.visitor.result.Node newNode = new graph.visitor.result.Node(graph.visitor.result.Node.Type.NODE,
+                        new Properties(), "", node.getLabel());
+                for (String property : selectProperties) {
+                    newNode.getProperties().addProperty(new Pair(property, resultSet.getString("node_" + property)));
+                }
+                nodes.add(newNode);
+            }
+
+            resultSet.close();
+            preparedStatement.close();
+
+        } catch (SQLException e) {
+            System.out.println("Error returning node.");
+            e.printStackTrace();
+        }
+
+        return nodes.toArray(graph.visitor.result.Node[]::new);
+    }
+
+    public Node[] returnNodes(String node_type) {
+
+        ArrayList<Node> nodes = new ArrayList<>();
 
         // create select statement using prepared statement
-        String selectNode = "SELECT * FROM " + nodes_table_name + " WHERE node_type = ? AND  node_id = ?";
-        // for (int i = 0; i < conditions.length; i++){
-        // selectNode = selectNode + conditions[i] + " AND ";
-        // }
-
-        // remove last AND
-        // selectNode = selectNode.substring(0, selectNode.length() - 5);
+        String selectNode = "SELECT  * FROM " + nodes_table_name + " WHERE node_type = ?;";
 
         try {
             // prepared statement
             PreparedStatement preparedStatement = dbConnection.prepareStatement(selectNode);
             preparedStatement.setString(1, node_type);
-            preparedStatement.setInt(2, node_id);
 
             // execute statement and get result set
             ResultSet resultSet = preparedStatement.executeQuery();
 
             // parse result set
+            int i = 0;
             while (resultSet.next()) {
                 int rs_node_id = resultSet.getInt("node_id");
                 String rs_node_type = resultSet.getString("node_type");
@@ -122,20 +171,19 @@ public class DBHelper {
                 String node_country = resultSet.getString("node_country");
                 String node_city = resultSet.getString("node_city");
 
-                node = new Node(rs_node_id, rs_node_type, node_name, node_username, node_email, node_content,
-                        node_date_created, node_tags, node_country, node_city);
+                nodes.add(new Node(rs_node_id, rs_node_type, node_name, node_username, node_email,
+                        node_content, node_date_created, node_tags, node_country, node_city));
             }
 
             resultSet.close();
             preparedStatement.close();
 
         } catch (SQLException e) {
-            System.out.println("Error returning node.");
+            System.out.println("Error returning node");
             e.printStackTrace();
         }
 
-        return node;
-
+        return nodes.toArray(Node[]::new);
     }
 
     public Node[] returnNodes(String node_type, String[] conditions) {

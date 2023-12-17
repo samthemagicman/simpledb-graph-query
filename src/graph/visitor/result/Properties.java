@@ -1,20 +1,26 @@
-package graph.visitor.types;
+package graph.visitor.result;
 
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
-import graph.visitor.types.core.VisitorResult;
+import graph.visitor.result.core.VisitorResult;
 
 public class Properties implements VisitorResult {
     // Would benefit turning this into a dictionary instead for getting properties,
     // but this is ok for now.
-    private Pair[] properties;
+    private ArrayList<Pair> properties = new ArrayList<>();
+
+    public Properties() {
+    }
 
     public Properties(Pair[] properties) {
-        this.properties = properties;
+        for (Pair pair : properties) {
+            this.properties.add(pair);
+        }
     }
 
     public Pair[] getProperties() {
-        return properties;
+        return properties.toArray(Pair[]::new);
     }
 
     public Pair getPropertyPair(String property) {
@@ -24,6 +30,10 @@ public class Properties implements VisitorResult {
             }
         }
         return null;
+    }
+
+    public void addProperty(Pair property) {
+        properties.add(property);
     }
 
     /**
@@ -40,4 +50,5 @@ public class Properties implements VisitorResult {
         }
         return null;
     }
+
 }
