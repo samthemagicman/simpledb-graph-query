@@ -1,0 +1,17 @@
+CREATE (n:User {type: 'User',name: 'John Doe, username: 'john', email: 'john@example.com', DOB: date('2000-01-01'), content: NULL, date_created: datetime('2023-12-17T00:00:00Z'), tags: NULL, country: 'USA', city: 'Chicago'})
+MATCH (source:Post {id: 8}), (target:Reaction {id: 21}) CREATE (source)-[:SomeType {edge_type: 'Has A Reaction', date_created: date('2023-12-02'), relationship_description: 'Dislike', relationship_type: 'ReactedOn'}]->(target)
+MATCH (n:User {id: 1}) RETURN n.name, n.email, n.country
+MATCH (u:User) WHERE u.date_created > date('2023-01-01') RETURN u.name, u.email, u.country
+MATCH (n:Post) RETURN n;
+MATCH (n:User) WHERE n.country = 'USA' RETURN n;
+MATCH (n {id: 20}) DELETE n
+MATCH (source:Node {id: 1})-[r:Created]->(target:Node {id: 6}) DELETE r
+MATCH (n:Node {id: 1}) SET n.email = 'new_email@example.com'
+MATCH (source:User{id = 1})-[r:Created]->(target:Post) RETURN target;
+MATCH (source:User{id = 1})-[r:Created]->(target:Reaction) RETURN target;
+MATCH (source:User{id = 1})-[r:Created]->(target:Comment) RETURN target;
+MATCH (source:Post{id = 6})-[r:Have  A Comment]->(target:Comment) RETURN target;
+MATCH (source:Post{id = 6})-[r:Have  A Reaction]->(target:Reaction) RETURN target;
+MATCH (source:User{id = 1})-[r:Created]->(target:Reaction {content = ‘Like’}) RETURN target;
+MATCH (source:User{id = 1})-[r:Created]->(target:Post ) WHERE r.edge_date_created > date('2020-01-01') RETURN target;
+

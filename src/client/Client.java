@@ -1,4 +1,4 @@
-package graph;
+package client;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -142,5 +142,9 @@ public class Client {
                 nodeRelationship.getLabel());
 
         dbHelper.createRelationship(relationship);
+    }
+
+    public void close() {
+        dbHelper.closeDBConnection();
     }
 }
