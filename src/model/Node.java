@@ -1,5 +1,7 @@
 package model;
 
+import java.time.LocalDate;
+
 public class Node {
 
     private int node_id;
@@ -7,12 +9,14 @@ public class Node {
     private String node_name;
     private String node_username;
     private String node_email;
-    private String node_dob;
+    private LocalDate node_dob;
     private String node_content;
-    private String node_date_created;
+    private LocalDate node_date_created;
     private String node_tags;
+    private String node_country;
+    private String node_city;
     
-    public Node(int node_id, String node_type, String node_name, String username, String node_email, String node_dob, String node_content, String node_date_created, String node_tags){
+    public Node(int node_id, String node_type, String node_name, String username, String node_email, LocalDate node_dob, String node_content, LocalDate node_date_created, String node_tags, String node_country, String node_city){
         this.node_id = node_id;
         this.node_type = node_type;
         this.node_name = node_name;
@@ -22,6 +26,8 @@ public class Node {
         this.node_content = node_content;
         this.node_date_created = node_date_created;
         this.node_tags = node_tags;
+        this.node_country = node_country;
+        this.node_city = node_city;
     }
 
     public int getNode_id(){
@@ -44,7 +50,7 @@ public class Node {
         return node_email;
     }
 
-    public String getNode_dob(){
+    public LocalDate getNode_dob(){
         return node_dob;
     }
 
@@ -52,12 +58,20 @@ public class Node {
         return node_content;
     }
 
-    public String getNode_date_created(){
+    public LocalDate getNode_date_created(){
         return node_date_created;
     }
 
     public String getNode_tags(){
         return node_tags;
+    }
+
+    public String getNode_country(){
+        return node_country;
+    }
+
+    public String getNode_city(){
+        return node_city;
     }
 
     public void setNode_id(int node_id){
@@ -80,7 +94,7 @@ public class Node {
         this.node_email = node_email;
     }
 
-    public void setNode_dob(String node_dob){
+    public void setNode_dob(LocalDate node_dob){
         this.node_dob = node_dob;
     }
 
@@ -88,12 +102,20 @@ public class Node {
         this.node_content = node_content;
     }
 
-    public void setNode_date_created(String node_date_created){
+    public void setNode_date_created(LocalDate node_date_created){
         this.node_date_created = node_date_created;
     }
 
     public void setNode_tags(String node_tags){
         this.node_tags = node_tags;
+    }
+
+    public void setNode_country(String node_country){
+        this.node_country = node_country;
+    }
+
+    public void setNode_city(String node_city){
+        this.node_city = node_city;
     }
 
     @Override
@@ -102,9 +124,11 @@ public class Node {
                "Node Type: " + node_type + "\n" +
                "Node Name: " + node_name + "\n" +
                "Node Email: " + node_email + "\n" +
-               "Node DOB: " + node_dob + "\n" +
+               "Node DOB: " + node_dob.toString() + "\n" +
                "Node Content: " + node_content + "\n" +
                "Node Date Created: " + node_date_created + "\n" +
-               "Node Tags: " + node_tags + "\n";
+               "Node Tags: " + node_tags + "\n" +
+                "Node Country: " + node_country + "\n" +
+                "Node City: " + node_city + "\n";
     }
 }
