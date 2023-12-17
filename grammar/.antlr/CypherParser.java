@@ -120,6 +120,14 @@ public class CypherParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_query; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterQuery(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitQuery(this);
+		}
 	}
 
 	public final QueryContext query() throws RecognitionException {
@@ -184,6 +192,14 @@ public class CypherParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_createCommand; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterCreateCommand(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitCreateCommand(this);
+		}
 	}
 
 	public final CreateCommandContext createCommand() throws RecognitionException {
@@ -249,6 +265,14 @@ public class CypherParser extends Parser {
 			return getRuleContext(NodeRelationshipPatternContext.class,0);
 		}
 		public CreateNodeRelationshipContext(CreateCommandPatternContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterCreateNodeRelationship(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitCreateNodeRelationship(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class CreateSingleNodeContext extends CreateCommandPatternContext {
@@ -257,6 +281,14 @@ public class CypherParser extends Parser {
 			return getRuleContext(NodePatternContext.class,0);
 		}
 		public CreateSingleNodeContext(CreateCommandPatternContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterCreateSingleNode(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitCreateSingleNode(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class CreateNodeInverseRelationshipContext extends CreateCommandPatternContext {
@@ -273,6 +305,14 @@ public class CypherParser extends Parser {
 			return getRuleContext(NodeRelationshipPatternContext.class,0);
 		}
 		public CreateNodeInverseRelationshipContext(CreateCommandPatternContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterCreateNodeInverseRelationship(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitCreateNodeInverseRelationship(this);
+		}
 	}
 
 	public final CreateCommandPatternContext createCommandPattern() throws RecognitionException {
@@ -351,6 +391,14 @@ public class CypherParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_nodeRelationshipPattern; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterNodeRelationshipPattern(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitNodeRelationshipPattern(this);
+		}
 	}
 
 	public final NodeRelationshipPatternContext nodeRelationshipPattern() throws RecognitionException {
@@ -396,6 +444,14 @@ public class CypherParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_nodePattern; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterNodePattern(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitNodePattern(this);
+		}
 	}
 
 	public final NodePatternContext nodePattern() throws RecognitionException {
@@ -443,6 +499,14 @@ public class CypherParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_nodeProperties; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterNodeProperties(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitNodeProperties(this);
+		}
 	}
 
 	public final NodePropertiesContext nodeProperties() throws RecognitionException {
@@ -521,6 +585,14 @@ public class CypherParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_matchAndReturnCommand; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterMatchAndReturnCommand(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitMatchAndReturnCommand(this);
+		}
 	}
 
 	public final MatchAndReturnCommandContext matchAndReturnCommand() throws RecognitionException {
@@ -556,6 +628,14 @@ public class CypherParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_matchCommand; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterMatchCommand(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitMatchCommand(this);
+		}
 	}
 
 	public final MatchCommandContext matchCommand() throws RecognitionException {
@@ -591,6 +671,14 @@ public class CypherParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_returnCommand; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterReturnCommand(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitReturnCommand(this);
+		}
 	}
 
 	public final ReturnCommandContext returnCommand() throws RecognitionException {
@@ -632,10 +720,26 @@ public class CypherParser extends Parser {
 	public static class ReturnSingleNodeContext extends ReturnPatternContext {
 		public TerminalNode ID() { return getToken(CypherParser.ID, 0); }
 		public ReturnSingleNodeContext(ReturnPatternContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterReturnSingleNode(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitReturnSingleNode(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class ReturnAllContext extends ReturnPatternContext {
 		public ReturnAllContext(ReturnPatternContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterReturnAll(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitReturnAll(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class ReturnMultipleNodesContext extends ReturnPatternContext {
@@ -650,6 +754,14 @@ public class CypherParser extends Parser {
 			return getToken(CypherParser.COMMA, i);
 		}
 		public ReturnMultipleNodesContext(ReturnPatternContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterReturnMultipleNodes(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitReturnMultipleNodes(this);
+		}
 	}
 
 	public final ReturnPatternContext returnPattern() throws RecognitionException {
@@ -734,6 +846,14 @@ public class CypherParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_returnItem; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterReturnItem(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitReturnItem(this);
+		}
 	}
 
 	public final ReturnItemContext returnItem() throws RecognitionException {
@@ -781,6 +901,14 @@ public class CypherParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_matchPattern; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterMatchPattern(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitMatchPattern(this);
+		}
 	}
 
 	public final MatchPatternContext matchPattern() throws RecognitionException {
@@ -875,6 +1003,14 @@ public class CypherParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_relationshipPattern; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterRelationshipPattern(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitRelationshipPattern(this);
+		}
 	}
 
 	public final RelationshipPatternContext relationshipPattern() throws RecognitionException {
@@ -934,6 +1070,14 @@ public class CypherParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_pair; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).enterPair(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CypherListener ) ((CypherListener)listener).exitPair(this);
+		}
 	}
 
 	public final PairContext pair() throws RecognitionException {

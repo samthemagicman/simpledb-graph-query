@@ -19,6 +19,7 @@ import graph.visitor.result.commands.CreateSingleNode;
 import graph.visitor.result.commands.MatchReturnCommand;
 import graph.visitor.result.commands.QueryResult;
 import graph.visitor.result.core.Command;
+import model.MatchQueryResult;
 import model.Node;
 import model.Relationship;
 
@@ -108,7 +109,13 @@ public class Client {
                 System.out.println(node);
             }
         } else {
+            MatchQueryResult[] result = dbHelper.getNodesWithUndirectedRelationship(pattern.getNodeSource(),
+                    pattern.getNodeTarget(),
+                    pattern.getNodeRelationship());
 
+            for (MatchQueryResult match : result) {
+                System.out.println(match.getSource() + " - " + match.getRelationship() + " -> " + match.getTarget());
+            }
         }
     }
 

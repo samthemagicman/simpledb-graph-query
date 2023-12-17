@@ -110,7 +110,7 @@ public class CypherVisitor extends CypherBaseVisitor<VisitorResult> {
             Node nodeFrom = (Node) visit(ctx.nodeFrom);
             Node relationship = (Node) visit(ctx.relationship);
 
-            return new MatchPattern(nodeTo, nodeFrom, relationship, MatchPattern.Type.RELATIONSHIP);
+            return new MatchPattern(nodeFrom, nodeTo, relationship, MatchPattern.Type.RELATIONSHIP);
         }
 
         return new MatchPattern(null, MatchPattern.Type.SINGLE);

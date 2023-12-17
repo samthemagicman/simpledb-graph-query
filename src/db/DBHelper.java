@@ -12,6 +12,7 @@ import java.util.Arrays;
 
 import graph.visitor.result.Pair;
 import graph.visitor.result.Properties;
+import model.MatchQueryResult;
 import model.Node;
 import model.Relationship;
 
@@ -89,7 +90,8 @@ public class DBHelper {
         }
     }
 
-    public graph.visitor.result.Node createNodeFromResultSet(ResultSet resultSet, String[] properties, String label)
+    public graph.visitor.result.Node createNodeFromResultSet(ResultSet resultSet, String label,
+            String propertyPrefix)
             throws SQLException {
         graph.visitor.result.Node newNode = new graph.visitor.result.Node(graph.visitor.result.Node.Type.NODE,
                 new Properties(), "", label);
@@ -97,10 +99,28 @@ public class DBHelper {
         ResultSetMetaData rsmd = resultSet.getMetaData();
         for (int j = 1; j <= rsmd.getColumnCount(); j++) {
             String columnName = rsmd.getColumnName(j);
-            newNode.getProperties()
-                    .addProperty(new Pair(columnName.replace("node_", ""), resultSet.getString(columnName)));
+            if (columnName.startsWith(propertyPrefix)) {
+                newNode.getProperties()
+                        .addProperty(new Pair(columnName.replace(propertyPrefix, ""), resultSet.getString(columnName)));
+            }
         }
         return newNode;
+    }
+
+    public graph.visitor.result.Node createNodeFromResultSet(ResultSet resultSet, String label)
+            throws SQLException {
+        // graph.visitor.result.Node newNode = new
+        // graph.visitor.result.Node(graph.visitor.result.Node.Type.NODE,
+        // new Properties(), "", label);
+
+        // ResultSetMetaData rsmd = resultSet.getMetaData();
+        // for (int j = 1; j <= rsmd.getColumnCount(); j++) {
+        // String columnName = rsmd.getColumnName(j);
+        // newNode.getProperties()
+        // .addProperty(new Pair(columnName.replace("node_", ""),
+        // resultSet.getString(columnName)));
+        // }
+        return createNodeFromResultSet(resultSet, label, "node_");
     }
 
     public graph.visitor.result.Node[] matchNode(graph.visitor.result.Node node) {
@@ -137,7 +157,7 @@ public class DBHelper {
             // execute statement and get result set
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                nodes.add(createNodeFromResultSet(resultSet, selectProperties, node.getLabel()));
+                nodes.add(createNodeFromResultSet(resultSet, node.getLabel()));
                 // nodes.add(createNodeFromResultSet(resultSet, selectProperties,
                 // node.getLabel()));
             }
@@ -333,20 +353,77 @@ public class DBHelper {
         }
     }
 
-    public void getNodesWithDirectedRelationship(graph.visitor.result.Node nodeSource,
+    public MatchQueryResult[] getNodesWithUndirectedRelationship(graph.visitor.result.Node nodeSource,
             graph.visitor.result.Node nodeTarget,
             graph.visitor.result.Node relationship) {
+
+        // Pair[] sourceProperties = nodeSource.getProperties().getProperties();
+        // Pair[] targetProperties = nodeTarget.getProperties().getProperties();
+        // Pair[] relationshipProperties = relationship.getProperties().getProperties();
+
+        String[] sourceProperties = nodeSource.getSelectProperties();
+        String[] targetProperties = nodeTarget.getSelectProperties();
+        String[] relationshipProperties = relationship.getSelectProperties();
+
         String sql = "SELECT " +
-                "n1.node_id AS source_node_id, " +
-                "n1.node_name AS source_name, " +
-                "n2.node_id AS target_node_id, " +
-                "n2.node_name AS target_name " +
-                "FROM " +
-                "buzzhub_relationships r " +
+                "src.node_id AS source_node_id, " +
+                "trgt.node_id AS target_node_id, ";
+
+        ArrayList<MatchQueryResult> result = new ArrayList<>();
+
+        for (String property : sourceProperties) {
+            if (property.equals("id")) {
+                continue;
+            }
+            sql = sql + "src.node_" + property + " AS source_node_" + property + ", ";
+        }
+
+        for (String property : targetProperties) {
+            if (property.equals("id")) {
+                continue;
+            }
+            sql = sql + "trgt.node_" + property + " AS target_node_" + property + ", ";
+        }
+
+        for (String property : relationshipProperties) {
+            if (property.equals("id")) {
+                continue;
+            }
+            sql = sql + "r.relationship_" + property + " AS relationship_" + property + ", ";
+        }
+
+        sql = sql.substring(0, sql.length() - 2) + " ";
+
+        sql = sql + "FROM " +
+                relationships_table_name + " r " +
                 "JOIN " +
-                "buzzhub_nodes n1 ON r.edge_source_node_id = n1.node_id " +
+                nodes_table_name + " src ON r.edge_source_node_id = src.node_id " +
                 "JOIN " +
-                "buzzhub_nodes n2 ON r.edge_target_node_id = n2.node_id;";
+                nodes_table_name + " trgt ON r.edge_target_node_id = trgt.node_id;";
+
+        try {
+            // prepared statement
+            PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
+            // execute statement
+            ResultSet resultSet = preparedStatement.executeQuery();
+            System.out.println(preparedStatement);
+            while (resultSet.next()) {
+                graph.visitor.result.Node sourceNode = createNodeFromResultSet(resultSet,
+                        nodeSource.getLabel(), "source_node_");
+                graph.visitor.result.Node targetNode = createNodeFromResultSet(resultSet,
+                        nodeTarget.getLabel(), "target_node_");
+                graph.visitor.result.Node relationshipNode = createNodeFromResultSet(resultSet,
+                        relationship.getLabel(), "relationship_");
+
+                MatchQueryResult matchQueryResult = new MatchQueryResult(sourceNode, targetNode, relationshipNode);
+                result.add(matchQueryResult);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error deleting node.");
+            e.printStackTrace();
+        }
+
+        return result.toArray(MatchQueryResult[]::new);
     }
 
     public Node[] searchNodesViaEdges(String src_node_type, String dest_node_type, String src_node_conditions,
