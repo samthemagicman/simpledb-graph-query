@@ -14,7 +14,6 @@ import graph.visitor.result.Node;
 import graph.visitor.result.Pair;
 import graph.visitor.result.Properties;
 import model.MatchQueryResult;
-import model.Relationship;
 
 public class DBHelper {
 
@@ -71,7 +70,6 @@ public class DBHelper {
             }
             throw new SQLException("Creating node failed, no ID obtained.");
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return null;
@@ -146,16 +144,8 @@ public class DBHelper {
 
     public Node[] matchNode(Node node) {
         ArrayList<Node> nodes = new ArrayList<>();
-        // String[] selectProperties = node.getSelectProperties();
 
         String selectNode = "SELECT *";
-        // if (selectProperties.length == 0 || selectProperties[0].equals("*")) {
-        // selectNode += "*";
-        // } else {
-        // selectNode += String.join(", ", Arrays.stream(selectProperties)
-        // .map(property -> "node_" + property)
-        // .toArray(String[]::new));
-        // }
         selectNode += " FROM " + nodes_table_name + " WHERE node_type = ?";
 
         // Add properties to the WHERE clause
@@ -174,13 +164,10 @@ public class DBHelper {
                 preparedStatement.setString(i, property.getValue());
                 i++;
             }
-            System.out.println(preparedStatement.toString());
             // execute statement and get result set
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 nodes.add(createNodeFromResultSet(resultSet, node.getLabel()));
-                // nodes.add(createNodeFromResultSet(resultSet, selectProperties,
-                // node.getLabel()));
             }
 
             resultSet.close();
