@@ -1,6 +1,7 @@
 package graph.visitor;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import graph.grammar.*;
 import graph.grammar.CypherParser.*;
@@ -183,14 +184,16 @@ public class CypherVisitor extends CypherBaseVisitor<VisitorResult> {
     public Node visitNodePattern(NodePatternContext ctx) {
         Pair variableAndLabel = (Pair) visit(ctx.nodeNameAndLabel);
         Properties properties = (Properties) visit(ctx.properties);
+        String variableName = variableAndLabel.getProperty();
 
-        if (variableAndLabel.getProperty() == null || variableAndLabel.getProperty().equals("")) {
-            return namespace.get(variableAndLabel.getValue());
+        if (variableName == null || variableName.equals("")) {
+            // return namespace.get(variableAndLabel.getValue());
+            variableName = UUID.randomUUID().toString();
         }
         return addNodeToNamespace(new Node(
                 Node.Type.NODE,
                 properties,
-                variableAndLabel.getProperty(),
+                variableName,
                 variableAndLabel.getValue()));
     }
 

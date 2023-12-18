@@ -60,4 +60,4 @@ matchPattern:
 
 relationshipPattern: '[]' | '[' pair ']';
 
-pair: (property = ID ':')* value = ID | (property = ID ':')* value = QUOTE_STRING;
+pair: (property = ID* ':')* value = ID | (property = ID ':')* value = QUOTE_STRING;
