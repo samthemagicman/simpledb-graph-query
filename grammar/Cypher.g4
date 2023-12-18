@@ -1,5 +1,7 @@
 grammar Cypher;
-
+options {
+	caseInsensitive = true;
+}
 // Lexer rules
 WS: [ \t\r\n]+ -> skip;
 
@@ -17,7 +19,7 @@ COMMA: ',';
 SEMICOLON: ';';
 COLON: ':';
 
-ID: [a-zA-Z0-9_]+;
+ID: [a-z0-9_]+;
 QUOTE_STRING:
 	'"' (~[\r\n"] | '""')* '"' {
      // Strip the quotes
