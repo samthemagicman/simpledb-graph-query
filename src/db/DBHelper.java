@@ -30,26 +30,29 @@ public class DBHelper {
         this.relationships_table_name = relationships_table_name;
     }
 
-    public graph.visitor.result.Node createNewNode(graph.visitor.result.Node node) {
+    public graph.visitor.result.Node createNodeInDb(graph.visitor.result.Node node) {
         Pair[] properties = node.getProperties().getProperties();
         String[] propertyNames = Arrays.stream(properties)
                 .map(pair -> "node_" + pair.getProperty())
                 .toArray(String[]::new);
 
-        String insertNode = "INSERT INTO " + nodes_table_name + " (" +
-                String.join(", ", propertyNames) +
-                ") VALUES (" +
-                String.join(", ", Arrays.stream(properties)
-                        .map(pair -> "?")
-                        .toArray(String[]::new))
-                +
-                ");";
+        String insertNode = "INSERT INTO " + nodes_table_name + " (node_type";
+        if (propertyNames.length > 0) {
+            insertNode += ", " + String.join(", ", propertyNames);
+        }
+        insertNode += ") VALUES (?";
+        if (propertyNames.length > 0) {
+            insertNode += ", " + String.join(", ", Arrays.stream(properties)
+                    .map(pair -> "?")
+                    .toArray(String[]::new));
+        }
+        insertNode += ");";
         // prepare statement
         PreparedStatement preparedStatement;
         try {
             preparedStatement = dbConnection.prepareStatement(insertNode, new String[] { "node_id" });
-
-            int i = 1;
+            preparedStatement.setString(1, node.getLabel());
+            int i = 2;
             for (Pair pair : properties) {
                 preparedStatement.setString(i, pair.getValue());
                 i++;
@@ -160,7 +163,7 @@ public class DBHelper {
                 preparedStatement.setString(i, property.getValue());
                 i++;
             }
-
+            System.out.println(preparedStatement.toString());
             // execute statement and get result set
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
