@@ -332,14 +332,21 @@ public class DBHelper {
                 nodes_table_name + " trgt ON r.edge_target_node_id = trgt.node_id " +
                 "WHERE ";
 
+        Boolean usedWhere = false;
         for (Pair pair : nodeSourceFilter) {
+            usedWhere = false;
             sql = sql + "src.node_" + pair.getProperty() + " = ? AND ";
         }
         for (Pair pair : targetSourceFilter) {
+            usedWhere = false;
             sql = sql + "trgt.node_" + pair.getProperty() + " = ? AND ";
         }
 
-        sql = sql.substring(0, sql.length() - 5) + ";";
+        if (usedWhere) {
+            sql = sql.substring(0, sql.length() - 5) + ";";
+        } else {
+            sql = sql.substring(0, sql.length() - 7) + ";";
+        }
 
         try {
             // prepared statement
@@ -368,7 +375,7 @@ public class DBHelper {
                 result.add(matchQueryResult);
             }
         } catch (SQLException e) {
-            System.out.println("Error deleting node.");
+            System.out.println("Error getting nodes.");
             e.printStackTrace();
         }
 
@@ -423,12 +430,12 @@ public class DBHelper {
                 nodes_table_name + " trgt ON r.edge_target_node_id = trgt.node_id " +
                 "WHERE ";
 
+        boolean usedWhere = false;
         boolean usingRelationshipLabel = relationship.getLabel() != null && !relationship.getLabel().equals("");
         if (usingRelationshipLabel) {
+            usedWhere = true;
             sql = sql + "r.relationship_type = ? AND ";
         }
-
-        boolean usedWhere = false;
         for (Pair pair : nodeSourceFilter) {
             usedWhere = true;
             sql = sql + "src.node_" + pair.getProperty() + " = ? AND ";
