@@ -47,7 +47,7 @@ public class Client {
 
             userQuery = scanner.nextLine();
             // parse and execute query
-            MultiQueryResult result = runQuery(userQuery);
+            MultiQueryResult result = processQueryString(userQuery);
             processQueries(result);
         }
 
@@ -99,7 +99,7 @@ public class Client {
         }
     }
 
-    public MultiQueryResult runQuery(String query) {
+    public MultiQueryResult processQueryString(String query) {
         var lexer = new CypherLexer(CharStreams.fromString(query));
         var tokens = new CommonTokenStream(lexer);
         var parser = new CypherParser(tokens);
