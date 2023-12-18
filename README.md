@@ -1,43 +1,152 @@
-### Project: Implement Graph Queries in Relational Database 
+## Project: Implement Graph Queries in Relational Database
 
-#### Property graph model: 
+### Property graph model:
+
 - Nodes represent entities, and edges represent relationships between these entities.
 - Both nodes and edges can have associated properties (key-value pairs).
 - Used in graph databases like Neo4j and Amazon Neptune.
 
 ---
 
-#### Requirement: 
-1. This project uses Postgres Database running on local host port 5432. 
+### Requirement:
+
+1. This project uses Postgres Database running on local host port 5432.
 2. This project connects to a Database name: graphs (Make sure a database with this name exists).
 
 ---
 
-#### Steps to Run: 
-<!-- Add the steps to run here -->
+### Steps to Run:
+
+1. Start a Postgres database:
+   - with the name `graphs` and user/password `postgres`
+   - or start `docker-compose.yml` in root
+2. (Optional) Insert data into the database by running `src/db/CreateData.java`
+3. Start interpreter in `src/client/interpreter`
+4. Enter your queries ending in `;` and enter `quit` to exit
 
 ---
 
-#### Different modules: 
+### Supported command examples:
 
-##### src/Client: 
-- app.java: reads the input Cypher queries and writes the output in the output.txt file. 
-- client.java: parses Cypher queries using the src/graph and executes their SQL equivalent using src/db.
+<b>Note</b>: This project only supports single labels and the following String properties in nodes:
 
-##### src/db: 
-- DBConnector.java: Creates a connection to the Postgres Database with the username and password. It is used by other functions/classes. 
-- CreateData.java: This class connects to the "graphs" database and creates example data to work with.
-- DBHelper.java: runs various SQL queries based on Graph query methods and returns the data. 
+- name
+- username
+- email
+- tags
+- country
+- city
+- type
+- id
 
-##### src/graph:  
-- grammar: 
-- visitor: 
+The following properties are supported in relationship nodes:
 
-##### src/model: 
-- Node: 
-- Relationship:
-  
+- description
+- type
+
+### Match
+
+```cypher
+MATCH (sam:Person {name: "Sam", email: "samsalfi@yahoo.ca"}); // Match any node with label Person and the given properties
+MATCH (movie:Movie); // Match any node with label Movie
+// You can also combine them into one MATCH command:
+
+MATCH (sam:Person {name: "Sam", email: "samsalfi@yahoo.ca"}), (movie:Movie);
+```
+
+### Return
+
+```cypher
+MATCH (sam:Person {name: "Sam", email: "samsalfi@yahoo.ca"}), (movie:Movie)
+
+RETURN sam; // Return the whole node
+RETURN sam.name, sam.email, sam.city, movie.name; // Or return specific properties
+```
+
+### Create
+
+##### Create Node
+
+```cypher
+CREATE (:Person); // Create a node with label Person
+CREATE (:Person {name: "Sam", email: "samsalfi@yahoo.ca"}); // Create a node with label Person with the given properties
+```
+
+##### Create Relationship
+
+The following command creates three nodes and a relationship (`REACTED`):
+
+```cypher
+CREATE (:Person {name: "Sam", email: "samsalfi@yahoo.ca"})-[r:REACTED {description: "Loved it"}]->(:Movie {name: "Matrix"})
+```
+
+The following command creates a relationship for existing nodes:
+
+```cypher
+MATCH (sam:Person {name: "Sam"})
+MATCH (movie:Movie {name: "Matrix"})
+CREATE (sam)-[r:REACTED {description: "Loved it"}]->(sam)
+```
+
+This command will create a relationship between any node with label `Person` and `name = "Sam"` and the matched node with label `Movie`. You can also create the relationship like this:
+
+```cypher
+CREATE (sam)<-[r:REACTED {description: "Loved it"}]-(sam)
+```
+
+You can also combine commands:
+
+```cypher
+CREATE (:Person {name: "Person1"}), (:Person {name: "Person2"}), (:Person {name: "Person3"})
+```
+
+### Delete
+
+To delete a node:
+
+```cypher
+MATCH (n:Person {name: "Person"})
+DELETE n
+```
+
 ---
 
-#### Contribution: 
+### Steps to modify grammar:
 
+The grammar is located in the `grammar` folder in the root of the project. You can modify the Cypher.g4 grammar and run `build.bat` to automatically generate the Antlr4 code and insert it into the project. You can also run `run.bat` with the `input.text` to test the grammar.
+
+More info is in `grammar/README.md`
+
+---
+
+## Different modules:
+
+### src/Client:
+
+- `Interpreter.java`: Allows you to enter your own queries separated by semicolon. Type `quit` to exit.
+- `InputFileTest.java`: reads the input.txt query file in the root, processes the query, and writes the output in the output.txt file.
+- `Client.java`: parses output from `CypherVisitor.java` and executes their SQL equivalent using `DBHelper.java`.
+
+### src/db:
+
+- `DBConnector.java`: Creates a connection to the Postgres Database with the username and password. It is used by other functions/classes.
+- `CreateData.java`: This class connects to the "graphs" database and creates example data to work with.
+- `DBHelper.java`: runs various SQL queries based on Graph query methods and returns the data.
+
+### src/graph:
+
+- `CypherVisitor.java`: Antlr4 visitor that parses openCypher input into various data type outputs.
+- `Result`: Various data types used by `CypherVisitor`
+- `grammar` folder: Autogenerated code from Antlr grammar in `grammar` root directory.
+
+### src/model:
+
+- `MatchQueryResult`: Output of the match query from `DBHelper`
+- `NodeNamespace`: Used by `Client` for keeping track of node variables during query execution.
+
+---
+
+## Contribution:
+
+- Haniya - SQL and other database work
+- Sam - Grammar and Visitor work
