@@ -18,16 +18,20 @@ public class Interpreter {
             inp += data;
             if (inp.endsWith(";")) {
                 System.out.println("--- Processing ---");
-                String[][] outputs = client.processQueries(client.processQueryString(inp));
+                try {
+                    String[][] outputs = client.processQueries(client.processQueryString(inp));
 
-                // print output
-                for (int i = 0; i < outputs.length; i++) {
-                    for (int j = 0; j < outputs[i].length; j++) {
-                        System.out.println(outputs[i][j]);
+                    // print output
+                    for (int i = 0; i < outputs.length; i++) {
+                        for (int j = 0; j < outputs[i].length; j++) {
+                            System.out.println(outputs[i][j]);
+                        }
+                        System.out.println();
                     }
-                    System.out.println();
-                }
 
+                } catch (Exception e) {
+                    System.out.println("Error occurred: " + e.getMessage());
+                }
                 inp = "";
             }
             inp += "\n";
