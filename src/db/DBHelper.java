@@ -465,15 +465,27 @@ public class DBHelper {
             }
 
             for (Pair pair : nodeSourceFilter) {
-                preparedStatement.setString(i, pair.getValue());
+                if (pair.getProperty().equals("id")) {
+                    preparedStatement.setInt(i, Integer.parseInt(pair.getValue()));
+                } else {
+                    preparedStatement.setString(i, pair.getValue());
+                }
                 i++;
             }
             for (Pair pair : targetSourceFilter) {
-                preparedStatement.setString(i, pair.getValue());
+                if (pair.getProperty().equals("id")) {
+                    preparedStatement.setInt(i, Integer.parseInt(pair.getValue()));
+                } else {
+                    preparedStatement.setString(i, pair.getValue());
+                }
                 i++;
             }
             for (Pair pair : relationshipSourceFilter) {
-                preparedStatement.setString(i, pair.getValue());
+                if (pair.getProperty().equals("id")) {
+                    preparedStatement.setInt(i, Integer.parseInt(pair.getValue()));
+                } else {
+                    preparedStatement.setString(i, pair.getValue());
+                }
                 i++;
             }
 
