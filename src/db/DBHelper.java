@@ -395,7 +395,8 @@ public class DBHelper {
 
         String sql = "SELECT " +
                 "src.node_id AS source_node_id, " +
-                "trgt.node_id AS target_node_id, ";
+                "trgt.node_id AS target_node_id, " +
+                "r.relationship_id AS relationship_id, ";
 
         ArrayList<MatchQueryResult> result = new ArrayList<>();
 
@@ -499,7 +500,7 @@ public class DBHelper {
                 Node targetNode = createNodeFromResultSet(resultSet,
                         nodeTarget.getLabel(), "target_node_");
                 Node relationshipNode = createNodeFromResultSet(resultSet,
-                        nodeTarget.getLabel(), "relationship_");
+                        relationship.getLabel(), "relationship_");
                 relationshipNode.setType(Node.Type.RELATIONSHIP);
 
                 MatchQueryResult matchQueryResult = new MatchQueryResult(sourceNode, targetNode, relationshipNode);
