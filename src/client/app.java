@@ -1,18 +1,6 @@
 package client;
 
-import db.DBHelper;
-import org.antlr.v4.runtime.CharStreams;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Scanner;
-
-import org.antlr.v4.runtime.CommonTokenStream;
-
-import graph.grammar.*;
-import graph.visitor.CypherVisitor;
 
 public class app {
 
