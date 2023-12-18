@@ -208,6 +208,25 @@ public class DBHelper {
         }
     }
 
+    public void DeleteRelationshipById(int relationshipId) {
+
+        // create delete statement using prepared statement
+        String deleteRelationship = "DELETE FROM " + relationships_table_name
+                + " WHERE relationship_id = ?";
+
+        try {
+            // prepared statement
+            PreparedStatement preparedStatement = dbConnection.prepareStatement(deleteRelationship);
+            preparedStatement.setInt(1, relationshipId);
+
+            // execute statement
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error deleting relationship.");
+            e.printStackTrace();
+        }
+    }
+
     public void DeleteRelationship(int edge_source_node_id, int edge_target_node_id) {
 
         // create delete statement using prepared statement

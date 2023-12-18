@@ -1,6 +1,5 @@
 package client;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -18,13 +17,13 @@ import graph.visitor.result.Properties;
 import graph.visitor.result.commands.CreateCommand;
 import graph.visitor.result.commands.CreateNodesWithRelationship;
 import graph.visitor.result.commands.CreateSingleNode;
+import graph.visitor.result.commands.DeleteCommand;
 import graph.visitor.result.commands.MatchCommand;
 import graph.visitor.result.commands.QueryResult;
 import graph.visitor.result.commands.ReturnCommand;
 import graph.visitor.result.core.Command;
 import model.MatchQueryResult;
 import model.NodeNamespace;
-import model.Relationship;
 
 public class Client {
     public DBHelper dbHelper;
@@ -65,7 +64,31 @@ public class Client {
                 handleMatchCommand((MatchCommand) command);
             } else if (command instanceof ReturnCommand) {
                 handleReturnCommand((ReturnCommand) command);
+            } else if (command instanceof DeleteCommand) {
+                handleDeleteCommand((DeleteCommand) command);
             }
+        }
+    }
+
+    private void handleDeleteCommand(DeleteCommand command) {
+        String variableName = command.getVariableName();
+        ArrayList<Node> nodes = nodeNamespace.get(variableName);
+        ArrayList<Node> nodesToDelete = new ArrayList<>();
+        if (nodes != null) {
+            for (Node node : nodes) {
+                if (node.getType() == Node.Type.RELATIONSHIP) {
+                    dbHelper.DeleteRelationshipById(Integer.parseInt(node.getProperties().get("id")));
+                } else if (node.getType() == Node.Type.NODE) {
+                    dbHelper.DeleteNode(Integer.parseInt(node.getProperties().get("id")));
+                    nodesToDelete.add(node);
+                }
+            }
+        } else {
+            System.out.println("Could not delete " + variableName);
+        }
+
+        for (Node node : nodesToDelete) {
+            nodes.remove(node);
         }
     }
 

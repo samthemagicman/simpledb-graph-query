@@ -25,8 +25,8 @@ public class app {
                 "CREATE (person2)-[r:FRIENDS]->(p:Person {name: \"Pam\"})\n"
                 +
                 "RETURN person2.name\n";
-        inp = "MATCH (person:Person {name: \"Keir\"})-[r:FRIENDS]->(per:Person)\n" +
-                "RETURN per.name, per.email, r.description\n";
+        inp = "CREATE (person:Person {name: \"Keir\"})-[r:FRIENDS]->(person:Person {name: \"Sam\"})\n" +
+                "DELETE person\n";
         // inp = "MATCH(p:Person {name: \"Keir\", email: \"keir@gmail.com\"})\n"
         // + "CREATE (p)-[r:FRIENDS {description: \"hereisadescription\"}]->(p2:Person
         // {name: \"Bradley\"})\n"

@@ -16,39 +16,40 @@ public class CypherParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, WS=7, LEFT_BRACKET=8, 
-		RIGHT_BRACKET=9, LEFT_BRACE=10, RIGHT_BRACE=11, LEFT_PAREN=12, RIGHT_PAREN=13, 
-		MATCH=14, RETURN=15, CREATE=16, PERIOD=17, COMMA=18, SEMICOLON=19, COLON=20, 
-		ID=21, QUOTE_STRING=22;
+		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, WS=8, LEFT_BRACKET=9, 
+		RIGHT_BRACKET=10, LEFT_BRACE=11, RIGHT_BRACE=12, LEFT_PAREN=13, RIGHT_PAREN=14, 
+		MATCH=15, RETURN=16, CREATE=17, PERIOD=18, COMMA=19, SEMICOLON=20, COLON=21, 
+		ID=22, QUOTE_STRING=23;
 	public static final int
 		RULE_query = 0, RULE_createCommand = 1, RULE_createCommandPattern = 2, 
 		RULE_nodeRelationshipPattern = 3, RULE_nodePattern = 4, RULE_nodeProperties = 5, 
-		RULE_matchAndReturnCommand = 6, RULE_matchCommand = 7, RULE_returnCommand = 8, 
-		RULE_returnPattern = 9, RULE_returnItem = 10, RULE_matchPattern = 11, 
-		RULE_relationshipPattern = 12, RULE_pair = 13;
+		RULE_matchAndReturnCommand = 6, RULE_deleteCommand = 7, RULE_matchCommand = 8, 
+		RULE_returnCommand = 9, RULE_returnPattern = 10, RULE_returnItem = 11, 
+		RULE_matchPattern = 12, RULE_relationshipPattern = 13, RULE_pair = 14;
 	private static String[] makeRuleNames() {
 		return new String[] {
 			"query", "createCommand", "createCommandPattern", "nodeRelationshipPattern", 
-			"nodePattern", "nodeProperties", "matchAndReturnCommand", "matchCommand", 
-			"returnCommand", "returnPattern", "returnItem", "matchPattern", "relationshipPattern", 
-			"pair"
+			"nodePattern", "nodeProperties", "matchAndReturnCommand", "deleteCommand", 
+			"matchCommand", "returnCommand", "returnPattern", "returnItem", "matchPattern", 
+			"relationshipPattern", "pair"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'-'", "'->'", "'<-'", "'*'", "'--'", "'[]'", null, "'['", "']'", 
-			"'{'", "'}'", "'('", "')'", "'MATCH'", "'RETURN'", "'CREATE'", "'.'", 
-			"','", "';'", "':'"
+			null, "'-'", "'->'", "'<-'", "'DELETE'", "'*'", "'--'", "'[]'", null, 
+			"'['", "']'", "'{'", "'}'", "'('", "')'", "'MATCH'", "'RETURN'", "'CREATE'", 
+			"'.'", "','", "';'", "':'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, null, null, null, null, null, "WS", "LEFT_BRACKET", "RIGHT_BRACKET", 
-			"LEFT_BRACE", "RIGHT_BRACE", "LEFT_PAREN", "RIGHT_PAREN", "MATCH", "RETURN", 
-			"CREATE", "PERIOD", "COMMA", "SEMICOLON", "COLON", "ID", "QUOTE_STRING"
+			null, null, null, null, null, null, null, null, "WS", "LEFT_BRACKET", 
+			"RIGHT_BRACKET", "LEFT_BRACE", "RIGHT_BRACE", "LEFT_PAREN", "RIGHT_PAREN", 
+			"MATCH", "RETURN", "CREATE", "PERIOD", "COMMA", "SEMICOLON", "COLON", 
+			"ID", "QUOTE_STRING"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -122,6 +123,12 @@ public class CypherParser extends Parser {
 		public CreateCommandContext createCommand(int i) {
 			return getRuleContext(CreateCommandContext.class,i);
 		}
+		public List<DeleteCommandContext> deleteCommand() {
+			return getRuleContexts(DeleteCommandContext.class);
+		}
+		public DeleteCommandContext deleteCommand(int i) {
+			return getRuleContext(DeleteCommandContext.class,i);
+		}
 		public QueryContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -135,40 +142,46 @@ public class CypherParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(31); 
+			setState(34); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
-				setState(31);
+				setState(34);
 				_errHandler.sync(this);
 				switch (_input.LA(1)) {
 				case MATCH:
 					{
-					setState(28);
+					setState(30);
 					matchCommand();
 					}
 					break;
 				case RETURN:
 					{
-					setState(29);
+					setState(31);
 					returnCommand();
 					}
 					break;
 				case CREATE:
 					{
-					setState(30);
+					setState(32);
 					createCommand();
+					}
+					break;
+				case T__3:
+					{
+					setState(33);
+					deleteCommand();
 					}
 					break;
 				default:
 					throw new NoViableAltException(this);
 				}
 				}
-				setState(33); 
+				setState(36); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 114688L) != 0) );
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 229392L) != 0) );
 			}
 		}
 		catch (RecognitionException re) {
@@ -205,18 +218,18 @@ public class CypherParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(35);
+			setState(38);
 			match(CREATE);
-			setState(36);
-			createCommandPattern();
 			setState(39);
+			createCommandPattern();
+			setState(42);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==COMMA) {
 				{
-				setState(37);
+				setState(40);
 				match(COMMA);
-				setState(38);
+				setState(41);
 				createCommandPattern();
 				}
 			}
@@ -291,22 +304,22 @@ public class CypherParser extends Parser {
 		CreateCommandPatternContext _localctx = new CreateCommandPatternContext(_ctx, getState());
 		enterRule(_localctx, 4, RULE_createCommandPattern);
 		try {
-			setState(54);
+			setState(57);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
 			case 1:
 				_localctx = new CreateNodeRelationshipContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(41);
-				((CreateNodeRelationshipContext)_localctx).nodeFrom = nodePattern();
-				setState(42);
-				match(T__0);
-				setState(43);
-				((CreateNodeRelationshipContext)_localctx).relationship = nodeRelationshipPattern();
 				setState(44);
-				match(T__1);
+				((CreateNodeRelationshipContext)_localctx).nodeFrom = nodePattern();
 				setState(45);
+				match(T__0);
+				setState(46);
+				((CreateNodeRelationshipContext)_localctx).relationship = nodeRelationshipPattern();
+				setState(47);
+				match(T__1);
+				setState(48);
 				((CreateNodeRelationshipContext)_localctx).nodeTo = nodePattern();
 				}
 				break;
@@ -314,15 +327,15 @@ public class CypherParser extends Parser {
 				_localctx = new CreateNodeInverseRelationshipContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(47);
-				((CreateNodeInverseRelationshipContext)_localctx).nodeTo = nodePattern();
-				setState(48);
-				match(T__2);
-				setState(49);
-				((CreateNodeInverseRelationshipContext)_localctx).relationship = nodeRelationshipPattern();
 				setState(50);
-				match(T__0);
+				((CreateNodeInverseRelationshipContext)_localctx).nodeTo = nodePattern();
 				setState(51);
+				match(T__2);
+				setState(52);
+				((CreateNodeInverseRelationshipContext)_localctx).relationship = nodeRelationshipPattern();
+				setState(53);
+				match(T__0);
+				setState(54);
 				((CreateNodeInverseRelationshipContext)_localctx).nodeFrom = nodePattern();
 				}
 				break;
@@ -330,7 +343,7 @@ public class CypherParser extends Parser {
 				_localctx = new CreateSingleNodeContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(53);
+				setState(56);
 				((CreateSingleNodeContext)_localctx).node = nodePattern();
 				}
 				break;
@@ -371,13 +384,13 @@ public class CypherParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(56);
-			match(LEFT_BRACKET);
-			setState(57);
-			((NodeRelationshipPatternContext)_localctx).nodeNameAndLabel = pair();
-			setState(58);
-			((NodeRelationshipPatternContext)_localctx).properties = nodeProperties();
 			setState(59);
+			match(LEFT_BRACKET);
+			setState(60);
+			((NodeRelationshipPatternContext)_localctx).nodeNameAndLabel = pair();
+			setState(61);
+			((NodeRelationshipPatternContext)_localctx).properties = nodeProperties();
+			setState(62);
 			match(RIGHT_BRACKET);
 			}
 		}
@@ -416,13 +429,13 @@ public class CypherParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(61);
-			match(LEFT_PAREN);
-			setState(62);
-			((NodePatternContext)_localctx).nodeNameAndLabel = pair();
-			setState(63);
-			((NodePatternContext)_localctx).properties = nodeProperties();
 			setState(64);
+			match(LEFT_PAREN);
+			setState(65);
+			((NodePatternContext)_localctx).nodeNameAndLabel = pair();
+			setState(66);
+			((NodePatternContext)_localctx).properties = nodeProperties();
+			setState(67);
 			match(RIGHT_PAREN);
 			}
 		}
@@ -462,41 +475,41 @@ public class CypherParser extends Parser {
 		enterRule(_localctx, 10, RULE_nodeProperties);
 		int _la;
 		try {
-			setState(79);
+			setState(82);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case LEFT_BRACE:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(66);
+				setState(69);
 				match(LEFT_BRACE);
-				setState(75);
+				setState(78);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==ID || _la==QUOTE_STRING) {
 					{
-					setState(67);
+					setState(70);
 					pair();
-					setState(72);
+					setState(75);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 					while (_la==COMMA) {
 						{
 						{
-						setState(68);
+						setState(71);
 						match(COMMA);
-						setState(69);
+						setState(72);
 						pair();
 						}
 						}
-						setState(74);
+						setState(77);
 						_errHandler.sync(this);
 						_la = _input.LA(1);
 					}
 					}
 				}
 
-				setState(77);
+				setState(80);
 				match(RIGHT_BRACE);
 				}
 				break;
@@ -541,10 +554,43 @@ public class CypherParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(81);
+			setState(84);
 			matchCommand();
-			setState(82);
+			setState(85);
 			returnCommand();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
+	public static class DeleteCommandContext extends ParserRuleContext {
+		public Token nodeVariable;
+		public TerminalNode ID() { return getToken(CypherParser.ID, 0); }
+		public DeleteCommandContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_deleteCommand; }
+	}
+
+	public final DeleteCommandContext deleteCommand() throws RecognitionException {
+		DeleteCommandContext _localctx = new DeleteCommandContext(_ctx, getState());
+		enterRule(_localctx, 14, RULE_deleteCommand);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(87);
+			match(T__3);
+			setState(88);
+			((DeleteCommandContext)_localctx).nodeVariable = match(ID);
 			}
 		}
 		catch (RecognitionException re) {
@@ -572,13 +618,13 @@ public class CypherParser extends Parser {
 
 	public final MatchCommandContext matchCommand() throws RecognitionException {
 		MatchCommandContext _localctx = new MatchCommandContext(_ctx, getState());
-		enterRule(_localctx, 14, RULE_matchCommand);
+		enterRule(_localctx, 16, RULE_matchCommand);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(84);
+			setState(90);
 			match(MATCH);
-			setState(85);
+			setState(91);
 			matchPattern();
 			}
 		}
@@ -607,13 +653,13 @@ public class CypherParser extends Parser {
 
 	public final ReturnCommandContext returnCommand() throws RecognitionException {
 		ReturnCommandContext _localctx = new ReturnCommandContext(_ctx, getState());
-		enterRule(_localctx, 16, RULE_returnCommand);
+		enterRule(_localctx, 18, RULE_returnCommand);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(87);
+			setState(93);
 			match(RETURN);
-			setState(88);
+			setState(94);
 			returnPattern();
 			}
 		}
@@ -666,25 +712,25 @@ public class CypherParser extends Parser {
 
 	public final ReturnPatternContext returnPattern() throws RecognitionException {
 		ReturnPatternContext _localctx = new ReturnPatternContext(_ctx, getState());
-		enterRule(_localctx, 18, RULE_returnPattern);
+		enterRule(_localctx, 20, RULE_returnPattern);
 		int _la;
 		try {
-			setState(102);
+			setState(108);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,9,_ctx) ) {
 			case 1:
 				_localctx = new ReturnAllContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(90);
-				match(T__3);
+				setState(96);
+				match(T__4);
 				}
 				break;
 			case 2:
 				_localctx = new ReturnSingleNodeContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(91);
+				setState(97);
 				match(ID);
 				}
 				break;
@@ -692,26 +738,26 @@ public class CypherParser extends Parser {
 				_localctx = new ReturnMultipleNodesContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(100);
+				setState(106);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==ID) {
 					{
-					setState(92);
+					setState(98);
 					returnItem();
-					setState(97);
+					setState(103);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 					while (_la==COMMA) {
 						{
 						{
-						setState(93);
+						setState(99);
 						match(COMMA);
-						setState(94);
+						setState(100);
 						returnItem();
 						}
 						}
-						setState(99);
+						setState(105);
 						_errHandler.sync(this);
 						_la = _input.LA(1);
 					}
@@ -750,15 +796,15 @@ public class CypherParser extends Parser {
 
 	public final ReturnItemContext returnItem() throws RecognitionException {
 		ReturnItemContext _localctx = new ReturnItemContext(_ctx, getState());
-		enterRule(_localctx, 20, RULE_returnItem);
+		enterRule(_localctx, 22, RULE_returnItem);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(104);
+			setState(110);
 			((ReturnItemContext)_localctx).object = match(ID);
-			setState(105);
+			setState(111);
 			match(PERIOD);
-			setState(106);
+			setState(112);
 			((ReturnItemContext)_localctx).property = match(ID);
 			}
 		}
@@ -796,56 +842,56 @@ public class CypherParser extends Parser {
 
 	public final MatchPatternContext matchPattern() throws RecognitionException {
 		MatchPatternContext _localctx = new MatchPatternContext(_ctx, getState());
-		enterRule(_localctx, 22, RULE_matchPattern);
+		enterRule(_localctx, 24, RULE_matchPattern);
 		try {
-			setState(125);
+			setState(131);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,10,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(108);
+				setState(114);
 				((MatchPatternContext)_localctx).nodeFrom = nodePattern();
-				setState(109);
-				match(T__4);
-				setState(110);
+				setState(115);
+				match(T__5);
+				setState(116);
 				((MatchPatternContext)_localctx).nodeTo = nodePattern();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(112);
+				setState(118);
 				((MatchPatternContext)_localctx).nodeFrom = nodePattern();
-				setState(113);
+				setState(119);
 				match(T__0);
-				setState(114);
+				setState(120);
 				((MatchPatternContext)_localctx).relationship = nodeRelationshipPattern();
-				setState(115);
+				setState(121);
 				match(T__1);
-				setState(116);
+				setState(122);
 				((MatchPatternContext)_localctx).nodeTo = nodePattern();
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(118);
+				setState(124);
 				((MatchPatternContext)_localctx).nodeTo = nodePattern();
-				setState(119);
+				setState(125);
 				match(T__2);
-				setState(120);
+				setState(126);
 				((MatchPatternContext)_localctx).relationship = nodeRelationshipPattern();
-				setState(121);
+				setState(127);
 				match(T__0);
-				setState(122);
+				setState(128);
 				((MatchPatternContext)_localctx).nodeFrom = nodePattern();
 				}
 				break;
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(124);
+				setState(130);
 				((MatchPatternContext)_localctx).node = nodePattern();
 				}
 				break;
@@ -877,26 +923,26 @@ public class CypherParser extends Parser {
 
 	public final RelationshipPatternContext relationshipPattern() throws RecognitionException {
 		RelationshipPatternContext _localctx = new RelationshipPatternContext(_ctx, getState());
-		enterRule(_localctx, 24, RULE_relationshipPattern);
+		enterRule(_localctx, 26, RULE_relationshipPattern);
 		try {
-			setState(132);
+			setState(138);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
-			case T__5:
+			case T__6:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(127);
-				match(T__5);
+				setState(133);
+				match(T__6);
 				}
 				break;
 			case LEFT_BRACKET:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(128);
+				setState(134);
 				match(LEFT_BRACKET);
-				setState(129);
+				setState(135);
 				pair();
-				setState(130);
+				setState(136);
 				match(RIGHT_BRACKET);
 				}
 				break;
@@ -936,58 +982,58 @@ public class CypherParser extends Parser {
 
 	public final PairContext pair() throws RecognitionException {
 		PairContext _localctx = new PairContext(_ctx, getState());
-		enterRule(_localctx, 26, RULE_pair);
+		enterRule(_localctx, 28, RULE_pair);
 		int _la;
 		try {
 			int _alt;
-			setState(150);
+			setState(156);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,14,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(138);
+				setState(144);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,12,_ctx);
 				while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 					if ( _alt==1 ) {
 						{
 						{
-						setState(134);
+						setState(140);
 						((PairContext)_localctx).property = match(ID);
-						setState(135);
+						setState(141);
 						match(COLON);
 						}
 						} 
 					}
-					setState(140);
+					setState(146);
 					_errHandler.sync(this);
 					_alt = getInterpreter().adaptivePredict(_input,12,_ctx);
 				}
-				setState(141);
+				setState(147);
 				((PairContext)_localctx).value = match(ID);
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(146);
+				setState(152);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==ID) {
 					{
 					{
-					setState(142);
+					setState(148);
 					((PairContext)_localctx).property = match(ID);
-					setState(143);
+					setState(149);
 					match(COLON);
 					}
 					}
-					setState(148);
+					setState(154);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(149);
+				setState(155);
 				((PairContext)_localctx).value = match(QUOTE_STRING);
 				}
 				break;
@@ -1005,93 +1051,98 @@ public class CypherParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001\u0016\u0099\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001"+
+		"\u0004\u0001\u0017\u009f\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001"+
 		"\u0002\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004"+
 		"\u0002\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007"+
 		"\u0002\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b"+
-		"\u0002\f\u0007\f\u0002\r\u0007\r\u0001\u0000\u0001\u0000\u0001\u0000\u0004"+
-		"\u0000 \b\u0000\u000b\u0000\f\u0000!\u0001\u0001\u0001\u0001\u0001\u0001"+
-		"\u0001\u0001\u0003\u0001(\b\u0001\u0001\u0002\u0001\u0002\u0001\u0002"+
+		"\u0002\f\u0007\f\u0002\r\u0007\r\u0002\u000e\u0007\u000e\u0001\u0000\u0001"+
+		"\u0000\u0001\u0000\u0001\u0000\u0004\u0000#\b\u0000\u000b\u0000\f\u0000"+
+		"$\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0003\u0001+\b\u0001"+
 		"\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002"+
-		"\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0003\u00027\b\u0002"+
-		"\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0004"+
-		"\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0005\u0001\u0005"+
-		"\u0001\u0005\u0001\u0005\u0005\u0005G\b\u0005\n\u0005\f\u0005J\t\u0005"+
-		"\u0003\u0005L\b\u0005\u0001\u0005\u0001\u0005\u0003\u0005P\b\u0005\u0001"+
-		"\u0006\u0001\u0006\u0001\u0006\u0001\u0007\u0001\u0007\u0001\u0007\u0001"+
-		"\b\u0001\b\u0001\b\u0001\t\u0001\t\u0001\t\u0001\t\u0001\t\u0005\t`\b"+
-		"\t\n\t\f\tc\t\t\u0003\te\b\t\u0003\tg\b\t\u0001\n\u0001\n\u0001\n\u0001"+
-		"\n\u0001\u000b\u0001\u000b\u0001\u000b\u0001\u000b\u0001\u000b\u0001\u000b"+
-		"\u0001\u000b\u0001\u000b\u0001\u000b\u0001\u000b\u0001\u000b\u0001\u000b"+
-		"\u0001\u000b\u0001\u000b\u0001\u000b\u0001\u000b\u0001\u000b\u0003\u000b"+
-		"~\b\u000b\u0001\f\u0001\f\u0001\f\u0001\f\u0001\f\u0003\f\u0085\b\f\u0001"+
-		"\r\u0001\r\u0005\r\u0089\b\r\n\r\f\r\u008c\t\r\u0001\r\u0001\r\u0001\r"+
-		"\u0005\r\u0091\b\r\n\r\f\r\u0094\t\r\u0001\r\u0003\r\u0097\b\r\u0001\r"+
-		"\u0000\u0000\u000e\u0000\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012\u0014"+
-		"\u0016\u0018\u001a\u0000\u0000\u009e\u0000\u001f\u0001\u0000\u0000\u0000"+
-		"\u0002#\u0001\u0000\u0000\u0000\u00046\u0001\u0000\u0000\u0000\u00068"+
-		"\u0001\u0000\u0000\u0000\b=\u0001\u0000\u0000\u0000\nO\u0001\u0000\u0000"+
-		"\u0000\fQ\u0001\u0000\u0000\u0000\u000eT\u0001\u0000\u0000\u0000\u0010"+
-		"W\u0001\u0000\u0000\u0000\u0012f\u0001\u0000\u0000\u0000\u0014h\u0001"+
-		"\u0000\u0000\u0000\u0016}\u0001\u0000\u0000\u0000\u0018\u0084\u0001\u0000"+
-		"\u0000\u0000\u001a\u0096\u0001\u0000\u0000\u0000\u001c \u0003\u000e\u0007"+
-		"\u0000\u001d \u0003\u0010\b\u0000\u001e \u0003\u0002\u0001\u0000\u001f"+
-		"\u001c\u0001\u0000\u0000\u0000\u001f\u001d\u0001\u0000\u0000\u0000\u001f"+
-		"\u001e\u0001\u0000\u0000\u0000 !\u0001\u0000\u0000\u0000!\u001f\u0001"+
-		"\u0000\u0000\u0000!\"\u0001\u0000\u0000\u0000\"\u0001\u0001\u0000\u0000"+
-		"\u0000#$\u0005\u0010\u0000\u0000$\'\u0003\u0004\u0002\u0000%&\u0005\u0012"+
-		"\u0000\u0000&(\u0003\u0004\u0002\u0000\'%\u0001\u0000\u0000\u0000\'(\u0001"+
-		"\u0000\u0000\u0000(\u0003\u0001\u0000\u0000\u0000)*\u0003\b\u0004\u0000"+
-		"*+\u0005\u0001\u0000\u0000+,\u0003\u0006\u0003\u0000,-\u0005\u0002\u0000"+
-		"\u0000-.\u0003\b\u0004\u0000.7\u0001\u0000\u0000\u0000/0\u0003\b\u0004"+
-		"\u000001\u0005\u0003\u0000\u000012\u0003\u0006\u0003\u000023\u0005\u0001"+
-		"\u0000\u000034\u0003\b\u0004\u000047\u0001\u0000\u0000\u000057\u0003\b"+
-		"\u0004\u00006)\u0001\u0000\u0000\u00006/\u0001\u0000\u0000\u000065\u0001"+
-		"\u0000\u0000\u00007\u0005\u0001\u0000\u0000\u000089\u0005\b\u0000\u0000"+
-		"9:\u0003\u001a\r\u0000:;\u0003\n\u0005\u0000;<\u0005\t\u0000\u0000<\u0007"+
-		"\u0001\u0000\u0000\u0000=>\u0005\f\u0000\u0000>?\u0003\u001a\r\u0000?"+
-		"@\u0003\n\u0005\u0000@A\u0005\r\u0000\u0000A\t\u0001\u0000\u0000\u0000"+
-		"BK\u0005\n\u0000\u0000CH\u0003\u001a\r\u0000DE\u0005\u0012\u0000\u0000"+
-		"EG\u0003\u001a\r\u0000FD\u0001\u0000\u0000\u0000GJ\u0001\u0000\u0000\u0000"+
-		"HF\u0001\u0000\u0000\u0000HI\u0001\u0000\u0000\u0000IL\u0001\u0000\u0000"+
-		"\u0000JH\u0001\u0000\u0000\u0000KC\u0001\u0000\u0000\u0000KL\u0001\u0000"+
-		"\u0000\u0000LM\u0001\u0000\u0000\u0000MP\u0005\u000b\u0000\u0000NP\u0001"+
-		"\u0000\u0000\u0000OB\u0001\u0000\u0000\u0000ON\u0001\u0000\u0000\u0000"+
-		"P\u000b\u0001\u0000\u0000\u0000QR\u0003\u000e\u0007\u0000RS\u0003\u0010"+
-		"\b\u0000S\r\u0001\u0000\u0000\u0000TU\u0005\u000e\u0000\u0000UV\u0003"+
-		"\u0016\u000b\u0000V\u000f\u0001\u0000\u0000\u0000WX\u0005\u000f\u0000"+
-		"\u0000XY\u0003\u0012\t\u0000Y\u0011\u0001\u0000\u0000\u0000Zg\u0005\u0004"+
-		"\u0000\u0000[g\u0005\u0015\u0000\u0000\\a\u0003\u0014\n\u0000]^\u0005"+
-		"\u0012\u0000\u0000^`\u0003\u0014\n\u0000_]\u0001\u0000\u0000\u0000`c\u0001"+
-		"\u0000\u0000\u0000a_\u0001\u0000\u0000\u0000ab\u0001\u0000\u0000\u0000"+
-		"be\u0001\u0000\u0000\u0000ca\u0001\u0000\u0000\u0000d\\\u0001\u0000\u0000"+
-		"\u0000de\u0001\u0000\u0000\u0000eg\u0001\u0000\u0000\u0000fZ\u0001\u0000"+
-		"\u0000\u0000f[\u0001\u0000\u0000\u0000fd\u0001\u0000\u0000\u0000g\u0013"+
-		"\u0001\u0000\u0000\u0000hi\u0005\u0015\u0000\u0000ij\u0005\u0011\u0000"+
-		"\u0000jk\u0005\u0015\u0000\u0000k\u0015\u0001\u0000\u0000\u0000lm\u0003"+
-		"\b\u0004\u0000mn\u0005\u0005\u0000\u0000no\u0003\b\u0004\u0000o~\u0001"+
-		"\u0000\u0000\u0000pq\u0003\b\u0004\u0000qr\u0005\u0001\u0000\u0000rs\u0003"+
-		"\u0006\u0003\u0000st\u0005\u0002\u0000\u0000tu\u0003\b\u0004\u0000u~\u0001"+
-		"\u0000\u0000\u0000vw\u0003\b\u0004\u0000wx\u0005\u0003\u0000\u0000xy\u0003"+
-		"\u0006\u0003\u0000yz\u0005\u0001\u0000\u0000z{\u0003\b\u0004\u0000{~\u0001"+
-		"\u0000\u0000\u0000|~\u0003\b\u0004\u0000}l\u0001\u0000\u0000\u0000}p\u0001"+
-		"\u0000\u0000\u0000}v\u0001\u0000\u0000\u0000}|\u0001\u0000\u0000\u0000"+
-		"~\u0017\u0001\u0000\u0000\u0000\u007f\u0085\u0005\u0006\u0000\u0000\u0080"+
-		"\u0081\u0005\b\u0000\u0000\u0081\u0082\u0003\u001a\r\u0000\u0082\u0083"+
-		"\u0005\t\u0000\u0000\u0083\u0085\u0001\u0000\u0000\u0000\u0084\u007f\u0001"+
-		"\u0000\u0000\u0000\u0084\u0080\u0001\u0000\u0000\u0000\u0085\u0019\u0001"+
-		"\u0000\u0000\u0000\u0086\u0087\u0005\u0015\u0000\u0000\u0087\u0089\u0005"+
-		"\u0014\u0000\u0000\u0088\u0086\u0001\u0000\u0000\u0000\u0089\u008c\u0001"+
-		"\u0000\u0000\u0000\u008a\u0088\u0001\u0000\u0000\u0000\u008a\u008b\u0001"+
-		"\u0000\u0000\u0000\u008b\u008d\u0001\u0000\u0000\u0000\u008c\u008a\u0001"+
-		"\u0000\u0000\u0000\u008d\u0097\u0005\u0015\u0000\u0000\u008e\u008f\u0005"+
-		"\u0015\u0000\u0000\u008f\u0091\u0005\u0014\u0000\u0000\u0090\u008e\u0001"+
-		"\u0000\u0000\u0000\u0091\u0094\u0001\u0000\u0000\u0000\u0092\u0090\u0001"+
-		"\u0000\u0000\u0000\u0092\u0093\u0001\u0000\u0000\u0000\u0093\u0095\u0001"+
-		"\u0000\u0000\u0000\u0094\u0092\u0001\u0000\u0000\u0000\u0095\u0097\u0005"+
-		"\u0016\u0000\u0000\u0096\u008a\u0001\u0000\u0000\u0000\u0096\u0092\u0001"+
-		"\u0000\u0000\u0000\u0097\u001b\u0001\u0000\u0000\u0000\u000f\u001f!\'"+
-		"6HKOadf}\u0084\u008a\u0092\u0096";
+		"\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002"+
+		"\u0001\u0002\u0003\u0002:\b\u0002\u0001\u0003\u0001\u0003\u0001\u0003"+
+		"\u0001\u0003\u0001\u0003\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004"+
+		"\u0001\u0004\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0005\u0005"+
+		"J\b\u0005\n\u0005\f\u0005M\t\u0005\u0003\u0005O\b\u0005\u0001\u0005\u0001"+
+		"\u0005\u0003\u0005S\b\u0005\u0001\u0006\u0001\u0006\u0001\u0006\u0001"+
+		"\u0007\u0001\u0007\u0001\u0007\u0001\b\u0001\b\u0001\b\u0001\t\u0001\t"+
+		"\u0001\t\u0001\n\u0001\n\u0001\n\u0001\n\u0001\n\u0005\nf\b\n\n\n\f\n"+
+		"i\t\n\u0003\nk\b\n\u0003\nm\b\n\u0001\u000b\u0001\u000b\u0001\u000b\u0001"+
+		"\u000b\u0001\f\u0001\f\u0001\f\u0001\f\u0001\f\u0001\f\u0001\f\u0001\f"+
+		"\u0001\f\u0001\f\u0001\f\u0001\f\u0001\f\u0001\f\u0001\f\u0001\f\u0001"+
+		"\f\u0003\f\u0084\b\f\u0001\r\u0001\r\u0001\r\u0001\r\u0001\r\u0003\r\u008b"+
+		"\b\r\u0001\u000e\u0001\u000e\u0005\u000e\u008f\b\u000e\n\u000e\f\u000e"+
+		"\u0092\t\u000e\u0001\u000e\u0001\u000e\u0001\u000e\u0005\u000e\u0097\b"+
+		"\u000e\n\u000e\f\u000e\u009a\t\u000e\u0001\u000e\u0003\u000e\u009d\b\u000e"+
+		"\u0001\u000e\u0000\u0000\u000f\u0000\u0002\u0004\u0006\b\n\f\u000e\u0010"+
+		"\u0012\u0014\u0016\u0018\u001a\u001c\u0000\u0000\u00a4\u0000\"\u0001\u0000"+
+		"\u0000\u0000\u0002&\u0001\u0000\u0000\u0000\u00049\u0001\u0000\u0000\u0000"+
+		"\u0006;\u0001\u0000\u0000\u0000\b@\u0001\u0000\u0000\u0000\nR\u0001\u0000"+
+		"\u0000\u0000\fT\u0001\u0000\u0000\u0000\u000eW\u0001\u0000\u0000\u0000"+
+		"\u0010Z\u0001\u0000\u0000\u0000\u0012]\u0001\u0000\u0000\u0000\u0014l"+
+		"\u0001\u0000\u0000\u0000\u0016n\u0001\u0000\u0000\u0000\u0018\u0083\u0001"+
+		"\u0000\u0000\u0000\u001a\u008a\u0001\u0000\u0000\u0000\u001c\u009c\u0001"+
+		"\u0000\u0000\u0000\u001e#\u0003\u0010\b\u0000\u001f#\u0003\u0012\t\u0000"+
+		" #\u0003\u0002\u0001\u0000!#\u0003\u000e\u0007\u0000\"\u001e\u0001\u0000"+
+		"\u0000\u0000\"\u001f\u0001\u0000\u0000\u0000\" \u0001\u0000\u0000\u0000"+
+		"\"!\u0001\u0000\u0000\u0000#$\u0001\u0000\u0000\u0000$\"\u0001\u0000\u0000"+
+		"\u0000$%\u0001\u0000\u0000\u0000%\u0001\u0001\u0000\u0000\u0000&\'\u0005"+
+		"\u0011\u0000\u0000\'*\u0003\u0004\u0002\u0000()\u0005\u0013\u0000\u0000"+
+		")+\u0003\u0004\u0002\u0000*(\u0001\u0000\u0000\u0000*+\u0001\u0000\u0000"+
+		"\u0000+\u0003\u0001\u0000\u0000\u0000,-\u0003\b\u0004\u0000-.\u0005\u0001"+
+		"\u0000\u0000./\u0003\u0006\u0003\u0000/0\u0005\u0002\u0000\u000001\u0003"+
+		"\b\u0004\u00001:\u0001\u0000\u0000\u000023\u0003\b\u0004\u000034\u0005"+
+		"\u0003\u0000\u000045\u0003\u0006\u0003\u000056\u0005\u0001\u0000\u0000"+
+		"67\u0003\b\u0004\u00007:\u0001\u0000\u0000\u00008:\u0003\b\u0004\u0000"+
+		"9,\u0001\u0000\u0000\u000092\u0001\u0000\u0000\u000098\u0001\u0000\u0000"+
+		"\u0000:\u0005\u0001\u0000\u0000\u0000;<\u0005\t\u0000\u0000<=\u0003\u001c"+
+		"\u000e\u0000=>\u0003\n\u0005\u0000>?\u0005\n\u0000\u0000?\u0007\u0001"+
+		"\u0000\u0000\u0000@A\u0005\r\u0000\u0000AB\u0003\u001c\u000e\u0000BC\u0003"+
+		"\n\u0005\u0000CD\u0005\u000e\u0000\u0000D\t\u0001\u0000\u0000\u0000EN"+
+		"\u0005\u000b\u0000\u0000FK\u0003\u001c\u000e\u0000GH\u0005\u0013\u0000"+
+		"\u0000HJ\u0003\u001c\u000e\u0000IG\u0001\u0000\u0000\u0000JM\u0001\u0000"+
+		"\u0000\u0000KI\u0001\u0000\u0000\u0000KL\u0001\u0000\u0000\u0000LO\u0001"+
+		"\u0000\u0000\u0000MK\u0001\u0000\u0000\u0000NF\u0001\u0000\u0000\u0000"+
+		"NO\u0001\u0000\u0000\u0000OP\u0001\u0000\u0000\u0000PS\u0005\f\u0000\u0000"+
+		"QS\u0001\u0000\u0000\u0000RE\u0001\u0000\u0000\u0000RQ\u0001\u0000\u0000"+
+		"\u0000S\u000b\u0001\u0000\u0000\u0000TU\u0003\u0010\b\u0000UV\u0003\u0012"+
+		"\t\u0000V\r\u0001\u0000\u0000\u0000WX\u0005\u0004\u0000\u0000XY\u0005"+
+		"\u0016\u0000\u0000Y\u000f\u0001\u0000\u0000\u0000Z[\u0005\u000f\u0000"+
+		"\u0000[\\\u0003\u0018\f\u0000\\\u0011\u0001\u0000\u0000\u0000]^\u0005"+
+		"\u0010\u0000\u0000^_\u0003\u0014\n\u0000_\u0013\u0001\u0000\u0000\u0000"+
+		"`m\u0005\u0005\u0000\u0000am\u0005\u0016\u0000\u0000bg\u0003\u0016\u000b"+
+		"\u0000cd\u0005\u0013\u0000\u0000df\u0003\u0016\u000b\u0000ec\u0001\u0000"+
+		"\u0000\u0000fi\u0001\u0000\u0000\u0000ge\u0001\u0000\u0000\u0000gh\u0001"+
+		"\u0000\u0000\u0000hk\u0001\u0000\u0000\u0000ig\u0001\u0000\u0000\u0000"+
+		"jb\u0001\u0000\u0000\u0000jk\u0001\u0000\u0000\u0000km\u0001\u0000\u0000"+
+		"\u0000l`\u0001\u0000\u0000\u0000la\u0001\u0000\u0000\u0000lj\u0001\u0000"+
+		"\u0000\u0000m\u0015\u0001\u0000\u0000\u0000no\u0005\u0016\u0000\u0000"+
+		"op\u0005\u0012\u0000\u0000pq\u0005\u0016\u0000\u0000q\u0017\u0001\u0000"+
+		"\u0000\u0000rs\u0003\b\u0004\u0000st\u0005\u0006\u0000\u0000tu\u0003\b"+
+		"\u0004\u0000u\u0084\u0001\u0000\u0000\u0000vw\u0003\b\u0004\u0000wx\u0005"+
+		"\u0001\u0000\u0000xy\u0003\u0006\u0003\u0000yz\u0005\u0002\u0000\u0000"+
+		"z{\u0003\b\u0004\u0000{\u0084\u0001\u0000\u0000\u0000|}\u0003\b\u0004"+
+		"\u0000}~\u0005\u0003\u0000\u0000~\u007f\u0003\u0006\u0003\u0000\u007f"+
+		"\u0080\u0005\u0001\u0000\u0000\u0080\u0081\u0003\b\u0004\u0000\u0081\u0084"+
+		"\u0001\u0000\u0000\u0000\u0082\u0084\u0003\b\u0004\u0000\u0083r\u0001"+
+		"\u0000\u0000\u0000\u0083v\u0001\u0000\u0000\u0000\u0083|\u0001\u0000\u0000"+
+		"\u0000\u0083\u0082\u0001\u0000\u0000\u0000\u0084\u0019\u0001\u0000\u0000"+
+		"\u0000\u0085\u008b\u0005\u0007\u0000\u0000\u0086\u0087\u0005\t\u0000\u0000"+
+		"\u0087\u0088\u0003\u001c\u000e\u0000\u0088\u0089\u0005\n\u0000\u0000\u0089"+
+		"\u008b\u0001\u0000\u0000\u0000\u008a\u0085\u0001\u0000\u0000\u0000\u008a"+
+		"\u0086\u0001\u0000\u0000\u0000\u008b\u001b\u0001\u0000\u0000\u0000\u008c"+
+		"\u008d\u0005\u0016\u0000\u0000\u008d\u008f\u0005\u0015\u0000\u0000\u008e"+
+		"\u008c\u0001\u0000\u0000\u0000\u008f\u0092\u0001\u0000\u0000\u0000\u0090"+
+		"\u008e\u0001\u0000\u0000\u0000\u0090\u0091\u0001\u0000\u0000\u0000\u0091"+
+		"\u0093\u0001\u0000\u0000\u0000\u0092\u0090\u0001\u0000\u0000\u0000\u0093"+
+		"\u009d\u0005\u0016\u0000\u0000\u0094\u0095\u0005\u0016\u0000\u0000\u0095"+
+		"\u0097\u0005\u0015\u0000\u0000\u0096\u0094\u0001\u0000\u0000\u0000\u0097"+
+		"\u009a\u0001\u0000\u0000\u0000\u0098\u0096\u0001\u0000\u0000\u0000\u0098"+
+		"\u0099\u0001\u0000\u0000\u0000\u0099\u009b\u0001\u0000\u0000\u0000\u009a"+
+		"\u0098\u0001\u0000\u0000\u0000\u009b\u009d\u0005\u0017\u0000\u0000\u009c"+
+		"\u0090\u0001\u0000\u0000\u0000\u009c\u0098\u0001\u0000\u0000\u0000\u009d"+
+		"\u001d\u0001\u0000\u0000\u0000\u000f\"$*9KNRgjl\u0083\u008a\u0090\u0098"+
+		"\u009c";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

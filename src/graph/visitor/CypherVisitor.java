@@ -26,6 +26,11 @@ public class CypherVisitor extends CypherBaseVisitor<VisitorResult> {
     }
 
     @Override
+    public DeleteCommand visitDeleteCommand(DeleteCommandContext ctx) {
+        return new DeleteCommand(ctx.nodeVariable.getText());
+    }
+
+    @Override
     public CreateCommand visitCreateCommand(CreateCommandContext ctx) {
         CreateNodePattern[] result = ctx.createCommandPattern().stream().map(this::visit)
                 .toArray(CreateNodePattern[]::new);

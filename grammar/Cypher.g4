@@ -25,7 +25,7 @@ QUOTE_STRING:
      s = s.substring(1, s.length() - 1);
      setText(s);
    };
-query: (matchCommand | returnCommand | createCommand)+;
+query: (matchCommand | returnCommand | createCommand | deleteCommand)+;
 
 createCommand: CREATE createCommandPattern (COMMA createCommandPattern)?;
 
@@ -41,6 +41,8 @@ nodePattern: '(' nodeNameAndLabel = pair properties = nodeProperties ')';
 nodeProperties: '{' (pair (COMMA pair)*)? '}' |;
 
 matchAndReturnCommand: matchCommand returnCommand;
+
+deleteCommand: 'DELETE' nodeVariable = ID;
 
 matchCommand: MATCH matchPattern;
 

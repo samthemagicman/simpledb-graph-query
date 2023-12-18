@@ -103,6 +103,16 @@ public interface CypherListener extends ParseTreeListener {
 	 */
 	void exitMatchAndReturnCommand(CypherParser.MatchAndReturnCommandContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link CypherParser#deleteCommand}.
+	 * @param ctx the parse tree
+	 */
+	void enterDeleteCommand(CypherParser.DeleteCommandContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CypherParser#deleteCommand}.
+	 * @param ctx the parse tree
+	 */
+	void exitDeleteCommand(CypherParser.DeleteCommandContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link CypherParser#matchCommand}.
 	 * @param ctx the parse tree
 	 */
