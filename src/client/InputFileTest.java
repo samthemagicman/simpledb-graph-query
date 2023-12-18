@@ -25,29 +25,27 @@ public class InputFileTest {
                                 inp += data + "\n";
                         }
 
-                        System.out.println(inp);
-
                         // pass to Client
                         String[][] outputs = client.processQueries(client.processQueryString(inp));
 
-                        // print the last output of each query
-                        for (int i = 0; i < outputs.length; i++) {
-                                System.out.print(outputs[i][outputs[i].length - 1] + " ");
-                                System.out.println();
-                        }
-
-                        // String output = client.processCommands(client.runQuery(inp));
-
-                        // write to output.txt
                         try {
                                 FileWriter myWriter = new FileWriter("output.txt");
-                                // myWriter.write(output);
+                                // print the last output of each query
+                                for (int i = 0; i < outputs.length; i++) {
+                                        for (int j = 0; j < outputs[i].length; j++) {
+                                                System.out.println(outputs[i][j]);
+                                                myWriter.write(outputs[i][j] + "\n");
+                                        }
+                                }
                                 myWriter.close();
                                 System.out.println("Successfully wrote to the file.");
                         } catch (IOException e) {
                                 System.out.println("error occurred writing to output file.");
                                 e.printStackTrace();
                         }
+
+                        // write to output.txt
+
                         myReader.close();
                 } catch (FileNotFoundException e) {
                         System.out.println("An error occurred.");
