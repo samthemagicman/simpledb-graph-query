@@ -353,7 +353,7 @@ public class DBHelper {
         return result.toArray(MatchQueryResult[]::new);
     }
 
-    public MatchQueryResult[] getNodesWithUndirectedRelationship(graph.visitor.result.Node nodeSource,
+    public MatchQueryResult[] getNodesWithDirectedRelationship(graph.visitor.result.Node nodeSource,
             graph.visitor.result.Node nodeTarget,
             graph.visitor.result.Node relationship) {
         String[] sourceSelectProperties = nodeSource.getSelectProperties();

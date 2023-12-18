@@ -20,13 +20,17 @@ public class app {
         Client client = new Client();
         Scanner scn = new Scanner(System.in);
         System.out.println("Enter a query: ");
-        // String inp = "CREATE (person:Person {name: \"Sam Salfi\", email:
-        // \"samsalfi@yahoo.ca\"})-[:RELATIONSHIP]->(:Person {name: \"Pamela\"})\n";
-        String inp = "MATCH (person:Person {name: \"Sam\"})\n" +
-                "MATCH (person2:Person {name: \"Keir\"})\n" +
-                "CREATE (person)-[r:FRIENDS]->(person2)\n"
+        String inp = "CREATE (person:Person {name: \"Sam Salfi\", email: \"samsalfi@yahoo.ca\"})-[:RELATIONSHIP]->(:Person {name: \"Pamela\"})\n";
+        inp = "MATCH (person2:Person {name: \"Keir\"})\n" +
+                "CREATE (person2)-[r:FRIENDS]->(p:Person {name: \"Pam\"})\n"
                 +
                 "RETURN person2.name\n";
+        inp = "MATCH (person:Person {name: \"Keir\"})-[r:FRIENDS]->(per:Person)\n" +
+                "RETURN per.name, per.email, per.username\n";
+        // inp = "MATCH(p:Person {name: \"Keir\", email: \"keir@gmail.com\"})\n"
+        // + "CREATE (p)-[r:FRIENDS]->(p2:Person {name: \"Bradley\"})\n"
+        // + "CREATE (p)-[r:FRIENDS]->(p2:Person {name: \"Pam\"})\n"
+        // + "CREATE (p)-[r:FRIENDS]->(p2:Person {name: \"Sam\"})\n";
 
         client.initialize();
         client.processCommands(client.runQuery(inp));

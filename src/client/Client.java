@@ -11,7 +11,6 @@ import db.DBHelper;
 import graph.grammar.CypherLexer;
 import graph.grammar.CypherParser;
 import graph.visitor.CypherVisitor;
-import graph.visitor.VisitorNamespace;
 import graph.visitor.result.MatchPattern;
 import graph.visitor.result.Node;
 import graph.visitor.result.Pair;
@@ -24,12 +23,13 @@ import graph.visitor.result.commands.QueryResult;
 import graph.visitor.result.commands.ReturnCommand;
 import graph.visitor.result.core.Command;
 import model.MatchQueryResult;
+import model.NodeNamespace;
 import model.Relationship;
 
 public class Client {
     public DBHelper dbHelper;
 
-    private ArrayList<VisitorNamespace> namespaces;
+    private NodeNamespace nodeNamespace;
 
     public void initialize() {
         dbHelper = new DBHelper("buzzhub_nodes", "buzzhub_relationships");
@@ -57,7 +57,7 @@ public class Client {
     }
 
     public void processCommands(QueryResult result) {
-        namespaces = new ArrayList<>();
+        nodeNamespace = new NodeNamespace();
         for (Command command : result.getCommands()) {
             if (command instanceof CreateCommand) {
                 handleCreateCommand((CreateCommand) command);
@@ -82,9 +82,8 @@ public class Client {
         // Prints out a table of the properties requested in the return command
         Properties properties = command.getProperties();
         Pair[] returnProperties = properties.getProperties();
-        ArrayList<String> alreadyPrinted = new ArrayList<>();
-
         ArrayList<String> uniqueReturnProperties = new ArrayList<>();
+        ArrayList<Node> alreadyPrinted = new ArrayList<>();
 
         for (Pair pair : returnProperties) {
             if (!uniqueReturnProperties.contains(pair.getValue())) {
@@ -97,54 +96,59 @@ public class Client {
         }
 
         System.out.println("\u001B[0m");
-        for (VisitorNamespace namespace : namespaces) {
-            for (String i : namespace.keySet()) {
-                if (properties.get(i) != null) {
-                    Node node = namespace.get(i);
-                    if (!alreadyPrinted.contains(node.getProperties().get("id"))) {
+
+        for (Pair pair : returnProperties) {
+            ArrayList<Node> nodes = nodeNamespace.get(pair.getProperty());
+            if (nodes != null) {
+                for (Node node : nodes) {
+                    if (!alreadyPrinted.contains(node)) {
                         for (String property : uniqueReturnProperties) {
                             if (property.equals("*")) {
-                                System.out.println(node);
+                                System.out.print(node);
                             } else {
                                 System.out.print(node.getProperties().get(property) + "\t");
                             }
-                            alreadyPrinted.add(node.getProperties().get("id"));
+                            alreadyPrinted.add(node);
                         }
                         System.out.println();
                     }
                 }
             }
         }
+
+        // for (String variableName : nodeNamespace.keySet()) {
+        // for (Node node : nodeNamespace.get(variableName)) {
+        // for (String property : uniqueReturnProperties) {
+        // if (property.equals("*")) {
+        // System.out.print(node);
+        // } else {
+        // System.out.print(node.getProperties().get(property) + "\t");
+        // }
+        // }
+        // System.out.println();
+        // }
+        // }
     }
 
     private void handleMatchCommand(MatchCommand command) {
         MatchPattern pattern = command.getMatchPattern();
 
         if (pattern.getType() == MatchPattern.Type.SINGLE) {
-            // String[] filters = pattern.getNodeSource().getSelectProperties();
-            // filters = Arrays.stream(filters)
-            // .map(filter -> "node_" + filter.toLowerCase())
-            // .toArray(String[]::new);
             Node[] nodes = dbHelper.matchNode(pattern.getNodeSource());
             for (Node node : nodes) {
-                // System.out.println(node);
-                VisitorNamespace namespace = new VisitorNamespace();
-                namespace.put(pattern.getNodeSource().getVariableName(), node);
-                namespaces.add(namespace);
+                nodeNamespace.addNode(pattern.getNodeSource().getVariableName(), node);
             }
         } else if (pattern.getType() == MatchPattern.Type.RELATIONSHIP) {
-            MatchQueryResult[] result = dbHelper.getNodesWithUndirectedRelationship(pattern.getNodeSource(),
+            MatchQueryResult[] result = dbHelper.getNodesWithDirectedRelationship(pattern.getNodeSource(),
                     pattern.getNodeTarget(),
                     pattern.getNodeRelationship());
 
             for (MatchQueryResult match : result) {
                 // System.out.println(match.getSource() + " - " + match.getRelationship() + " ->
                 // " + match.getTarget());
-                VisitorNamespace namespace = new VisitorNamespace();
-                namespace.put(pattern.getNodeSource().getVariableName(), match.getSource());
-                namespace.put(pattern.getNodeTarget().getVariableName(), match.getTarget());
-                namespace.put(pattern.getNodeRelationship().getVariableName(), match.getRelationship());
-                namespaces.add(namespace);
+                nodeNamespace.addNode(pattern.getNodeSource().getVariableName(), match.getSource());
+                nodeNamespace.addNode(pattern.getNodeTarget().getVariableName(), match.getTarget());
+                nodeNamespace.addNode(pattern.getNodeRelationship().getVariableName(), match.getRelationship());
             }
         } else if (pattern.getType() == MatchPattern.Type.ANY_RELATIONSHIP) {
             MatchQueryResult[] result = dbHelper.getNodesWithAnyRelationship(pattern.getNodeSource(),
@@ -153,10 +157,8 @@ public class Client {
             for (MatchQueryResult match : result) {
                 // System.out.println(match.getSource() + " - " + match.getRelationship() + " ->
                 // " + match.getTarget());
-                VisitorNamespace namespace = new VisitorNamespace();
-                namespace.put(pattern.getNodeSource().getVariableName(), match.getSource());
-                namespace.put(pattern.getNodeTarget().getVariableName(), match.getTarget());
-                namespaces.add(namespace);
+                nodeNamespace.addNode(pattern.getNodeSource().getVariableName(), match.getSource());
+                nodeNamespace.addNode(pattern.getNodeTarget().getVariableName(), match.getTarget());
             }
         }
     }
@@ -166,7 +168,7 @@ public class Client {
         command.getNodesWithRelationships();
 
         for (CreateSingleNode node : command.getSingleNodes()) {
-            handleSingleNode(node);
+            createSingleNode(node);
         }
 
         for (CreateNodesWithRelationship node : command.getNodesWithRelationships()) {
@@ -174,37 +176,64 @@ public class Client {
         }
     }
 
-    private void handleSingleNode(CreateSingleNode node) {
-        VisitorNamespace namespace = new VisitorNamespace();
-        Node newNode = dbHelper.createNewNode(node.getNode());
-        namespace.put(node.getNode().getVariableName(), newNode);
-        namespaces.add(namespace);
+    private void createSingleNode(CreateSingleNode node) {
+        Node newNode = dbHelper.createNodeInDb(node.getNode());
+        nodeNamespace.addNode(node.getNode().getVariableName(), newNode);
     }
 
     private void handleCreateNodeWithRelationships(CreateNodesWithRelationship node) {
-        VisitorNamespace namespace = new VisitorNamespace();
-        // Node nodeTo = visitorNodeToDBNode(node.getNodeTo());
-        // Node nodeFrom = visitorNodeToDBNode(node.getNodeFrom());
         var nodeRelationship = node.getRelationshipNode();
 
-        // int nodeToId = dbHelper.createNode(nodeTo);
-        // int nodeFromId = dbHelper.createNode(nodeFrom);
+        Node nodeTo = node.getNodeTo();
+        Node nodeFrom = node.getNodeFrom();
+        String nodeToVariableName = nodeTo.getVariableName();
+        String nodeFromVariableName = nodeFrom.getVariableName();
 
-        Node nodeTo = dbHelper.createNewNode(node.getNodeTo());
-        Node nodeFrom = dbHelper.createNewNode(node.getNodeFrom());
+        ArrayList<Node> nodeToResults = nodeNamespace.get(nodeToVariableName) == null ? new ArrayList<>()
+                : nodeNamespace.get(nodeToVariableName);
+        ArrayList<Node> nodeFromResults = nodeNamespace.get(nodeFromVariableName) == null ? new ArrayList<>()
+                : nodeNamespace.get(nodeFromVariableName);
 
-        int nodeToId = Integer.parseInt(nodeTo.getProperties().get("id"));
-        int nodeFromId = Integer.parseInt(nodeFrom.getProperties().get("id"));
+        if (nodeToResults.size() == 0) { // Node doesn't exist (match did not find it, or it's not in namespace
+                                         // otherwise)
+            nodeTo = dbHelper.createNodeInDb(node.getNodeTo());
+            nodeToResults.add(nodeTo);
 
-        Relationship relationship = new Relationship(nodeRelationship.getLabel(),
-                nodeFromId, nodeToId, LocalDate.now(), nodeRelationship.getProperties().get("description"),
-                nodeRelationship.getLabel());
+            nodeNamespace.addNode(node.getNodeTo().getVariableName(), nodeTo);
+        }
 
-        dbHelper.createRelationship(relationship);
+        if (nodeFromResults.size() == 0) {
+            nodeFrom = dbHelper.createNodeInDb(node.getNodeFrom());
+            nodeFromResults.add(nodeFrom);
 
-        namespace.put(node.getNodeTo().getVariableName(), nodeTo);
-        namespace.put(node.getNodeFrom().getVariableName(), nodeFrom);
-        namespaces.add(namespace);
+            nodeNamespace.addNode(node.getNodeFrom().getVariableName(), nodeFrom);
+        }
+
+        // nodeTo = dbHelper.createNodeInDb(node.getNodeTo());
+        // nodeFrom = dbHelper.createNodeInDb(node.getNodeFrom());
+
+        for (Node nodeToResult : nodeToResults) {
+            for (Node nodeFromResult : nodeFromResults) {
+                int nodeToId = Integer.parseInt(nodeToResult.getProperties().get("id"));
+                int nodeFromId = Integer.parseInt(nodeFromResult.getProperties().get("id"));
+
+                Relationship relationship = new Relationship(nodeRelationship.getLabel(),
+                        nodeFromId, nodeToId, LocalDate.now(), nodeRelationship.getProperties().get("description"),
+                        nodeRelationship.getLabel());
+
+                dbHelper.createRelationship(relationship);
+            }
+        }
+
+        // int nodeToId = Integer.parseInt(nodeTo.getProperties().get("id"));
+        // int nodeFromId = Integer.parseInt(nodeFrom.getProperties().get("id"));
+
+        // Relationship relationship = new Relationship(nodeRelationship.getLabel(),
+        // nodeFromId, nodeToId, LocalDate.now(),
+        // nodeRelationship.getProperties().get("description"),
+        // nodeRelationship.getLabel());
+
+        // dbHelper.createRelationship(relationship);
     }
 
     public void close() {
