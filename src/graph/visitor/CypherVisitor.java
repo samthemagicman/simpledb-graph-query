@@ -174,9 +174,13 @@ public class CypherVisitor extends CypherBaseVisitor<VisitorResult> {
     @Override
     public Pair visitPair(PairContext ctx) {
         var property = "";
+        var value = "";
+        if (ctx.value != null) {
+            value = ctx.value.getText();
+        }
         if (ctx.property != null) {
             property = ctx.property.getText();
         }
-        return new Pair(property, ctx.value.getText());
+        return new Pair(property, value);
     }
 }
