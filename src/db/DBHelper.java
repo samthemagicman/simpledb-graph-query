@@ -423,24 +423,40 @@ public class DBHelper {
                 nodes_table_name + " trgt ON r.edge_target_node_id = trgt.node_id " +
                 "WHERE ";
 
+        boolean usingRelationshipLabel = relationship.getLabel() != null && !relationship.getLabel().equals("");
+        if (usingRelationshipLabel) {
+            sql = sql + "r.relationship_type = ? AND ";
+        }
+
+        boolean usedWhere = false;
         for (Pair pair : nodeSourceFilter) {
+            usedWhere = true;
             sql = sql + "src.node_" + pair.getProperty() + " = ? AND ";
         }
         for (Pair pair : targetSourceFilter) {
+            usedWhere = true;
             sql = sql + "trgt.node_" + pair.getProperty() + " = ? AND ";
         }
         for (Pair pair : relationshipSourceFilter) {
+            usedWhere = true;
             sql = sql + "r.relationship_" + pair.getProperty() + " = ? AND ";
         }
-
-        sql = sql.substring(0, sql.length() - 5) + ";";
+        if (usedWhere) {
+            sql = sql.substring(0, sql.length() - 5) + ";";
+        } else {
+            sql = sql.substring(0, sql.length() - 7) + ";";
+        }
 
         try {
             // prepared statement
             PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
             // execute statement
-
             int i = 1;
+            if (usingRelationshipLabel) {
+                preparedStatement.setString(1, relationship.getLabel());
+                i++;
+            }
+
             for (Pair pair : nodeSourceFilter) {
                 preparedStatement.setString(i, pair.getValue());
                 i++;
@@ -453,6 +469,8 @@ public class DBHelper {
                 preparedStatement.setString(i, pair.getValue());
                 i++;
             }
+
+            System.out.println(preparedStatement);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -468,7 +486,7 @@ public class DBHelper {
                 result.add(matchQueryResult);
             }
         } catch (SQLException e) {
-            System.out.println("Error deleting node.");
+            System.out.println("Error getting node with relationship.");
             e.printStackTrace();
         }
 

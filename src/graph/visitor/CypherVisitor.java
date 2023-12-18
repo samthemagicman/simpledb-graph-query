@@ -157,7 +157,7 @@ public class CypherVisitor extends CypherBaseVisitor<VisitorResult> {
 
         if (variableName == null || variableName.equals("")) {
             // return namespace.get(variableAndLabel.getValue());
-            variableName = UUID.randomUUID().toString();
+            // variableName = UUID.randomUUID().toString();
         }
         return addNodeToNamespace(new Node(
                 Node.Type.NODE,
