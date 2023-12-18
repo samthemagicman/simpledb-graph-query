@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import graph.visitor.result.Node;
 import graph.visitor.result.Pair;
 import graph.visitor.result.Properties;
 import model.MatchQueryResult;
@@ -30,7 +31,7 @@ public class DBHelper {
         this.relationships_table_name = relationships_table_name;
     }
 
-    public graph.visitor.result.Node createNodeInDb(graph.visitor.result.Node node) {
+    public Node createNodeInDb(Node node) {
         Pair[] properties = node.getProperties().getProperties();
         String[] propertyNames = Arrays.stream(properties)
                 .map(pair -> "node_" + pair.getProperty())
@@ -76,7 +77,7 @@ public class DBHelper {
         return null;
     }
 
-    public void createRelationship(Relationship relationship) {
+    public Node createRelationship(Node relationship, int nodeSource, int nodeTarget) {
         // create relationship use prepared statement
         String insertRelationship = "INSERT INTO " + relationships_table_name
                 + " (edge_type, edge_source_node_id, edge_target_node_id, edge_date_created, relationship_description, relationship_type) VALUES "
@@ -84,26 +85,36 @@ public class DBHelper {
 
         try {
             // prepare statement
-            PreparedStatement preparedStatement = dbConnection.prepareStatement(insertRelationship);
-            preparedStatement.setString(1, relationship.getEdgeType());
-            preparedStatement.setInt(2, relationship.getEdgeSourceNodeId());
-            preparedStatement.setInt(3, relationship.getEdgeTargetNodeId());
-            preparedStatement.setDate(4, java.sql.Date.valueOf(relationship.getEdgeDateCreated()));
-            preparedStatement.setString(5, relationship.getDescription());
+            PreparedStatement preparedStatement = dbConnection.prepareStatement(insertRelationship,
+                    new String[] { "relationship_id" });
+            preparedStatement.setString(1, relationship.getLabel());
+            preparedStatement.setInt(2, nodeSource);
+            preparedStatement.setInt(3, nodeTarget);
+            preparedStatement.setDate(4, java.sql.Date.valueOf(LocalDate.now()));
+            preparedStatement.setString(5, relationship.getProperties().get("description"));
             preparedStatement.setString(6, relationship.getLabel());
 
-            // execute statement
-            preparedStatement.executeUpdate();
+            int affectedRows = preparedStatement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Creating node failed, no rows affected.");
+            }
+            if (preparedStatement.getGeneratedKeys().next()) {
+                ResultSet resultSet = preparedStatement.getGeneratedKeys();
+                relationship.getProperties()
+                        .addProperty(new Pair("id", String.valueOf(resultSet.getInt("relationship_id"))));
+                return relationship;
+            }
         } catch (SQLException e) {
             System.out.println("Error creating relationship.");
             e.printStackTrace();
         }
+        return null;
     }
 
-    public graph.visitor.result.Node createNodeFromResultSet(ResultSet resultSet, String label,
+    public Node createNodeFromResultSet(ResultSet resultSet, String label,
             String propertyPrefix)
             throws SQLException {
-        graph.visitor.result.Node newNode = new graph.visitor.result.Node(graph.visitor.result.Node.Type.NODE,
+        Node newNode = new Node(Node.Type.NODE,
                 new Properties(), "", label);
 
         ResultSetMetaData rsmd = resultSet.getMetaData();
@@ -117,10 +128,10 @@ public class DBHelper {
         return newNode;
     }
 
-    public graph.visitor.result.Node createNodeFromResultSet(ResultSet resultSet, String label)
+    public Node createNodeFromResultSet(ResultSet resultSet, String label)
             throws SQLException {
-        // graph.visitor.result.Node newNode = new
-        // graph.visitor.result.Node(graph.visitor.result.Node.Type.NODE,
+        // Node newNode = new
+        // Node(Node.Type.NODE,
         // new Properties(), "", label);
 
         // ResultSetMetaData rsmd = resultSet.getMetaData();
@@ -133,8 +144,8 @@ public class DBHelper {
         return createNodeFromResultSet(resultSet, label, "node_");
     }
 
-    public graph.visitor.result.Node[] matchNode(graph.visitor.result.Node node) {
-        ArrayList<graph.visitor.result.Node> nodes = new ArrayList<>();
+    public Node[] matchNode(Node node) {
+        ArrayList<Node> nodes = new ArrayList<>();
         // String[] selectProperties = node.getSelectProperties();
 
         String selectNode = "SELECT *";
@@ -180,7 +191,7 @@ public class DBHelper {
             e.printStackTrace();
         }
 
-        return nodes.toArray(graph.visitor.result.Node[]::new);
+        return nodes.toArray(Node[]::new);
     }
 
     public void DeleteNode(int node_id) {
@@ -230,7 +241,7 @@ public class DBHelper {
         }
     }
 
-    public void updateNodeProperties(graph.visitor.result.Node node) throws Exception {
+    public void updateNodeProperties(Node node) throws Exception {
         // create update statement using prepared statement
         String[] selectProperties = node.getSelectProperties();
 
@@ -272,8 +283,8 @@ public class DBHelper {
 
     }
 
-    public MatchQueryResult[] getNodesWithAnyRelationship(graph.visitor.result.Node nodeSource,
-            graph.visitor.result.Node nodeTarget) {
+    public MatchQueryResult[] getNodesWithAnyRelationship(Node nodeSource,
+            Node nodeTarget) {
         String[] sourceSelectProperties = nodeSource.getSelectProperties();
         String[] targetSelectProperties = nodeTarget.getSelectProperties();
 
@@ -337,9 +348,9 @@ public class DBHelper {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                graph.visitor.result.Node sourceNode = createNodeFromResultSet(resultSet,
+                Node sourceNode = createNodeFromResultSet(resultSet,
                         nodeSource.getLabel(), "source_node_");
-                graph.visitor.result.Node targetNode = createNodeFromResultSet(resultSet,
+                Node targetNode = createNodeFromResultSet(resultSet,
                         nodeTarget.getLabel(), "target_node_");
 
                 MatchQueryResult matchQueryResult = new MatchQueryResult(sourceNode, targetNode);
@@ -353,9 +364,9 @@ public class DBHelper {
         return result.toArray(MatchQueryResult[]::new);
     }
 
-    public MatchQueryResult[] getNodesWithDirectedRelationship(graph.visitor.result.Node nodeSource,
-            graph.visitor.result.Node nodeTarget,
-            graph.visitor.result.Node relationship) {
+    public MatchQueryResult[] getNodesWithDirectedRelationship(Node nodeSource,
+            Node nodeTarget,
+            Node relationship) {
         String[] sourceSelectProperties = nodeSource.getSelectProperties();
         String[] targetSelectProperties = nodeTarget.getSelectProperties();
         String[] relationshipSelectProperties = relationship.getSelectProperties();
@@ -435,11 +446,11 @@ public class DBHelper {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                graph.visitor.result.Node sourceNode = createNodeFromResultSet(resultSet,
+                Node sourceNode = createNodeFromResultSet(resultSet,
                         nodeSource.getLabel(), "source_node_");
-                graph.visitor.result.Node targetNode = createNodeFromResultSet(resultSet,
+                Node targetNode = createNodeFromResultSet(resultSet,
                         nodeTarget.getLabel(), "target_node_");
-                graph.visitor.result.Node relationshipNode = createNodeFromResultSet(resultSet,
+                Node relationshipNode = createNodeFromResultSet(resultSet,
                         nodeTarget.getLabel(), "relationship_");
 
                 MatchQueryResult matchQueryResult = new MatchQueryResult(sourceNode, targetNode, relationshipNode);

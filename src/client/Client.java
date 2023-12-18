@@ -197,11 +197,13 @@ public class Client {
                 int nodeToId = Integer.parseInt(nodeToResult.getProperties().get("id"));
                 int nodeFromId = Integer.parseInt(nodeFromResult.getProperties().get("id"));
 
-                Relationship relationship = new Relationship(nodeRelationship.getLabel(),
-                        nodeFromId, nodeToId, LocalDate.now(), nodeRelationship.getProperties().get("description"),
-                        nodeRelationship.getLabel());
+                // Relationship relationship = new Relationship(nodeRelationship.getLabel(),
+                // nodeFromId, nodeToId, LocalDate.now(),
+                // nodeRelationship.getProperties().get("description"),
+                // nodeRelationship.getLabel());
 
-                dbHelper.createRelationship(relationship);
+                Node relationshipNode = dbHelper.createRelationship(nodeRelationship, nodeFromId, nodeToId);
+                nodeNamespace.addNode(relationshipNode.getVariableName(), relationshipNode);
             }
         }
     }

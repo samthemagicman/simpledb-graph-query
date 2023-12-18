@@ -26,11 +26,11 @@ public class app {
                 +
                 "RETURN person2.name\n";
         inp = "MATCH (person:Person {name: \"Keir\"})-[r:FRIENDS]->(per:Person)\n" +
-                "RETURN per.name, per.email, per.username\n";
+                "RETURN per.name, per.email, r.description\n";
         // inp = "MATCH(p:Person {name: \"Keir\", email: \"keir@gmail.com\"})\n"
-        // + "CREATE (p)-[r:FRIENDS]->(p2:Person {name: \"Bradley\"})\n"
-        // + "CREATE (p)-[r:FRIENDS]->(p2:Person {name: \"Pam\"})\n"
-        // + "CREATE (p)-[r:FRIENDS]->(p2:Person {name: \"Sam\"})\n";
+        // + "CREATE (p)-[r:FRIENDS {description: \"hereisadescription\"}]->(p2:Person
+        // {name: \"Bradley\"})\n"
+        // + "RETURN r.description\n";
 
         client.initialize();
         client.processCommands(client.runQuery(inp));
