@@ -54,6 +54,21 @@ MATCH (movie:Movie); // Match any node with label Movie
 MATCH (sam:Person {name: "Sam", email: "samsalfi@yahoo.ca"}), (movie:Movie);
 ```
 
+##### Match Relationship
+
+```cypher
+MATCH (sam:Person {name: "Sam"})-[r:LIKED]->(m:Movie {name: "Matrix"});
+```
+
+Match all relationship:
+
+```cypher
+MATCH (sam:Person {name: "Sam"})-[r]->(m:Movie {name: "Matrix"});
+MATCH (sam:Person {name: "Sam"})-[r]->(m);
+```
+
+Matching any directed relationship isn't supported yet.
+
 ### Return
 
 ```cypher
