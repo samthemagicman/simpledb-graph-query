@@ -19,18 +19,18 @@ public class CypherVisitor extends CypherBaseVisitor<VisitorResult> {
     }
 
     @Override
-    public MultiQueryResult visitMultiQuery(MultiQueryContext ctx) {
-        QueryResult[] queries = ctx.query().stream().map(this::visit).toArray(QueryResult[]::new);
+    public MultiQuery visitMultiQuery(MultiQueryContext ctx) {
+        Query[] queries = ctx.query().stream().map(this::visit).toArray(Query[]::new);
 
-        return new MultiQueryResult(queries);
+        return new MultiQuery(queries);
     }
 
     @Override
-    public QueryResult visitQuery(CypherParser.QueryContext ctx) {
+    public Query visitQuery(CypherParser.QueryContext ctx) {
         namespace = new VisitorNamespace();
         var query = ctx.children.stream().map(this::visit).toArray(Command[]::new);
 
-        return new QueryResult(query);
+        return new Query(query);
     }
 
     @Override

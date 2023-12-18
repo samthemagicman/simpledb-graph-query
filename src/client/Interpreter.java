@@ -17,6 +17,7 @@ public class Interpreter {
                 break;
             inp += data;
             if (inp.endsWith(";")) {
+                System.out.println("--- Processing ---");
                 client.processQueries(client.processQueryString(inp));
                 inp = "";
             }

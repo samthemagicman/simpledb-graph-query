@@ -10,6 +10,7 @@ public class InputFileTest {
 
         public static void main(String[] args) {
                 Client client = new Client();
+                client.initialize();
                 Scanner scn = new Scanner(System.in);
                 System.out.println("Enter a query: ");
 
@@ -24,7 +25,6 @@ public class InputFileTest {
                                 inp += data + "\n";
 
                                 // pass to Client
-                                client.initialize();
                                 client.processQueries(client.processQueryString(inp));
 
                                 // String output = client.processCommands(client.runQuery(inp));

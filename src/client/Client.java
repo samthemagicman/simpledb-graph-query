@@ -19,8 +19,8 @@ import graph.visitor.result.commands.CreateNodesWithRelationship;
 import graph.visitor.result.commands.CreateSingleNode;
 import graph.visitor.result.commands.DeleteCommand;
 import graph.visitor.result.commands.MatchCommand;
-import graph.visitor.result.commands.MultiQueryResult;
-import graph.visitor.result.commands.QueryResult;
+import graph.visitor.result.commands.MultiQuery;
+import graph.visitor.result.commands.Query;
 import graph.visitor.result.commands.ReturnCommand;
 import graph.visitor.result.core.Command;
 import model.MatchQueryResult;
@@ -47,7 +47,7 @@ public class Client {
 
             userQuery = scanner.nextLine();
             // parse and execute query
-            MultiQueryResult result = processQueryString(userQuery);
+            MultiQuery result = processQueryString(userQuery);
             processQueries(result);
         }
 
@@ -56,13 +56,13 @@ public class Client {
         System.exit(0);
     }
 
-    public void processQueries(MultiQueryResult result) {
-        for (QueryResult query : result.getQueries()) {
+    public void processQueries(MultiQuery result) {
+        for (Query query : result.getQueries()) {
             processQuery(query);
         }
     }
 
-    public void processQuery(QueryResult query) {
+    public void processQuery(Query query) {
         nodeNamespace = new NodeNamespace();
         for (Command command : query.getCommands()) {
             if (command instanceof CreateCommand) {
@@ -99,13 +99,13 @@ public class Client {
         }
     }
 
-    public MultiQueryResult processQueryString(String query) {
+    public MultiQuery processQueryString(String query) {
         var lexer = new CypherLexer(CharStreams.fromString(query));
         var tokens = new CommonTokenStream(lexer);
         var parser = new CypherParser(tokens);
         var visitor = new CypherVisitor();
         var results = visitor.visit(parser.multiQuery());
-        return (MultiQueryResult) results;
+        return (MultiQuery) results;
     }
 
     private void handleReturnCommand(ReturnCommand command) {
