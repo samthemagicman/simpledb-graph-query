@@ -4,7 +4,7 @@ import graph.visitor.result.core.VisitorResult;
 
 public class MatchPattern implements VisitorResult {
     public enum Type {
-        SINGLE, RELATIONSHIP, UNDIRECTED_RELATIONSHIP
+        SINGLE, RELATIONSHIP, ANY_RELATIONSHIP
     }
 
     Node nodeSource;
@@ -14,6 +14,12 @@ public class MatchPattern implements VisitorResult {
 
     public MatchPattern(Node nodeSource, Type type) {
         this.nodeSource = nodeSource;
+        this.type = type;
+    }
+
+    public MatchPattern(Node nodeSource, Node nodeTarget, Type type) {
+        this.nodeSource = nodeSource;
+        this.nodeTarget = nodeTarget;
         this.type = type;
     }
 

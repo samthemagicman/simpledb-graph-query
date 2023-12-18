@@ -13,7 +13,6 @@ import java.util.Arrays;
 import graph.visitor.result.Pair;
 import graph.visitor.result.Properties;
 import model.MatchQueryResult;
-import model.Node;
 import model.Relationship;
 
 public class DBHelper {
@@ -31,24 +30,30 @@ public class DBHelper {
         this.relationships_table_name = relationships_table_name;
     }
 
-    public int createNode(Node node) {
+    public graph.visitor.result.Node createNewNode(graph.visitor.result.Node node) {
+        Pair[] properties = node.getProperties().getProperties();
+        String[] propertyNames = Arrays.stream(properties)
+                .map(pair -> "node_" + pair.getProperty())
+                .toArray(String[]::new);
 
-        // Create node use prepared statement
-        String insertNode = "INSERT INTO " + nodes_table_name
-                + "(node_type, node_name, node_username, node_email, node_content, node_date_created, node_tags, node_country, node_city) VALUES "
-                + "(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String insertNode = "INSERT INTO " + nodes_table_name + " (" +
+                String.join(", ", propertyNames) +
+                ") VALUES (" +
+                String.join(", ", Arrays.stream(properties)
+                        .map(pair -> "?")
+                        .toArray(String[]::new))
+                +
+                ");";
+        // prepare statement
+        PreparedStatement preparedStatement;
         try {
-            // prepare statement
-            PreparedStatement preparedStatement = dbConnection.prepareStatement(insertNode, new String[] { "node_id" });
-            preparedStatement.setString(1, node.getLabel());
-            preparedStatement.setString(2, node.getName());
-            preparedStatement.setString(3, node.getUsername());
-            preparedStatement.setString(4, node.getEmail());
-            preparedStatement.setString(5, node.getContent());
-            preparedStatement.setDate(6, java.sql.Date.valueOf(node.getDateCreated()));
-            preparedStatement.setString(7, node.getTags());
-            preparedStatement.setString(8, node.getCountry());
-            preparedStatement.setString(9, node.getCity());
+            preparedStatement = dbConnection.prepareStatement(insertNode, new String[] { "node_id" });
+
+            int i = 1;
+            for (Pair pair : properties) {
+                preparedStatement.setString(i, pair.getValue());
+                i++;
+            }
 
             // execute statement
             int affectedRows = preparedStatement.executeUpdate();
@@ -56,14 +61,16 @@ public class DBHelper {
                 throw new SQLException("Creating node failed, no rows affected.");
             }
             if (preparedStatement.getGeneratedKeys().next()) {
-                return preparedStatement.getGeneratedKeys().getInt(1);
+                ResultSet resultSet = preparedStatement.getGeneratedKeys();
+                node.getProperties().addProperty(new Pair("id", String.valueOf(resultSet.getInt("node_id"))));
+                return node;
             }
-
+            throw new SQLException("Creating node failed, no ID obtained.");
         } catch (SQLException e) {
-            System.out.println("Error creating node.");
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return -1;
+        return null;
     }
 
     public void createRelationship(Relationship relationship) {
@@ -125,16 +132,16 @@ public class DBHelper {
 
     public graph.visitor.result.Node[] matchNode(graph.visitor.result.Node node) {
         ArrayList<graph.visitor.result.Node> nodes = new ArrayList<>();
-        String[] selectProperties = node.getSelectProperties();
+        // String[] selectProperties = node.getSelectProperties();
 
-        String selectNode = "SELECT ";
-        if (selectProperties.length == 0) {
-            selectNode += "*";
-        } else {
-            selectNode += String.join(", ", Arrays.stream(selectProperties)
-                    .map(property -> "node_" + property)
-                    .toArray(String[]::new));
-        }
+        String selectNode = "SELECT *";
+        // if (selectProperties.length == 0 || selectProperties[0].equals("*")) {
+        // selectNode += "*";
+        // } else {
+        // selectNode += String.join(", ", Arrays.stream(selectProperties)
+        // .map(property -> "node_" + property)
+        // .toArray(String[]::new));
+        // }
         selectNode += " FROM " + nodes_table_name + " WHERE node_type = ?";
 
         // Add properties to the WHERE clause
@@ -171,112 +178,6 @@ public class DBHelper {
         }
 
         return nodes.toArray(graph.visitor.result.Node[]::new);
-    }
-
-    public Node[] returnNodes(String node_type) {
-
-        ArrayList<Node> nodes = new ArrayList<>();
-
-        // create select statement using prepared statement
-        String selectNode = "SELECT  * FROM " + nodes_table_name + " WHERE node_type = ?;";
-
-        try {
-            // prepared statement
-            PreparedStatement preparedStatement = dbConnection.prepareStatement(selectNode);
-            preparedStatement.setString(1, node_type);
-
-            // execute statement and get result set
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            // parse result set
-            int i = 0;
-            while (resultSet.next()) {
-                int rs_node_id = resultSet.getInt("node_id");
-                String rs_node_type = resultSet.getString("node_type");
-                String node_name = resultSet.getString("node_name");
-                String node_username = resultSet.getString("node_username");
-                String node_email = resultSet.getString("node_email");
-                String node_content = resultSet.getString("node_content");
-                java.sql.Date node_date_created_sql = resultSet.getDate("node_date_created");
-                LocalDate node_date_created = node_date_created_sql.toLocalDate();
-                String node_tags = resultSet.getString("node_tags");
-                String node_country = resultSet.getString("node_country");
-                String node_city = resultSet.getString("node_city");
-
-                nodes.add(new Node(rs_node_id, rs_node_type, node_name, node_username, node_email,
-                        node_content, node_date_created, node_tags, node_country, node_city));
-            }
-
-            resultSet.close();
-            preparedStatement.close();
-
-        } catch (SQLException e) {
-            System.out.println("Error returning node");
-            e.printStackTrace();
-        }
-
-        return nodes.toArray(Node[]::new);
-    }
-
-    public Node[] returnNodes(String node_type, String[] conditions) {
-
-        Node[] nodes = null;
-
-        // create select statement using prepared statement
-        String selectNode = "SELECT * FROM " + nodes_table_name + " WHERE node_type = ? AND ";
-        for (int i = 0; i < conditions.length; i++) {
-            selectNode = selectNode + conditions[i] + " AND ";
-        }
-
-        // remove last AND
-        selectNode = selectNode.substring(0, selectNode.length() - 5);
-
-        try {
-            // prepared statement
-            PreparedStatement preparedStatement = dbConnection.prepareStatement(selectNode);
-            preparedStatement.setString(1, node_type);
-
-            // execute statement and get result set
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            // get number of rows
-            int rowCount = 0;
-            while (resultSet.next()) {
-                rowCount++;
-            }
-
-            // create array of nodes
-            nodes = new Node[rowCount];
-
-            // parse result set
-            int i = 0;
-            while (resultSet.next()) {
-                int rs_node_id = resultSet.getInt("node_id");
-                String rs_node_type = resultSet.getString("node_type");
-                String node_name = resultSet.getString("node_name");
-                String node_username = resultSet.getString("node_username");
-                String node_email = resultSet.getString("node_email");
-                String node_content = resultSet.getString("node_content");
-                java.sql.Date node_date_created_sql = resultSet.getDate("node_date_created");
-                LocalDate node_date_created = node_date_created_sql.toLocalDate();
-                String node_tags = resultSet.getString("node_tags");
-                String node_country = resultSet.getString("node_country");
-                String node_city = resultSet.getString("node_city");
-
-                nodes[i] = new Node(rs_node_id, rs_node_type, node_name, node_username, node_email,
-                        node_content, node_date_created, node_tags, node_country, node_city);
-                i++;
-            }
-
-            resultSet.close();
-            preparedStatement.close();
-
-        } catch (SQLException e) {
-            System.out.println("Error returning node");
-            e.printStackTrace();
-        }
-
-        return nodes;
     }
 
     public void DeleteNode(int node_id) {
@@ -349,7 +250,7 @@ public class DBHelper {
 
         updateNode += ";";
 
-        try{
+        try {
             // prepared statement
             PreparedStatement preparedStatement = dbConnection.prepareStatement(updateNode);
             preparedStatement.setString(1, node.getLabel());
@@ -363,22 +264,18 @@ public class DBHelper {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error updating node.");
-            e.printStackTrace();   
+            e.printStackTrace();
         }
-        
+
     }
 
-    public MatchQueryResult[] getNodesWithUndirectedRelationship(graph.visitor.result.Node nodeSource,
-            graph.visitor.result.Node nodeTarget,
-            graph.visitor.result.Node relationship) {
+    public MatchQueryResult[] getNodesWithAnyRelationship(graph.visitor.result.Node nodeSource,
+            graph.visitor.result.Node nodeTarget) {
+        String[] sourceSelectProperties = nodeSource.getSelectProperties();
+        String[] targetSelectProperties = nodeTarget.getSelectProperties();
 
-        // Pair[] sourceProperties = nodeSource.getProperties().getProperties();
-        // Pair[] targetProperties = nodeTarget.getProperties().getProperties();
-        // Pair[] relationshipProperties = relationship.getProperties().getProperties();
-
-        String[] sourceProperties = nodeSource.getSelectProperties();
-        String[] targetProperties = nodeTarget.getSelectProperties();
-        String[] relationshipProperties = relationship.getSelectProperties();
+        Pair[] nodeSourceFilter = nodeSource.getProperties().getProperties();
+        Pair[] targetSourceFilter = nodeTarget.getProperties().getProperties();
 
         String sql = "SELECT " +
                 "src.node_id AS source_node_id, " +
@@ -386,22 +283,106 @@ public class DBHelper {
 
         ArrayList<MatchQueryResult> result = new ArrayList<>();
 
-        for (String property : sourceProperties) {
-            if (property.equals("id")) {
+        for (String property : sourceSelectProperties) {
+            if (property.equals("id") || property.equals("*")) {
                 continue;
             }
             sql = sql + "src.node_" + property + " AS source_node_" + property + ", ";
         }
 
-        for (String property : targetProperties) {
-            if (property.equals("id")) {
+        for (String property : targetSelectProperties) {
+            if (property.equals("id") || property.equals("*")) {
                 continue;
             }
             sql = sql + "trgt.node_" + property + " AS target_node_" + property + ", ";
         }
 
-        for (String property : relationshipProperties) {
-            if (property.equals("id")) {
+        sql = sql.substring(0, sql.length() - 2) + " ";
+
+        sql = sql + "FROM " +
+                relationships_table_name + " r " +
+                "JOIN " +
+                nodes_table_name + " src ON r.edge_source_node_id = src.node_id " +
+                "JOIN " +
+                nodes_table_name + " trgt ON r.edge_target_node_id = trgt.node_id " +
+                "WHERE ";
+
+        for (Pair pair : nodeSourceFilter) {
+            sql = sql + "src.node_" + pair.getProperty() + " = ? AND ";
+        }
+        for (Pair pair : targetSourceFilter) {
+            sql = sql + "trgt.node_" + pair.getProperty() + " = ? AND ";
+        }
+
+        sql = sql.substring(0, sql.length() - 5) + ";";
+
+        try {
+            // prepared statement
+            PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
+            // execute statement
+
+            int i = 1;
+            for (Pair pair : nodeSourceFilter) {
+                preparedStatement.setString(i, pair.getValue());
+                i++;
+            }
+            for (Pair pair : targetSourceFilter) {
+                preparedStatement.setString(i, pair.getValue());
+                i++;
+            }
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                graph.visitor.result.Node sourceNode = createNodeFromResultSet(resultSet,
+                        nodeSource.getLabel(), "source_node_");
+                graph.visitor.result.Node targetNode = createNodeFromResultSet(resultSet,
+                        nodeTarget.getLabel(), "target_node_");
+
+                MatchQueryResult matchQueryResult = new MatchQueryResult(sourceNode, targetNode);
+                result.add(matchQueryResult);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error deleting node.");
+            e.printStackTrace();
+        }
+
+        return result.toArray(MatchQueryResult[]::new);
+    }
+
+    public MatchQueryResult[] getNodesWithUndirectedRelationship(graph.visitor.result.Node nodeSource,
+            graph.visitor.result.Node nodeTarget,
+            graph.visitor.result.Node relationship) {
+        String[] sourceSelectProperties = nodeSource.getSelectProperties();
+        String[] targetSelectProperties = nodeTarget.getSelectProperties();
+        String[] relationshipSelectProperties = relationship.getSelectProperties();
+
+        Pair[] nodeSourceFilter = nodeSource.getProperties().getProperties();
+        Pair[] targetSourceFilter = nodeTarget.getProperties().getProperties();
+        Pair[] relationshipSourceFilter = relationship.getProperties().getProperties();
+
+        String sql = "SELECT " +
+                "src.node_id AS source_node_id, " +
+                "trgt.node_id AS target_node_id, ";
+
+        ArrayList<MatchQueryResult> result = new ArrayList<>();
+
+        for (String property : sourceSelectProperties) {
+            if (property.equals("id") || property.equals("*")) {
+                continue;
+            }
+            sql = sql + "src.node_" + property + " AS source_node_" + property + ", ";
+        }
+
+        for (String property : targetSelectProperties) {
+            if (property.equals("id") || property.equals("*")) {
+                continue;
+            }
+            sql = sql + "trgt.node_" + property + " AS target_node_" + property + ", ";
+        }
+
+        for (String property : relationshipSelectProperties) {
+            if (property.equals("id") || property.equals("*")) {
                 continue;
             }
             sql = sql + "r.relationship_" + property + " AS relationship_" + property + ", ";
@@ -414,21 +395,49 @@ public class DBHelper {
                 "JOIN " +
                 nodes_table_name + " src ON r.edge_source_node_id = src.node_id " +
                 "JOIN " +
-                nodes_table_name + " trgt ON r.edge_target_node_id = trgt.node_id;";
+                nodes_table_name + " trgt ON r.edge_target_node_id = trgt.node_id " +
+                "WHERE ";
+
+        for (Pair pair : nodeSourceFilter) {
+            sql = sql + "src.node_" + pair.getProperty() + " = ? AND ";
+        }
+        for (Pair pair : targetSourceFilter) {
+            sql = sql + "trgt.node_" + pair.getProperty() + " = ? AND ";
+        }
+        for (Pair pair : relationshipSourceFilter) {
+            sql = sql + "r.relationship_" + pair.getProperty() + " = ? AND ";
+        }
+
+        sql = sql.substring(0, sql.length() - 5) + ";";
 
         try {
             // prepared statement
             PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
             // execute statement
+
+            int i = 1;
+            for (Pair pair : nodeSourceFilter) {
+                preparedStatement.setString(i, pair.getValue());
+                i++;
+            }
+            for (Pair pair : targetSourceFilter) {
+                preparedStatement.setString(i, pair.getValue());
+                i++;
+            }
+            for (Pair pair : relationshipSourceFilter) {
+                preparedStatement.setString(i, pair.getValue());
+                i++;
+            }
+
             ResultSet resultSet = preparedStatement.executeQuery();
-            System.out.println(preparedStatement);
+
             while (resultSet.next()) {
                 graph.visitor.result.Node sourceNode = createNodeFromResultSet(resultSet,
                         nodeSource.getLabel(), "source_node_");
                 graph.visitor.result.Node targetNode = createNodeFromResultSet(resultSet,
                         nodeTarget.getLabel(), "target_node_");
                 graph.visitor.result.Node relationshipNode = createNodeFromResultSet(resultSet,
-                        relationship.getLabel(), "relationship_");
+                        nodeTarget.getLabel(), "relationship_");
 
                 MatchQueryResult matchQueryResult = new MatchQueryResult(sourceNode, targetNode, relationshipNode);
                 result.add(matchQueryResult);
@@ -440,73 +449,6 @@ public class DBHelper {
 
         return result.toArray(MatchQueryResult[]::new);
     }
-
-    public Node[] searchNodesViaEdges(String src_node_type, String dest_node_type, String src_node_conditions,
-            String dest_node_conditions, String relationship_conditions, String relationship_type) {
-
-        Node[] nodes = null;
-
-        // create select statement using prepared statement
-        String selectNodes = "SELECT " + nodes_table_name + ".* FROM " + nodes_table_name + " JOIN "
-                + relationships_table_name + " ON " + nodes_table_name + ".node_id = " +
-                relationships_table_name + ".edge_target_node_id WHERE " + relationships_table_name
-                + ".relationship_type = ? AND "
-                + relationships_table_name + ".edge_source_node_id = (SELECT node_id FROM " + nodes_table_name
-                + " WHERE node_type = ? AND "
-                + src_node_conditions + ") AND " + nodes_table_name + ".node_type = ? AND " + dest_node_conditions;
-
-        try {
-            // prepared statement
-            PreparedStatement preparedStatement = dbConnection.prepareStatement(selectNodes);
-            preparedStatement.setString(1, relationship_type);
-            preparedStatement.setString(2, src_node_type);
-            preparedStatement.setString(3, dest_node_type);
-
-            // execute statement and get result set
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            // get number of rows
-            int rowCount = 0;
-            while (resultSet.next()) {
-                rowCount++;
-            }
-
-            // create array of nodes
-            nodes = new Node[rowCount];
-
-            // parse result set
-            int i = 0;
-            while (resultSet.next()) {
-                int rs_node_id = resultSet.getInt("node_id");
-                String rs_node_type = resultSet.getString("node_type");
-                String node_name = resultSet.getString("node_name");
-                String node_username = resultSet.getString("node_username");
-                String node_email = resultSet.getString("node_email");
-                String node_content = resultSet.getString("node_content");
-                java.sql.Date node_date_created_sql = resultSet.getDate("node_date_created");
-                LocalDate node_date_created = node_date_created_sql.toLocalDate();
-                String node_tags = resultSet.getString("node_tags");
-                String node_country = resultSet.getString("node_country");
-                String node_city = resultSet.getString("node_city");
-
-                nodes[i] = new Node(rs_node_id, rs_node_type, node_name, node_username, node_email,
-                        node_content, node_date_created, node_tags, node_country, node_city);
-                i++;
-
-            }
-
-            resultSet.close();
-            preparedStatement.close();
-
-        } catch (SQLException e) {
-            System.out.println("Error searching nodes");
-            e.printStackTrace();
-        }
-
-        return nodes;
-
-    }
-
 
     public void closeDBConnection() {
         try {

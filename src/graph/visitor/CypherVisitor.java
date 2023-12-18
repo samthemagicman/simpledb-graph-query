@@ -10,9 +10,16 @@ import graph.visitor.result.core.*;
 
 public class CypherVisitor extends CypherBaseVisitor<VisitorResult> {
     String graphName = "defaultgraph";
+    VisitorNamespace namespace;
+
+    Node addNodeToNamespace(Node node) {
+        namespace.put(node.getVariableName(), node);
+        return node;
+    }
 
     @Override
     public QueryResult visitQuery(CypherParser.QueryContext ctx) {
+        namespace = new VisitorNamespace();
         var query = ctx.children.stream().map(this::visit).toArray(Command[]::new);
 
         return new QueryResult(query);
@@ -61,32 +68,68 @@ public class CypherVisitor extends CypherBaseVisitor<VisitorResult> {
         return new CreateNodePattern(nodeTo, nodeFrom, relationship);
     }
 
+    // @Override
+    // public Command visitMatchAndReturnCommand(MatchAndReturnCommandContext ctx) {
+    // MatchPattern match = (MatchPattern) visit(ctx.matchCommand());
+    // Properties returnPattern = (Properties) visit(ctx.returnCommand());
+
+    // for (Pair pair : returnPattern.getProperties()) {
+    // if (pair.getProperty().equals(match.getNodeSource().getVariableName())) {
+    // match.getNodeSource().addSelectProperty(pair.getValue());
+    // }
+
+    // if (match.getType() == MatchPattern.Type.RELATIONSHIP) {
+    // if (pair.getProperty().equals(match.getNodeTarget().getVariableName())) {
+    // match.getNodeTarget().addSelectProperty(pair.getValue());
+    // }
+    // if (pair.getProperty().equals(match.getNodeRelationship().getVariableName()))
+    // {
+    // match.getNodeRelationship().addSelectProperty(pair.getValue());
+    // }
+    // }
+    // }
+
+    // return new MatchReturnCommand(match, returnPattern);
+    // }
+
     @Override
-    public Command visitMatchAndReturnCommand(MatchAndReturnCommandContext ctx) {
-        MatchPattern match = (MatchPattern) visit(ctx.matchCommand());
-        Properties returnPattern = (Properties) visit(ctx.returnCommand());
-
+    public ReturnCommand visitReturnCommand(ReturnCommandContext ctx) {
+        Properties returnPattern = (Properties) visit(ctx.returnPattern());
         for (Pair pair : returnPattern.getProperties()) {
-            if (pair.getProperty().equals(match.getNodeSource().getVariableName())) {
-                match.getNodeSource().addSelectProperty(pair.getValue());
+            if (namespace.containsKey(pair.getProperty())) {
+                Node node = namespace.get(pair.getProperty());
+                node.addSelectProperty(pair.getValue());
             }
 
-            if (match.getType() == MatchPattern.Type.RELATIONSHIP) {
-                if (pair.getProperty().equals(match.getNodeTarget().getVariableName())) {
-                    match.getNodeTarget().addSelectProperty(pair.getValue());
-                }
-                if (pair.getProperty().equals(match.getNodeRelationship().getVariableName())) {
-                    match.getNodeRelationship().addSelectProperty(pair.getValue());
-                }
-            }
+            // if (pair.getProperty().equals(match.getNodeSource().getVariableName())) {
+            // match.getNodeSource().addSelectProperty(pair.getValue());
+            // }
+
+            // if (match.getType() == MatchPattern.Type.RELATIONSHIP) {
+            // if (pair.getProperty().equals(match.getNodeTarget().getVariableName())) {
+            // match.getNodeTarget().addSelectProperty(pair.getValue());
+            // }
+            // if (pair.getProperty().equals(match.getNodeRelationship().getVariableName()))
+            // {
+            // match.getNodeRelationship().addSelectProperty(pair.getValue());
+            // }
+            // }
         }
 
-        return new MatchReturnCommand(match, returnPattern);
+        return new ReturnCommand(returnPattern);
+    }
+
+    @Override
+    public MatchCommand visitMatchCommand(MatchCommandContext ctx) {
+        MatchPattern match = (MatchPattern) visit(ctx.matchPattern());
+
+        return new MatchCommand(match, new Properties());
     }
 
     @Override
     public Properties visitReturnSingleNode(ReturnSingleNodeContext ctx) {
-        return new Properties();
+        Pair pair = new Pair(ctx.children.get(0).getText(), "*");
+        return new Properties(new Pair[] { pair });
     }
 
     @Override
@@ -111,31 +154,39 @@ public class CypherVisitor extends CypherBaseVisitor<VisitorResult> {
             Node relationship = (Node) visit(ctx.relationship);
 
             return new MatchPattern(nodeFrom, nodeTo, relationship, MatchPattern.Type.RELATIONSHIP);
+        } else if (ctx.nodeTo != null && ctx.nodeFrom != null) {
+            Node nodeTo = (Node) visit(ctx.nodeTo);
+            Node nodeFrom = (Node) visit(ctx.nodeFrom);
+            return new MatchPattern(nodeFrom, nodeTo, MatchPattern.Type.ANY_RELATIONSHIP);
         }
 
-        return new MatchPattern(null, MatchPattern.Type.SINGLE);
+        throw new RuntimeException("Invalid match pattern");
     }
 
     @Override
     public Node visitNodeRelationshipPattern(NodeRelationshipPatternContext ctx) {
         Pair variableAndLabel = (Pair) visit(ctx.nodeNameAndLabel);
         Properties properties = (Properties) visit(ctx.properties);
-        return new Node(
+        return addNodeToNamespace(new Node(
                 Node.Type.RELATIONSHIP,
                 properties,
                 variableAndLabel.getProperty(),
-                variableAndLabel.getValue());
+                variableAndLabel.getValue()));
     }
 
     @Override
     public Node visitNodePattern(NodePatternContext ctx) {
         Pair variableAndLabel = (Pair) visit(ctx.nodeNameAndLabel);
         Properties properties = (Properties) visit(ctx.properties);
-        return new Node(
+
+        if (variableAndLabel.getProperty() == null || variableAndLabel.getProperty().equals("")) {
+            return namespace.get(variableAndLabel.getValue());
+        }
+        return addNodeToNamespace(new Node(
                 Node.Type.NODE,
                 properties,
                 variableAndLabel.getProperty(),
-                variableAndLabel.getValue());
+                variableAndLabel.getValue()));
     }
 
     @Override

@@ -1,42 +1,20 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "type": "java",
-            "name": "Current File",
-            "request": "launch",
-            "mainClass": "${file}"
-        },
-        {
-            "type": "java",
-            "name": "CreateData",
-            "request": "launch",
-            "mainClass": "db.CreateData",
-            "projectName": "simpledb-graph-query_7fab4e"
-        },
-        {
-            "type": "java",
-            "name": "PostgresJDBCExample",
-            "request": "launch",
-            "mainClass": "db.PostgresJDBCExample",
-            "projectName": "simpledb-graph-query_7fab4e"
-        },
-        {
-            "type": "java",
-            "name": "Antlr4test",
-            "request": "launch",
-            "mainClass": "graph.Antlr4test",
-            "projectName": "simpledb-graph-query_7fab4e"
-        },
-        {
-            "type": "java",
-            "name": "graphInterpreter",
-            "request": "launch",
-            "mainClass": "graphInterpreter",
-            "projectName": "simpledb-graph-query_7fab4e"
-        }
-    ]
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Current File",
+      "request": "launch",
+      "mainClass": "${file}"
+    },
+    {
+      "type": "java",
+      "name": "Debug (Launch)-Main",
+      "request": "launch",
+      "mainClass": "client.app"
+    }
+  ]
 }

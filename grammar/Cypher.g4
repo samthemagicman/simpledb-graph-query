@@ -25,7 +25,7 @@ QUOTE_STRING:
      s = s.substring(1, s.length() - 1);
      setText(s);
    };
-query: (matchAndReturnCommand | createCommand)+;
+query: (matchCommand | returnCommand | createCommand)+;
 
 createCommand: CREATE createCommandPattern (COMMA createCommandPattern)?;
 
@@ -51,7 +51,7 @@ returnPattern: '*' # returnAll | ID # returnSingleNode | (returnItem (COMMA retu
 returnItem: object = ID PERIOD property = ID;
 
 matchPattern:
-	nodeFrom = nodePattern '-' (undirectedRelationship = nodeRelationshipPattern)? '-' nodeTo = nodePattern
+	nodeFrom = nodePattern '--' nodeTo = nodePattern
 	| nodeFrom = nodePattern '-' relationship = nodeRelationshipPattern '->' nodeTo = nodePattern
 	| nodeTo = nodePattern '<-' relationship = nodeRelationshipPattern '-' nodeFrom = nodePattern
 	| node = nodePattern;

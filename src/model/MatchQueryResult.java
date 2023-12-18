@@ -7,6 +7,11 @@ public class MatchQueryResult {
     Node target;
     Node relationship;
 
+    public MatchQueryResult(Node source, Node target) {
+        this.source = source;
+        this.target = target;
+    }
+
     public MatchQueryResult(Node source, Node target, Node relationship) {
         this.source = source;
         this.target = target;

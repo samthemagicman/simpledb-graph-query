@@ -4,15 +4,15 @@ import graph.visitor.result.MatchPattern;
 import graph.visitor.result.Properties;
 import graph.visitor.result.core.Command;
 
-public class MatchReturnCommand implements Command {
+public class MatchCommand implements Command {
     MatchPattern matchPattern;
     Properties returnPattern;
 
-    public MatchReturnCommand(MatchPattern matchPattern) {
+    public MatchCommand(MatchPattern matchPattern) {
         this.matchPattern = matchPattern;
     }
 
-    public MatchReturnCommand(MatchPattern matchPattern, Properties returnPattern) {
+    public MatchCommand(MatchPattern matchPattern, Properties returnPattern) {
         this.matchPattern = matchPattern;
         this.returnPattern = returnPattern;
     }
