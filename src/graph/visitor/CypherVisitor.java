@@ -74,30 +74,6 @@ public class CypherVisitor extends CypherBaseVisitor<VisitorResult> {
         return new CreateNodePattern(nodeTo, nodeFrom, relationship);
     }
 
-    // @Override
-    // public Command visitMatchAndReturnCommand(MatchAndReturnCommandContext ctx) {
-    // MatchPattern match = (MatchPattern) visit(ctx.matchCommand());
-    // Properties returnPattern = (Properties) visit(ctx.returnCommand());
-
-    // for (Pair pair : returnPattern.getProperties()) {
-    // if (pair.getProperty().equals(match.getNodeSource().getVariableName())) {
-    // match.getNodeSource().addSelectProperty(pair.getValue());
-    // }
-
-    // if (match.getType() == MatchPattern.Type.RELATIONSHIP) {
-    // if (pair.getProperty().equals(match.getNodeTarget().getVariableName())) {
-    // match.getNodeTarget().addSelectProperty(pair.getValue());
-    // }
-    // if (pair.getProperty().equals(match.getNodeRelationship().getVariableName()))
-    // {
-    // match.getNodeRelationship().addSelectProperty(pair.getValue());
-    // }
-    // }
-    // }
-
-    // return new MatchReturnCommand(match, returnPattern);
-    // }
-
     @Override
     public ReturnCommand visitReturnCommand(ReturnCommandContext ctx) {
         Properties returnPattern = (Properties) visit(ctx.returnPattern());
@@ -106,20 +82,6 @@ public class CypherVisitor extends CypherBaseVisitor<VisitorResult> {
                 Node node = namespace.get(pair.getProperty());
                 node.addSelectProperty(pair.getValue());
             }
-
-            // if (pair.getProperty().equals(match.getNodeSource().getVariableName())) {
-            // match.getNodeSource().addSelectProperty(pair.getValue());
-            // }
-
-            // if (match.getType() == MatchPattern.Type.RELATIONSHIP) {
-            // if (pair.getProperty().equals(match.getNodeTarget().getVariableName())) {
-            // match.getNodeTarget().addSelectProperty(pair.getValue());
-            // }
-            // if (pair.getProperty().equals(match.getNodeRelationship().getVariableName()))
-            // {
-            // match.getNodeRelationship().addSelectProperty(pair.getValue());
-            // }
-            // }
         }
 
         return new ReturnCommand(returnPattern);
