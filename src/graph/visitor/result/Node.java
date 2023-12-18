@@ -27,6 +27,10 @@ public class Node implements VisitorResult {
         return type;
     }
 
+    public Type setType(Type type) {
+        return this.type = type;
+    }
+
     public Properties getProperties() {
         return properties;
     }

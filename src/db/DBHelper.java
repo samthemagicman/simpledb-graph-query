@@ -500,6 +500,7 @@ public class DBHelper {
                         nodeTarget.getLabel(), "target_node_");
                 Node relationshipNode = createNodeFromResultSet(resultSet,
                         nodeTarget.getLabel(), "relationship_");
+                relationshipNode.setType(Node.Type.RELATIONSHIP);
 
                 MatchQueryResult matchQueryResult = new MatchQueryResult(sourceNode, targetNode, relationshipNode);
                 result.add(matchQueryResult);
