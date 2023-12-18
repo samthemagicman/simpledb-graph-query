@@ -7,6 +7,16 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface CypherListener extends ParseTreeListener {
 	/**
+	 * Enter a parse tree produced by {@link CypherParser#multiQuery}.
+	 * @param ctx the parse tree
+	 */
+	void enterMultiQuery(CypherParser.MultiQueryContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CypherParser#multiQuery}.
+	 * @param ctx the parse tree
+	 */
+	void exitMultiQuery(CypherParser.MultiQueryContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link CypherParser#query}.
 	 * @param ctx the parse tree
 	 */

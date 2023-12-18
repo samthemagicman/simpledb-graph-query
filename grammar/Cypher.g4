@@ -25,6 +25,9 @@ QUOTE_STRING:
      s = s.substring(1, s.length() - 1);
      setText(s);
    };
+
+multiQuery: query SEMICOLON? (SEMICOLON query)?;
+
 query: (matchCommand | returnCommand | createCommand | deleteCommand)+;
 
 createCommand: CREATE createCommandPattern (COMMA createCommandPattern)?;

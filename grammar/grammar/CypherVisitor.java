@@ -10,6 +10,12 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface CypherVisitor<T> extends ParseTreeVisitor<T> {
 	/**
+	 * Visit a parse tree produced by {@link CypherParser#multiQuery}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMultiQuery(CypherParser.MultiQueryContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link CypherParser#query}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
