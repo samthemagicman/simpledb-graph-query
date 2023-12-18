@@ -115,19 +115,6 @@ public class Client {
                 }
             }
         }
-
-        // for (String variableName : nodeNamespace.keySet()) {
-        // for (Node node : nodeNamespace.get(variableName)) {
-        // for (String property : uniqueReturnProperties) {
-        // if (property.equals("*")) {
-        // System.out.print(node);
-        // } else {
-        // System.out.print(node.getProperties().get(property) + "\t");
-        // }
-        // }
-        // System.out.println();
-        // }
-        // }
     }
 
     private void handleMatchCommand(MatchCommand command) {
@@ -144,8 +131,6 @@ public class Client {
                     pattern.getNodeRelationship());
 
             for (MatchQueryResult match : result) {
-                // System.out.println(match.getSource() + " - " + match.getRelationship() + " ->
-                // " + match.getTarget());
                 nodeNamespace.addNode(pattern.getNodeSource().getVariableName(), match.getSource());
                 nodeNamespace.addNode(pattern.getNodeTarget().getVariableName(), match.getTarget());
                 nodeNamespace.addNode(pattern.getNodeRelationship().getVariableName(), match.getRelationship());
@@ -155,8 +140,6 @@ public class Client {
                     pattern.getNodeTarget());
 
             for (MatchQueryResult match : result) {
-                // System.out.println(match.getSource() + " - " + match.getRelationship() + " ->
-                // " + match.getTarget());
                 nodeNamespace.addNode(pattern.getNodeSource().getVariableName(), match.getSource());
                 nodeNamespace.addNode(pattern.getNodeTarget().getVariableName(), match.getTarget());
             }
@@ -181,11 +164,11 @@ public class Client {
         nodeNamespace.addNode(node.getNode().getVariableName(), newNode);
     }
 
-    private void handleCreateNodeWithRelationships(CreateNodesWithRelationship node) {
-        var nodeRelationship = node.getRelationshipNode();
+    private void handleCreateNodeWithRelationships(CreateNodesWithRelationship createData) {
+        var nodeRelationship = createData.getRelationshipNode();
 
-        Node nodeTo = node.getNodeTo();
-        Node nodeFrom = node.getNodeFrom();
+        Node nodeTo = createData.getNodeTo();
+        Node nodeFrom = createData.getNodeFrom();
         String nodeToVariableName = nodeTo.getVariableName();
         String nodeFromVariableName = nodeFrom.getVariableName();
 
@@ -196,21 +179,18 @@ public class Client {
 
         if (nodeToResults.size() == 0) { // Node doesn't exist (match did not find it, or it's not in namespace
                                          // otherwise)
-            nodeTo = dbHelper.createNodeInDb(node.getNodeTo());
+            nodeTo = dbHelper.createNodeInDb(createData.getNodeTo());
             nodeToResults.add(nodeTo);
 
-            nodeNamespace.addNode(node.getNodeTo().getVariableName(), nodeTo);
+            nodeNamespace.addNode(createData.getNodeTo().getVariableName(), nodeTo);
         }
 
         if (nodeFromResults.size() == 0) {
-            nodeFrom = dbHelper.createNodeInDb(node.getNodeFrom());
+            nodeFrom = dbHelper.createNodeInDb(createData.getNodeFrom());
             nodeFromResults.add(nodeFrom);
 
-            nodeNamespace.addNode(node.getNodeFrom().getVariableName(), nodeFrom);
+            nodeNamespace.addNode(createData.getNodeFrom().getVariableName(), nodeFrom);
         }
-
-        // nodeTo = dbHelper.createNodeInDb(node.getNodeTo());
-        // nodeFrom = dbHelper.createNodeInDb(node.getNodeFrom());
 
         for (Node nodeToResult : nodeToResults) {
             for (Node nodeFromResult : nodeFromResults) {
@@ -224,16 +204,6 @@ public class Client {
                 dbHelper.createRelationship(relationship);
             }
         }
-
-        // int nodeToId = Integer.parseInt(nodeTo.getProperties().get("id"));
-        // int nodeFromId = Integer.parseInt(nodeFrom.getProperties().get("id"));
-
-        // Relationship relationship = new Relationship(nodeRelationship.getLabel(),
-        // nodeFromId, nodeToId, LocalDate.now(),
-        // nodeRelationship.getProperties().get("description"),
-        // nodeRelationship.getLabel());
-
-        // dbHelper.createRelationship(relationship);
     }
 
     public void close() {
