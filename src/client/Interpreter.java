@@ -18,7 +18,16 @@ public class Interpreter {
             inp += data;
             if (inp.endsWith(";")) {
                 System.out.println("--- Processing ---");
-                client.processQueries(client.processQueryString(inp));
+                String[][] outputs = client.processQueries(client.processQueryString(inp));
+
+                // print output
+                for (int i = 0; i < outputs.length; i++) {
+                    for (int j = 0; j < outputs[i].length; j++) {
+                        System.out.println(outputs[i][j]);
+                    }
+                    System.out.println();
+                }
+
                 inp = "";
             }
             inp += "\n";

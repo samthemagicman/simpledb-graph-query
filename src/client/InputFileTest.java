@@ -23,23 +23,30 @@ public class InputFileTest {
                         while (myReader.hasNextLine()) {
                                 String data = myReader.nextLine();
                                 inp += data + "\n";
+                        }
 
-                                // pass to Client
-                                client.processQueries(client.processQueryString(inp));
+                        System.out.println(inp);
 
-                                // String output = client.processCommands(client.runQuery(inp));
+                        // pass to Client
+                        String[][] outputs = client.processQueries(client.processQueryString(inp));
 
-                                // write to output.txt
-                                try {
-                                        FileWriter myWriter = new FileWriter("output.txt");
-                                        // myWriter.write(output);
-                                        myWriter.close();
-                                        System.out.println("Successfully wrote to the file.");
-                                } catch (IOException e) {
-                                        System.out.println("error occurred writing to output file.");
-                                        e.printStackTrace();
-                                }
+                        // print the last output of each query
+                        for (int i = 0; i < outputs.length; i++) {
+                                System.out.print(outputs[i][outputs[i].length - 1] + " ");
+                                System.out.println();
+                        }
 
+                        // String output = client.processCommands(client.runQuery(inp));
+
+                        // write to output.txt
+                        try {
+                                FileWriter myWriter = new FileWriter("output.txt");
+                                // myWriter.write(output);
+                                myWriter.close();
+                                System.out.println("Successfully wrote to the file.");
+                        } catch (IOException e) {
+                                System.out.println("error occurred writing to output file.");
+                                e.printStackTrace();
                         }
                         myReader.close();
                 } catch (FileNotFoundException e) {

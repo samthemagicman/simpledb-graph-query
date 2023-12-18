@@ -56,28 +56,35 @@ public class Client {
         System.exit(0);
     }
 
-    public void processQueries(MultiQuery result) {
+    public String[][] processQueries(MultiQuery result) {
+        ArrayList<String[]> outputs = new ArrayList<>();
         for (Query query : result.getQueries()) {
-            processQuery(query);
+            outputs.add(processQuery(query));
         }
+
+        return outputs.toArray(new String[outputs.size()][]);
     }
 
-    public void processQuery(Query query) {
+    public String[] processQuery(Query query) {
         nodeNamespace = new NodeNamespace();
+        ArrayList<String> outputs = new ArrayList<>();
         for (Command command : query.getCommands()) {
             if (command instanceof CreateCommand) {
-                handleCreateCommand((CreateCommand) command);
+                outputs.add(handleCreateCommand((CreateCommand) command));
             } else if (command instanceof MatchCommand) {
-                handleMatchCommand((MatchCommand) command);
+                outputs.add(handleMatchCommand((MatchCommand) command));
             } else if (command instanceof ReturnCommand) {
-                handleReturnCommand((ReturnCommand) command);
+                outputs.add(handleReturnCommand((ReturnCommand) command));
             } else if (command instanceof DeleteCommand) {
-                handleDeleteCommand((DeleteCommand) command);
+                outputs.add(handleDeleteCommand((DeleteCommand) command));
             }
         }
+
+        return outputs.toArray(new String[outputs.size()]);
     }
 
-    private void handleDeleteCommand(DeleteCommand command) {
+    private String handleDeleteCommand(DeleteCommand command) {
+        StringBuilder output = new StringBuilder();
         String variableName = command.getVariableName();
         ArrayList<Node> nodes = nodeNamespace.get(variableName);
         ArrayList<Node> nodesToDelete = new ArrayList<>();
@@ -91,12 +98,15 @@ public class Client {
                 }
             }
         } else {
-            System.out.println("Could not delete " + variableName);
+            output.append("Could not delete " + variableName);
         }
 
         for (Node node : nodesToDelete) {
+            output.append(node + " deleted\n");
             nodes.remove(node);
         }
+
+        return output.toString();
     }
 
     public MultiQuery processQueryString(String query) {
@@ -108,8 +118,9 @@ public class Client {
         return (MultiQuery) results;
     }
 
-    private void handleReturnCommand(ReturnCommand command) {
+    private String handleReturnCommand(ReturnCommand command) {
         // Prints out a table of the properties requested in the return command
+        StringBuilder output = new StringBuilder();
         Properties properties = command.getProperties();
         Pair[] returnProperties = properties.getProperties();
         ArrayList<String> uniqueReturnProperties = new ArrayList<>();
@@ -120,12 +131,12 @@ public class Client {
                 uniqueReturnProperties.add(pair.getValue());
             }
         }
-        System.out.print("\u001B[32m");
+        output.append("\u001B[32m");
         for (String property : uniqueReturnProperties) {
-            System.out.print(property + "\t");
+            output.append(property + "\t");
         }
 
-        System.out.println("\u001B[0m");
+        output.append("\u001B[0m\n");
 
         for (Pair pair : returnProperties) {
             ArrayList<Node> nodes = nodeNamespace.get(pair.getProperty());
@@ -134,20 +145,23 @@ public class Client {
                     if (!alreadyPrinted.contains(node)) {
                         for (String property : uniqueReturnProperties) {
                             if (property.equals("*")) {
-                                System.out.print(node);
+                                output.append(node);
                             } else {
-                                System.out.print(node.getProperties().get(property) + "\t");
+                                output.append(node.getProperties().get(property) + "\t");
                             }
                             alreadyPrinted.add(node);
                         }
-                        System.out.println();
+                        output.append("\n");
                     }
                 }
             }
         }
+
+        return output.toString();
     }
 
-    private void handleMatchCommand(MatchCommand command) {
+    private String handleMatchCommand(MatchCommand command) {
+        StringBuilder output = new StringBuilder();
         MatchPattern[] patterns = command.getMatchPatterns();
 
         for (MatchPattern pattern : patterns) {
@@ -155,6 +169,7 @@ public class Client {
                 Node[] nodes = dbHelper.matchNode(pattern.getNodeSource());
                 for (Node node : nodes) {
                     nodeNamespace.addNode(pattern.getNodeSource().getVariableName(), node);
+                    output.append("Matched node " + node.getProperties().get("id") + "\n");
                 }
             } else if (pattern.getType() == MatchPattern.Type.RELATIONSHIP) {
                 MatchQueryResult[] result = dbHelper.getNodesWithDirectedRelationship(pattern.getNodeSource(),
@@ -165,6 +180,9 @@ public class Client {
                     nodeNamespace.addNode(pattern.getNodeSource().getVariableName(), match.getSource());
                     nodeNamespace.addNode(pattern.getNodeTarget().getVariableName(), match.getTarget());
                     nodeNamespace.addNode(pattern.getNodeRelationship().getVariableName(), match.getRelationship());
+                    output.append("Matched node " + match.getSource().getProperties().get("id") + " - "
+                            + match.getTarget().getProperties().get("id") + " -> "
+                            + match.getRelationship() + "\n");
                 }
             } else if (pattern.getType() == MatchPattern.Type.ANY_RELATIONSHIP) {
                 MatchQueryResult[] result = dbHelper.getNodesWithAnyRelationship(pattern.getNodeSource(),
@@ -173,30 +191,39 @@ public class Client {
                 for (MatchQueryResult match : result) {
                     nodeNamespace.addNode(pattern.getNodeSource().getVariableName(), match.getSource());
                     nodeNamespace.addNode(pattern.getNodeTarget().getVariableName(), match.getTarget());
+                    output.append("Matched node " + match.getSource().getProperties().get("id") + " - "
+                            + match.getTarget().getProperties().get("id") + "\n");
                 }
             }
         }
+
+        return output.toString();
     }
 
-    private void handleCreateCommand(CreateCommand command) {
+    private String handleCreateCommand(CreateCommand command) {
         command.getSingleNodes();
         command.getNodesWithRelationships();
 
         for (CreateSingleNode node : command.getSingleNodes()) {
-            createSingleNode(node);
+            return createSingleNode(node);
         }
 
         for (CreateNodesWithRelationship node : command.getNodesWithRelationships()) {
-            handleCreateNodeWithRelationships(node);
+            return handleCreateNodeWithRelationships(node);
         }
+
+        return "No nodes created";
     }
 
-    private void createSingleNode(CreateSingleNode node) {
+    private String createSingleNode(CreateSingleNode node) {
         Node newNode = dbHelper.createNodeInDb(node.getNode());
         nodeNamespace.addNode(node.getNode().getVariableName(), newNode);
+        return "Created node " + newNode.getVariableName() + " with id " + newNode.getProperties().get("id");
     }
 
-    private void handleCreateNodeWithRelationships(CreateNodesWithRelationship createData) {
+    private String handleCreateNodeWithRelationships(CreateNodesWithRelationship createData) {
+        String output = "";
+
         var nodeRelationship = createData.getRelationshipNode();
 
         Node nodeTo = createData.getNodeTo();
@@ -215,6 +242,8 @@ public class Client {
             nodeToResults.add(nodeTo);
 
             nodeNamespace.addNode(createData.getNodeTo().getVariableName(), nodeTo);
+            output += "Created node " + nodeTo.getVariableName() + " with id " + nodeTo.getProperties().get("id")
+                    + "\n";
         }
 
         if (nodeFromResults.size() == 0) {
@@ -222,6 +251,8 @@ public class Client {
             nodeFromResults.add(nodeFrom);
 
             nodeNamespace.addNode(createData.getNodeFrom().getVariableName(), nodeFrom);
+            output += "Created node " + nodeFrom.getVariableName() + " with id " + nodeFrom.getProperties().get("id")
+                    + "\n";
         }
 
         for (Node nodeToResult : nodeToResults) {
@@ -231,8 +262,12 @@ public class Client {
 
                 Node relationshipNode = dbHelper.createRelationship(nodeRelationship, nodeFromId, nodeToId);
                 nodeNamespace.addNode(relationshipNode.getVariableName(), relationshipNode);
+                output += "Created relationship " + relationshipNode.getVariableName() + " with id "
+                        + relationshipNode.getProperties().get("id") + "\n";
             }
         }
+
+        return output;
     }
 
     public void close() {
