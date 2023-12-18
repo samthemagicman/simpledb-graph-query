@@ -161,9 +161,14 @@ public class DBHelper {
             preparedStatement.setString(1, node.getLabel());
             int i = 2;
             for (Pair property : nodeProperties.getProperties()) {
-                preparedStatement.setString(i, property.getValue());
+                if (property.getProperty().equals("id")) {
+                    preparedStatement.setInt(i, Integer.parseInt(property.getValue()));
+                } else {
+                    preparedStatement.setString(i, property.getValue());
+                }
                 i++;
             }
+
             // execute statement and get result set
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
