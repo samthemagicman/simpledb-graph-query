@@ -127,9 +127,9 @@ public class CypherVisitor extends CypherBaseVisitor<VisitorResult> {
 
     @Override
     public MatchCommand visitMatchCommand(MatchCommandContext ctx) {
-        MatchPattern match = (MatchPattern) visit(ctx.matchPattern());
+        MatchPattern[] matches = ctx.matchPattern().stream().map(this::visit).toArray(MatchPattern[]::new);
 
-        return new MatchCommand(match, new Properties());
+        return new MatchCommand(matches);
     }
 
     @Override

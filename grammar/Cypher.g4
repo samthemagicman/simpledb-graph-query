@@ -44,7 +44,7 @@ matchAndReturnCommand: matchCommand returnCommand;
 
 deleteCommand: 'DELETE' nodeVariable = ID;
 
-matchCommand: MATCH matchPattern;
+matchCommand: MATCH matchPattern (COMMA matchPattern)?;
 
 returnCommand: RETURN returnPattern;
 

@@ -141,30 +141,32 @@ public class Client {
     }
 
     private void handleMatchCommand(MatchCommand command) {
-        MatchPattern pattern = command.getMatchPattern();
+        MatchPattern[] patterns = command.getMatchPatterns();
 
-        if (pattern.getType() == MatchPattern.Type.SINGLE) {
-            Node[] nodes = dbHelper.matchNode(pattern.getNodeSource());
-            for (Node node : nodes) {
-                nodeNamespace.addNode(pattern.getNodeSource().getVariableName(), node);
-            }
-        } else if (pattern.getType() == MatchPattern.Type.RELATIONSHIP) {
-            MatchQueryResult[] result = dbHelper.getNodesWithDirectedRelationship(pattern.getNodeSource(),
-                    pattern.getNodeTarget(),
-                    pattern.getNodeRelationship());
+        for (MatchPattern pattern : patterns) {
+            if (pattern.getType() == MatchPattern.Type.SINGLE) {
+                Node[] nodes = dbHelper.matchNode(pattern.getNodeSource());
+                for (Node node : nodes) {
+                    nodeNamespace.addNode(pattern.getNodeSource().getVariableName(), node);
+                }
+            } else if (pattern.getType() == MatchPattern.Type.RELATIONSHIP) {
+                MatchQueryResult[] result = dbHelper.getNodesWithDirectedRelationship(pattern.getNodeSource(),
+                        pattern.getNodeTarget(),
+                        pattern.getNodeRelationship());
 
-            for (MatchQueryResult match : result) {
-                nodeNamespace.addNode(pattern.getNodeSource().getVariableName(), match.getSource());
-                nodeNamespace.addNode(pattern.getNodeTarget().getVariableName(), match.getTarget());
-                nodeNamespace.addNode(pattern.getNodeRelationship().getVariableName(), match.getRelationship());
-            }
-        } else if (pattern.getType() == MatchPattern.Type.ANY_RELATIONSHIP) {
-            MatchQueryResult[] result = dbHelper.getNodesWithAnyRelationship(pattern.getNodeSource(),
-                    pattern.getNodeTarget());
+                for (MatchQueryResult match : result) {
+                    nodeNamespace.addNode(pattern.getNodeSource().getVariableName(), match.getSource());
+                    nodeNamespace.addNode(pattern.getNodeTarget().getVariableName(), match.getTarget());
+                    nodeNamespace.addNode(pattern.getNodeRelationship().getVariableName(), match.getRelationship());
+                }
+            } else if (pattern.getType() == MatchPattern.Type.ANY_RELATIONSHIP) {
+                MatchQueryResult[] result = dbHelper.getNodesWithAnyRelationship(pattern.getNodeSource(),
+                        pattern.getNodeTarget());
 
-            for (MatchQueryResult match : result) {
-                nodeNamespace.addNode(pattern.getNodeSource().getVariableName(), match.getSource());
-                nodeNamespace.addNode(pattern.getNodeTarget().getVariableName(), match.getTarget());
+                for (MatchQueryResult match : result) {
+                    nodeNamespace.addNode(pattern.getNodeSource().getVariableName(), match.getSource());
+                    nodeNamespace.addNode(pattern.getNodeTarget().getVariableName(), match.getTarget());
+                }
             }
         }
     }
